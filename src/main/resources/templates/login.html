@@ -8,16 +8,22 @@
     </head>
 
 <body class="">
-
+    <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show" role="alert" th:if="${fail}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+        <strong th:text="#{login_fail}"></strong>
+    </div>
     <div class="account-pages mt-5 mb-1">
         <div class="container">
+
             <div class="row justify-content-center">
                 <div class="col-lg-5">
                     <div class="card mb-0">
 
                         <!-- Logo -->
                         <div class="card-body pt-4 pb-0 text-center">
-                            <a href="index.html">
+                            <a href="#">
                                 <span><img th:src="@{/assets/images/logo-dark.png}" alt=""></span>
                             </a>
                         </div>
@@ -27,17 +33,17 @@
                                 <h4 class="text-dark-50 text-center mt-0 font-weight-bold">Log in</h4>
                                 <p class="text-muted mb-4">Enter your email address and password to access admin panel.</p>
                             </div>
-                            <form>
+                            <form action="/user/login" method="post">
                                 <div class="form-group">
                                     <label for="emailaddress">Email address</label>
-                                    <input class="form-control" type="email" id="emailaddress" required="" placeholder="Enter your email" name="userName">
+                                    <input class="form-control" type="email" id="emailaddress" required="" placeholder="Enter your email" name="email">
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
                                     <input class="form-control" type="password" required="" id="password" placeholder="Enter your password" name="password">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <a href="pages-recoverpw.html" class="text-muted float-right"><small>Forgot your password?</small></a>
+
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="checkbox-signin" checked>
                                         <label class="custom-control-label" for="checkbox-signin">Remember me</label>
@@ -53,9 +59,14 @@
                             </form>
                             <div class="row mt-3">
                                 <div class="col-12 text-center">
-                                    <p class="text-muted mb-0">Don't have an account? <a href="pages-register.html" class="text-muted ml-1"><b>Sign Up</b></a></p>
+                                    <p class="text-muted mb-0">Don't have an account? <a th:href="@{/register}" class="text-muted ml-1"><b>Sign Up</b></a></p>
                                 </div>
-                            </div>
+
+                                <div class="col-12 text-center">
+                                    <p class="text-muted mb-0"><a th:href="@{/pwd_recovery}" class="text-muted float-right"><small>Forgot your password?</small></a></p>
+                                </div>
+
+                                </div>
                         </div>
 
                     </div>
