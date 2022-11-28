@@ -3,6 +3,7 @@ package com.octenexin.ecnu.service.impl;
 
 import com.octenexin.ecnu.dao.UserDao;
 import com.octenexin.ecnu.pojo.User;
+import com.octenexin.ecnu.service.MessageService;
 import com.octenexin.ecnu.service.UserService;
 import org.springframework.stereotype.Service;
 

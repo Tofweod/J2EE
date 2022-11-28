@@ -2,7 +2,7 @@
 <html lang="en">
     <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
 
-        <title>Shimba Bootstrap 4 Admin Dashboard</title>
+        <title>消息中心</title>
 
     </head>
     <body>
@@ -15,6 +15,8 @@
                     <div th:replace="~{/commons/common :: navbar}"></div>
 
                     <!--===============main content start===============-->
+                    <!--使用ajax实现-->
+
 
 
 
@@ -28,5 +30,10 @@
 
 
         <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+    <script>
+        function show_messages(){
+
+        }
+    </script>
     </body>
 </html>

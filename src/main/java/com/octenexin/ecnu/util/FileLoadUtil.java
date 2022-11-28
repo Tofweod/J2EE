@@ -12,12 +12,12 @@ public class FileLoadUtil {
 
 
     public static String getEmailTemplate(String captcha) {
-        String emailTemplet = System.getProperty("emailTemplet");
-        emailTemplet = emailTemplet.replace("[[$para0]]", String.valueOf(captcha.charAt(0)))
+        String emailTemplate = System.getProperty("emailTemplate");
+        emailTemplate = emailTemplate.replace("[[$para0]]", String.valueOf(captcha.charAt(0)))
                 .replace("[[$para1]]", String.valueOf(captcha.charAt(1)))
                 .replace("[[$para2]]", String.valueOf(captcha.charAt(2)))
                 .replace("[[$para3]]", String.valueOf(captcha.charAt(3)));
-        return emailTemplet;
+        return emailTemplate;
     }
 
 
@@ -44,7 +44,7 @@ public class FileLoadUtil {
                     //System.out.println(lineTxt);
                     sb.append(lineTxt);
                 }
-                System.setProperty("emailTemplet", sb.toString());
+                System.setProperty("emailTemplate", sb.toString());
                 read.close();
             } else {
                 System.out.println("找不到指定的文件");

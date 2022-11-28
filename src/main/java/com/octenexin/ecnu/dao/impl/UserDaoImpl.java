@@ -42,14 +42,14 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> getList(User user) {
         String sql = "SELECT * FROM users;";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<User>(User.class));
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
     @Override
     public User getUser(User user) {
         String sql = "SELECT * FROM users where email=?;";
 
         try{
-            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class), user.getEmail());
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), user.getEmail());
         }catch (EmptyResultDataAccessException e){
             return null;
         }

@@ -2,6 +2,7 @@ package com.octenexin.ecnu.controller;
 
 
 import com.octenexin.ecnu.pojo.User;
+import com.octenexin.ecnu.service.MessageService;
 import com.octenexin.ecnu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,6 +19,9 @@ public class LoginController {
 
     @Autowired
     UserService userService;
+    
+    @Autowired
+    MessageService messageService;
 
     @PostMapping("/user/login")
     public String redirectRule(@RequestParam String email, @RequestParam String password, Model model, HttpSession session){
@@ -32,6 +36,10 @@ public class LoginController {
         }
 
         session.setAttribute("loginUser",res.getUserName());
+        // 添加邮件服务至会话
+        messageService.setUser(res);
+        session.setAttribute("messageService",messageService);
+        System.out.println("设置邮件服务");
         if(res.getAuthority()==1){
             return "redirect:/admin/index";
         }else{

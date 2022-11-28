@@ -57,7 +57,7 @@ FOREIGN KEY (project_state_id) REFERENCES project_states(project_state_id),
 FOREIGN KEY (project_prestate_id) REFERENCES project_states(project_state_id));
 
 CREATE TABLE messages(
-message_id INT PRIMARY KEY,
+message_id INT PRIMARY KEY AUTO_INCREMENT,
 message_user_id CHAR(11) NOT NULL,
 message_raw_data TEXT NOT NULL,
 message_time TIMESTAMP, -- 因为显示消息按顺序排序，使用timestamp方便计算
