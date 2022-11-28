@@ -10273,7 +10273,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .text-hide {
-    font: 0/0 a;
+    /*font: 0/0 a;*/
     color: transparent;
     text-shadow: none;
     background-color: transparent;
@@ -10347,7 +10347,8 @@ a.text-dark:hover, a.text-dark:focus {
   h3 {
         page-break-after: avoid;
     }
-  @    page {
+
+  @page {
         size: a3;
     }
 
@@ -16238,10 +16239,10 @@ div.dt-button-info h2 {
 
 @font-face {
     font-family: "summernote";
-  font-style: normal;
-  font-weight: normal;
-  src: url("../fonts/summernote.eot");
-  src: url(http://bvmthemes.com/themes/shimba/live/assets/fonts/summernote.eot?#iefixx") format("embedded-opentype"), url("../fonts/summernote.woff?") format("woff"), url("../fonts/summernote.ttf?") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+    src: url("../fonts/summernote.eot");
+    src: url("http://bvmthemes.com/themes/shimba/live/assets/fonts/summernote.eot?#iefixx") format("embedded-opentype"), url("../fonts/summernote.woff?") format("woff"), url("../fonts/summernote.ttf?") format("truetype");
 }
 
 .note-toolbar {
