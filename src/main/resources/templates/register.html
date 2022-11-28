@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+    <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
+
+        <title>Shimba Bootstrap 4 Admin Dashboard</title>
+
+    </head>
+
+<body class="">
+
+    <div class="account-pages mt-5 mb-1">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="card mb-0">
+                        <!-- Logo-->
+                        <div class="card-body pt-4 pb-0 text-center">
+                            <a href="#">
+                                <span><img src="assets/images/logo-dark.png" alt=""></span>
+                            </a>
+                        </div>
+
+                        <div class="card-body p-4">
+                            <div class="text-center w-75 m-auto">
+                                <h4 class="text-dark-50 text-center mt-0 font-weight-bold">Free Registration</h4>
+                                <p class="text-muted mb-4">Don't have an account? Create your account, it takes less than a minute </p>
+                            </div>
+
+<!--                            <form action="#">-->
+
+
+
+                                <div class="form-group">
+                                    <label for="email">Email address</label>
+                                    <input class="form-control" type="email" id="email" required placeholder="Enter your email" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input class="form-control" type="password" required id="password" placeholder="Enter your password" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="repeat-password">Repeat Password</label>
+                                    <input class="form-control" type="password" required id="repeat-password" placeholder="Repeat your password" value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="user-id">Student No. / Job No.</label>
+                                    <input class="form-control" type="text" id="user-id" placeholder="Enter your student No. or job No." required value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="full-name">Full Name</label>
+                                    <input class="form-control" type="text" id="full-name" placeholder="Enter your full name" required value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="major">Major</label>
+                                    <input class="form-control" type="text" id="major" placeholder="Enter your major" required value="">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="checkbox-signup" checked="checked">
+                                        <label class="custom-control-label" for="checkbox-signup">I accept <a href="#" class="text-muted">Terms &amp; Conditions</a></label>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-8">
+                                        <div class="form-group mb-0">
+                                            <button class="btn btn-primary btn-block" type="submit" onclick="signUp()"> Sign Up </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    function signUp(){
+
+                                        console.log("83")
+                                        var email=$("#email").val();
+                                        var userId=$("#user-id").val();
+                                        var userName=$("#full-name").val();
+                                        var pwd=$("#password").val();
+                                        var rpwd=$("#repeat-password").val();
+                                        var major=$("#major").val();
+                                        var checked=$("#checkbox-signup").prop('checked');
+
+                                        var email_rgx=/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+                                        var id_rgx=/^[0-9]*$/
+
+                                        if(email===""||userId===""||userName===""||pwd===""||rpwd===""||major===""){
+                                            alert("未填写完整！");
+                                            return;
+                                        }
+
+                                        if(!email_rgx.test(email)){
+                                            alert("邮箱格式错！");
+                                            return;
+                                        }
+
+                                        if(!id_rgx.test(userId)){
+                                            alert("学工号格式错！");
+                                            return;
+                                        }
+
+                                        if(pwd!==rpwd){
+                                            alert("重复密码错误！");
+                                            return;
+                                        }
+
+                                        if(!checked){
+                                            alert("请勾选必填项！");
+                                            return;
+                                        }
+
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/user/register",
+                                            data: {
+                                                'email': email,
+                                                'userId': userId,
+                                                'userName': userName,
+                                                'userPassword': pwd,
+                                                'major': major,
+                                                'authority': 0
+                                            },
+                                            success: function () {
+                                                alert("注册成功！");
+                                                window.location.href = "/";
+                                            },
+                                            error: function (){
+                                                alert("邮箱或学工号不唯一！");
+                                            }
+                                        });
+
+                                    }
+                                </script>
+
+<!--                            </form>-->
+
+
+                            <div class="row mt-3">
+                                <div class="col-12 text-center">
+                                    <p class="text-muted">Already have account? <a href="pages-login.html" class="text-muted ml-1"><b>Log In</b></a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end page -->
+
+    <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+
+</body>
+
+</html>

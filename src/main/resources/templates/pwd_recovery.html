@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+    <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
+
+        <title>Shimba Bootstrap 4 Admin Dashboard</title>
+
+    </head>
+
+<body class="">
+
+    <div class="account-pages mt-5 mb-1">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="card mb-0">
+                        <div class="card-body pt-4 pb-0 text-center">
+                            <a href="index.html">
+                                <span><img src="assets/images/logo-dark.png" alt=""></span>
+                            </a>
+                        </div>
+
+                        <div class="card-body p-4">
+
+                            <div class="text-center w-75 m-auto">
+                                <h4 class="text-dark-50 text-center mt-0 font-weight-bold">Reset Password</h4>
+                                <p class="text-muted mb-4">Enter your email address and we'll send you an email with instructions to reset your password.</p>
+                            </div>
+
+                            <!--===========form start==============-->
+                            <div class="input-group mb-3">
+                                <input type="email" class="form-control" placeholder="Enter your email" aria-label="Enter your email" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn  btn-primary" type="button">Get Code</button>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="check-code">Email address</label>
+                                <input class="form-control" type="email" id="check-code" required="" placeholder="Enter the code you have received">
+                            </div>
+
+                            <div class="row justify-content-center">
+                                <div class="col-8">
+                                    <div class="form-group mb-0">
+                                        <button class="btn btn-primary btn-block" type="submit"> Reset Password </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--===========form end==============-->
+
+
+                            <div class="row mt-3">
+                                <div class="col-12 text-center">
+                                    <p class="text-muted mb-0">Back to <a href="pages-login.html" class="text-muted ml-1"><b>Log In</b></a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end page -->
+    <!-- Required js -->
+    <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+
+</body>
+
+</html>
