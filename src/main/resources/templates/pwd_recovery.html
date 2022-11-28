@@ -16,7 +16,7 @@
                     <div class="card mb-0">
                         <div class="card-body pt-4 pb-0 text-center">
                             <a href="index.html">
-                                <span><img src="assets/images/logo-dark.png" alt=""></span>
+                                <span><img th:src="@{/assets/images/logo-dark.png}" alt=""></span>
                             </a>
                         </div>
 
@@ -28,30 +28,137 @@
                             </div>
 
                             <!--===========form start==============-->
+                            <h5>Email address</h5>
                             <div class="input-group mb-3">
-                                <input type="email" class="form-control" placeholder="Enter your email" aria-label="Enter your email" aria-describedby="basic-addon2">
+                                <input type="email" class="form-control" placeholder="Enter your email" aria-label="Enter your email" aria-describedby="basic-addon2" id="email">
                                 <div class="input-group-append">
-                                    <button class="btn  btn-primary" type="button">Get Code</button>
+                                    <button class="btn btn-primary" type="button" onclick="getCode()" id="get-code-btn">Get Code</button>
                                 </div>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="check-code">Email address</label>
-                                <input class="form-control" type="email" id="check-code" required="" placeholder="Enter the code you have received">
+                                <label for="check-code">Received Code</label>
+                                <input class="form-control" type="text" id="check-code" required="" placeholder="Enter the code you have received" value="">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="new-pwd">New Password</label>
+                                <input class="form-control" type="text" id="new-pwd" required="" placeholder="Enter the your new password" value="">
                             </div>
 
                             <div class="row justify-content-center">
                                 <div class="col-8">
                                     <div class="form-group mb-0">
-                                        <button class="btn btn-primary btn-block" type="submit"> Reset Password </button>
+                                        <button class="btn btn-primary btn-block" type="submit" onclick="resetPwd()"> Reset Password </button>
                                     </div>
                                 </div>
                             </div>
                             <!--===========form end==============-->
 
+                            <script>
+                                var time = 60;
+                                var t;
+                                var btn=document.getElementById("get-code-btn");
+
+                                function countdown(e){
+                                    if (time <= 0) {
+                                        //这里时设置当时间到0的时候重新设置点击事件，并且默认time修改为60
+                                        e.setAttribute("onclick","getCode()");
+                                        e.removeAttribute("disabled");
+                                        e.innerText="Get Code";
+                                        time = 60;
+                                        clearInterval(t);
+                                    }else{
+                                        //这里是显示时间倒计时的时候点击不生效
+                                        e.setAttribute("onclick", "");
+                                        e.setAttribute("disabled"," ");
+                                        e.innerText=""+time+"秒后重新发送";
+                                        time--;
+                                    }
+                                }
+
+                                var captcha;
+
+                                function getCode(){
+                                    console.log("get code");
+
+                                    var email=$("#email").val();
+                                    var email_rgx=/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+                                    if(email===""||!email_rgx.test(email)){
+                                        alert("邮箱不合法！");
+                                        return;
+                                    }
+
+                                    t = setInterval(function () {
+                                        countdown(btn)
+                                    }, 1000)
+                                    alert("验证码已发送!");
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/mail",
+                                        data: {
+                                            'email': email
+                                        },
+                                        success: function (data) {
+                                            alert("验证码发送成功！");
+                                            captcha=data;
+                                        },
+                                        error: function () {
+                                            alert("验证码发送失败！");
+                                        }
+                                    })
+
+                                }
+
+                                function resetPwd(){
+                                    var email=$("#email").val();
+                                    var email_rgx=/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+                                    if(email===""||!email_rgx.test(email)){
+                                        alert("邮箱不合法！");
+                                        return;
+                                    }
+
+
+                                    var checkCode=$("#check-code").val();
+                                    if(checkCode===""){
+                                        alert("请填写验证码！");
+                                        return;
+                                    }
+
+                                    if(checkCode!==captcha){
+                                        alert("验证码错误！");
+                                        return;
+                                    }
+
+                                    var newPwd=$("#new-pwd").val();
+                                    if(newPwd===""){
+                                        alert("请填写新密码！");
+                                        return;
+                                    }
+
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "/pwd/change",
+                                        data: {
+                                            'email': email,
+                                            'newPwd': newPwd
+                                        },
+                                        success: function (data) {
+                                            alert("密码修改成功！");
+                                            window.location.href = "/";
+                                        },
+                                        error: function () {
+                                            alert("用户名不存在，密码修改失败！");
+                                        }
+                                    })
+
+                                }
+                            </script>
+
 
                             <div class="row mt-3">
                                 <div class="col-12 text-center">
-                                    <p class="text-muted mb-0">Back to <a href="pages-login.html" class="text-muted ml-1"><b>Log In</b></a></p>
+                                    <p class="text-muted mb-0">Back to <a th:href="@{/}" class="text-muted ml-1"><b>Log In</b></a></p>
                                 </div>
                             </div>
                         </div>
