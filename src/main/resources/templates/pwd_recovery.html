@@ -27,19 +27,28 @@
                                 <p class="text-muted mb-4">Enter your email address and we'll send you an email with instructions to reset your password.</p>
                             </div>
 
-                            <form action="#">
-                                <div class="form-group mb-3">
-                                    <label for="emailaddress">Email address</label>
-                                    <input class="form-control" type="email" id="emailaddress" required="" placeholder="Enter your email">
+                            <!--===========form start==============-->
+                            <div class="input-group mb-3">
+                                <input type="email" class="form-control" placeholder="Enter your email" aria-label="Enter your email" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn  btn-primary" type="button">Get Code</button>
                                 </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-8">
-                                        <div class="form-group mb-0">
-                                            <button class="btn btn-primary btn-block" type="submit"> Reset Password </button>
-                                        </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="check-code">Email address</label>
+                                <input class="form-control" type="email" id="check-code" required="" placeholder="Enter the code you have received">
+                            </div>
+
+                            <div class="row justify-content-center">
+                                <div class="col-8">
+                                    <div class="form-group mb-0">
+                                        <button class="btn btn-primary btn-block" type="submit"> Reset Password </button>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <!--===========form end==============-->
+
+
                             <div class="row mt-3">
                                 <div class="col-12 text-center">
                                     <p class="text-muted mb-0">Back to <a href="pages-login.html" class="text-muted ml-1"><b>Log In</b></a></p>
