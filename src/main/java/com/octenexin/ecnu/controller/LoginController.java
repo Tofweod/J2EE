@@ -25,6 +25,10 @@ public class LoginController {
 
     @PostMapping("/user/login")
     public String redirectRule(@RequestParam String email, @RequestParam String password, Model model, HttpSession session){
+    
+        // 添加邮件服务至会话
+        if(session.getAttribute("messageService") == null)
+            session.setAttribute("messageService",messageService);
 
         User user=new User();
         user.setEmail(email);
@@ -32,14 +36,11 @@ public class LoginController {
         User res=userService.getUser(user);
         if(res==null||!Objects.equals(password, res.getUserPassword())){
             model.addAttribute("fail","true");
+            messageService.setUser(res);
             return "/login";
         }
-
         session.setAttribute("loginUser",res.getUserName());
-        // 添加邮件服务至会话
-        messageService.setUser(res);
-        session.setAttribute("messageService",messageService);
-        System.out.println("设置邮件服务");
+        
         if(res.getAuthority()==1){
             return "redirect:/admin/index";
         }else{

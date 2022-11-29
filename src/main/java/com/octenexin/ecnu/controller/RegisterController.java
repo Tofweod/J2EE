@@ -29,13 +29,10 @@ public class RegisterController {
         }
 
         userService.addUser(user);
-        MessageService messageService = new MessageServiceImpl();
+        MessageService messageService = (MessageService) session.getAttribute("messageService");
+        // 设置欢迎信息
         messageService.setUser(user);
-        // 注册成功发送欢迎消息
-        messageService.sendMessage("hello"+user.getUserName());
-        messageService = null;
+        messageService.sendMessage("hello:" + user.getUserName());
         return "success";
-
-
     }
 }

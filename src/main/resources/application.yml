@@ -52,7 +52,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       username: root
-      password: aaa123
+      password: 2002madlife
       url: jdbc:mysql://localhost:3306/j2ee?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
       driver-class-name: com.mysql.cj.jdbc.Driver
 

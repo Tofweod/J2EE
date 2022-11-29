@@ -5,6 +5,7 @@ import com.octenexin.ecnu.pojo.Message;
 import com.octenexin.ecnu.pojo.User;
 import com.octenexin.ecnu.service.MessageService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author Tofweod
  */
 @Service("messageService")
+@SessionScope
 public class MessageServiceImpl implements MessageService {
 	
 	private User user;
@@ -32,7 +34,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 	
 	@Override
-	public void setUser(User user) {
+	public synchronized void setUser(User user) {
 		this.user = user;
 	}
 	
