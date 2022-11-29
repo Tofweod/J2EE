@@ -3,7 +3,8 @@ DELIMITER $$
 USE `j2ee`$$
 
 DROP PROCEDURE IF EXISTS `create_users`$$
-
+-- start_num 开始的id号,nums生成多少行数据
+-- 注意由于primarykey存在，设置start_num前应知道表中有哪些数据
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create_users`(start_num INT,nums INT)
 BEGIN
 DECLARE id CHAR(11);
