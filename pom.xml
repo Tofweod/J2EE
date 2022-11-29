@@ -135,6 +135,7 @@
 
 
 		<!--==================Tools Start=================-->
+		<! -- 原版本无法注入getter和setter -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
