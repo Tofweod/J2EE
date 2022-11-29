@@ -31,6 +31,9 @@ public class MyMvcConfig implements WebMvcConfigurer {
         //admin
         registry.addViewController("/admin/index").setViewName("/admin/index");
         registry.addViewController("/admin/profile").setViewName("/admin/profile");
+        
+        // submit paper
+        registry.addViewController("/paperForm").setViewName("paperForm");
     }
 
     @Bean

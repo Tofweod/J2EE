@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +37,7 @@ public class MessageDaoImpl implements MessageDao {
   
   /**
    * message的update只有修改可读状态，因此特殊化其方法
+   * todo:描述message具体实现
    * @param message
    */
   @Override
@@ -48,6 +48,7 @@ public class MessageDaoImpl implements MessageDao {
   
   @Override
   public int deleteScalar(Message message) {
+    // 删除
     String sql = "DELETE FROM messages WHERE message_id = ?";
     return jdbcTemplate.update(sql,message.getMessageId());
   }

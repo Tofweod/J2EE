@@ -82,3 +82,8 @@ spring:
       # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
+  # 上传文件参数设置，此处设置为上传大小无上限
+  servlet:
+    multipart:
+      maxFileSize: -1
+      maxRequestSize: -1

@@ -15,7 +15,7 @@ state VARCHAR(5) NOT NULL);
 INSERT INTO paper_states VALUES(0,"待审核"),(1,"审核通过"),(-1,"审核不通过"),(2,"申请修改中"),(-2,"待修改");
 
 CREATE TABLE papers(
-paper_id INT PRIMARY KEY,
+paper_id INT PRIMARY KEY AUTO_INCREMENT,
 paper_title VARCHAR(30) NOT NULL,
 paper_author VARCHAR(20) NOT NULL,
 paper_summary VARCHAR(400), -- 论文摘要

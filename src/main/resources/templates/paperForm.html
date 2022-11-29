@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!--表单样式任意修改，各字段name值不能改动-->
+<form id="paperForm">
+    论文标题<input name="title" type="text"><br>
+    论文作者<input name="author" type="text"><br>
+    摘要<input name="summary" type="text"><br>
+    关键词<input name="keywords" type="text"><br>
+    上传文件<input name="file" type="file"/><br>
+    <input type="submit" onclick="fileSelected();return false;">
+</form>
+
+<script>
+    function fileSelected(){
+        var form =document.getElementById("paperForm");
+        startFileUpload(form);
+
+    }
+
+    //开始上传
+
+    function startFileUpload(form)
+
+    {
+
+        var uploadURL = "/testForm"; // 此处与controller的映射对应
+
+        var formData = new FormData(form);
+
+        //设置 progress, load, error, abort 4个事件处理器
+
+        var request = new XMLHttpRequest();
+
+        request.upload.addEventListener("progress" , window.evt_upload_progress , false);
+
+        request.addEventListener("load", window.evt_upload_complete, false);
+
+        request.addEventListener("error", window.evt_upload_failed, false);
+
+        request.addEventListener("abort", window.evt_upload_cancel, false);
+
+        request.open("POST", uploadURL ); // 设置服务URL
+        request.send(formData); // 发送表单数据
+
+    }
+
+    window.evt_upload_progress = function(evt)
+
+    {
+
+        if(evt.lengthComputable)
+
+        {
+
+            var progress = Math.round(evt.loaded * 100 / evt.total);
+
+            console.log("上传进度" + progress);
+
+        }
+
+    };
+
+    window.evt_upload_complete = function (evt)
+
+    {
+
+        if(evt.loaded === 0)
+
+        {
+
+            console.log ("上传失败!");
+
+        }
+
+        else
+
+        {
+
+            // 弹窗提示
+            alert("上传完成!");
+            //var response = JSON.parse(evt.target.responseText);
+            var response=evt.target.responseText;
+            console.log ("response:  "+response);
+            // 点击确定后跳转到设置页面
+            // 需要在MyMvcConfig里添加viewController
+            // window.location.href="updateSuccess";
+        }
+
+    };
+
+    window.evt_upload_failed = function (evt)
+
+    {
+
+        console.log ("上传出错");
+
+    };
+
+    window.evt_upload_cancel = function (evt)
+
+    {
+
+        console.log( "上传中止!");
+
+    };
+</script>
+</body>
+</html>

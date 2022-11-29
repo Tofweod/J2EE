@@ -23,7 +23,7 @@ public interface MessageService {
 	
 	/**
 	 * 设置该服务的user
-	 * 一个session中可能存在多个用户，共享一个messageService对象，具体实现尚未完成
+	 * 建议每次操作消息前的因考虑service内的user
 	 * @param user
 	 */
 	void setUser(User user);

@@ -36,9 +36,10 @@ public class LoginController {
         User res=userService.getUser(user);
         if(res==null||!Objects.equals(password, res.getUserPassword())){
             model.addAttribute("fail","true");
-            messageService.setUser(res);
             return "/login";
         }
+    
+        messageService.setUser(res);
         session.setAttribute("loginUser",res.getUserName());
         
         if(res.getAuthority()==1){
