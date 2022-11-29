@@ -18,7 +18,7 @@ public class RegisterController {
 
     @Autowired
     UserService userService;
-
+    
     @RequestMapping("/user/register")
     @ResponseBody
     public String registerUser(@ModelAttribute User user, Model model, HttpSession session){
