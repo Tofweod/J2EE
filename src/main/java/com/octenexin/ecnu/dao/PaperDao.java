@@ -58,4 +58,10 @@ public interface PaperDao {
 	 * 一般用于论文下载
 	 */
 	Paper getPaperWithData(Paper paper);
+	
+	/**
+	 * 获取论文原生数据
+	 * 下载论文使用
+	 */
+	byte[] getPaperData(int paper_id);
 }

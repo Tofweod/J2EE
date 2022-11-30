@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -56,5 +59,27 @@ public class PaperController {
 		int page = Integer.parseInt(url.substring(idx)); // 获取*内代表的页数,从1开始
 		// 假设每页显示10条数据
 		return paperService.getPaperPage((page-1) * 10, 10);
+	}
+	
+	/**
+	 * 论文下载功能，具体获取paper_id方法未提供
+	 * 通过<a></a>标签提供的url进行下载
+	 * @param response
+	 */
+	@RequestMapping("/download")
+	public void downLoad(HttpServletResponse response,Paper paper){
+		// 此处根据本人数据库信息假设获取paper_id为2的论文数据
+		
+		// 设置文件名--可规定为：标题-作者.pdf,此处由于未实现paper获取使用test作为文件名
+		String fileName = "test.pdf";
+		// 设置请求头为下载文件
+		response.setHeader("content-disposition","attachment;fileName="+fileName);
+
+		try(ServletOutputStream out = response.getOutputStream()) {
+			out.write(paperService.getPaperData(2));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
 	}
 }

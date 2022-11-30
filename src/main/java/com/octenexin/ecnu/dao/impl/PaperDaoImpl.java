@@ -74,7 +74,7 @@ public class PaperDaoImpl implements PaperDao {
 	@Override
 	public List<Paper> getPaperPage(int start, int nums) {
 		String sql = "SELECT paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id FROM papers" +
-				"LIMIT ?,?";
+				"LIMIT ?,? WHERE paper_state_id = 1";
 		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Paper.class),start,nums);
 	}
 	
@@ -106,5 +106,11 @@ public class PaperDaoImpl implements PaperDao {
 		}catch (EmptyResultDataAccessException e){
 			return null;
 		}
+	}
+	
+	@Override
+	public byte[] getPaperData(int paper_id) {
+		String sql = "SELECT paper_rawdata from papers WHERE paper_id = ?";
+		return jdbcTemplate.queryForObject(sql,byte[].class,paper_id);
 	}
 }

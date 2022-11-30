@@ -58,4 +58,15 @@ public class PaperServiceImpl implements PaperService {
 	public Paper getPaperWithData(Paper paper) {
 		return paperDao.getPaperWithData(paper);
 	}
+	
+	
+	@Override
+	public byte[] getPaperData(int paper_id) {
+		return paperDao.getPaperData(paper_id);
+	}
+	
+	@Override
+	public byte[] getPaperData(Paper paper) {
+		return getPaperData(paper.getPaperId());
+	}
 }

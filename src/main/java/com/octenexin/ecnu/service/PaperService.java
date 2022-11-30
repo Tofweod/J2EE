@@ -23,6 +23,7 @@ public interface PaperService {
 	/**
 	 * 分页显示
 	 * 从start+1个数据开始查询nums条数据
+	 * 只显示审核通过论文
 	 */
 	List<Paper> getPaperPage(int start,int nums);
 	
@@ -34,4 +35,8 @@ public interface PaperService {
 	List<Paper> getPapersWithData(List<Paper> papers);
 	
 	Paper getPaperWithData(Paper paper);
+	
+	byte[] getPaperData(int paper_id);
+	
+	byte[] getPaperData(Paper paper);
 }
