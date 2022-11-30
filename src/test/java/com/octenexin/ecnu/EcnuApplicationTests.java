@@ -20,21 +20,9 @@ class EcnuApplicationTests {
 	@Autowired
 	PaperService paperService;
 	
-	@Resource
-	private JdbcTemplate jdbcTemplate;
-	@Resource
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	
 	@Test
 	void contextLoads() throws IOException {
-//		String sql = "SELECT paper_rawdata from papers WHERE paper_id = ?";
-//		byte[] bytes = jdbcTemplate.queryForObject(sql, byte[].class, 2);
 
-		final byte[] bytes = paperService.getPaperData(2);
-		System.out.println(Arrays.toString(bytes));
-		FileOutputStream out = new FileOutputStream("test.pdf");
-		out.write(bytes);
-		out.close();
 	}
 
 }
