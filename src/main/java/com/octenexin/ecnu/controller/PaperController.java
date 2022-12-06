@@ -26,6 +26,7 @@ public class PaperController {
 	@Autowired
 	PaperService paperService;
 	
+
 	// 论文下载路径，根据application配置获取
 	@Value("${upload.path}")
 	String uploadPath;
@@ -35,7 +36,7 @@ public class PaperController {
 					   @RequestParam("author")String author,
 					   @RequestParam("summary")String summary,
 					   @RequestParam("keywords")String keywords,
-					   @RequestParam("file") MultipartFile file,HttpServletRequest req) throws IOException {
+					   @RequestParam("file") MultipartFile file,HttpServletRequest req){
 		Paper paper = new Paper();
 		// 设置论文的保存路径
 		String pathName = System.getProperty("user.dir")+uploadPath; // 动态获取项目路径

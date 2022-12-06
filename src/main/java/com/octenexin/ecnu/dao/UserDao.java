@@ -47,6 +47,16 @@ public interface UserDao {
      * @return
      */
     User getUser(User user);
+
+
+    /**
+     * 通过学号查询单个用户信息
+     *
+     * @param user
+     * @return
+     */
+    User getUserById(User user);
+
     /**
      * 批量增加用户
      *

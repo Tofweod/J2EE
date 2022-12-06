@@ -57,6 +57,17 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User getUserById(User user){
+        String sql = "SELECT * FROM users where user_id=?;";
+
+        try{
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class), user.getUserId());
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    @Override
     public void batchAddUser(List<Object[]> batchArgs) {
         String sql = "INSERT into users (email,user_id,user_name,user_password,major,authority) VALUES(?,?,?,?,?,?);";
         jdbcTemplate.batchUpdate(sql, batchArgs);
