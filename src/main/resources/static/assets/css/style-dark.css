@@ -15868,6 +15868,7 @@ div.dt-button-info h2 {
 }
 
 .dropzone {
+    position: relative!important;
     border: 2px dashed #4d5764;
     background: #464f5b;
     border-radius: 6px;
