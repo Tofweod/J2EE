@@ -41,7 +41,12 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="new-pwd">New Password</label>
-                                <input class="form-control" type="text" id="new-pwd" required="" placeholder="Enter the your new password" value="">
+                                <input class="form-control" type="password" id="new-pwd" required="" placeholder="Enter the your new password" value="">
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="rep-pwd">Repeat Password</label>
+                                <input class="form-control" type="password" id="rep-pwd" required="" placeholder="Repeat your password" value="">
                             </div>
 
                             <div class="row justify-content-center">
@@ -132,6 +137,17 @@
                                     var newPwd=$("#new-pwd").val();
                                     if(newPwd===""){
                                         alert("请填写新密码！");
+                                        return;
+                                    }
+
+                                    var repPwd=$("#rep-pwd").val();
+                                    if(repPwd===""){
+                                        alert("重复密码为空！");
+                                        return;
+                                    }
+
+                                    if(repPwd!==newPwd){
+                                        alert("重复密码错误！");
                                         return;
                                     }
 

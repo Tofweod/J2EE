@@ -32,7 +32,7 @@ public interface MessageService {
 	 * 设置消息已读
 	 * @param message
 	 */
-	int readMessage(Message message);
+	int setRead(Message message);
 	
 	/**
 	 * 删除单个message
