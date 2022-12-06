@@ -24,7 +24,7 @@ public class PaperController {
 	@Autowired
 	PaperService paperService;
 	
-	@RequestMapping("/testForm") // 此处映射自行设置，注意修改html文件内uploadURL，跳转操作在html文件内
+	@RequestMapping("/student/paper/do-add") // 此处映射自行设置，注意修改html文件内uploadURL，跳转操作在html文件内
 	public void update(@RequestParam("title")String title,
 					   @RequestParam("author")String author,
 					   @RequestParam("summary")String summary,

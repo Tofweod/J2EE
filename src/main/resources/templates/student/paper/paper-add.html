@@ -16,125 +16,190 @@
 
                     <!--===============main content start===============-->
 
-                    <div class="form-group">
-                        <label>Project File</label>
-                        <form action="/" method="post" class="dropzone" id="myAwesomeDropzone" data-plugin="dropzone" data-previews-container="#file-previews" data-upload-preview-template="#uploadPreviewTemplate">
-                            <div class="fallback" id="fallback" style="position: absolute;top:-20px;left:-20px;opacity: 0">
-                                <input name="file" type="file" multiple id="project-files" style="width: 100%;height: 100%;cursor: pointer" onchange="onAddFile()"/>
-                            </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Add Paper</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="paper-title">Paper Title</label>
+                                            <input type="text" class="form-control" id="paper-title" placeholder="Title">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="paper-author" th:text="#{paper_author}"></label>
+                                            <input type="text" class="form-control" id="paper-author" placeholder="Author">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="paper-summary">Summary</label>
+                                        <textarea class="form-control" id="paper-summary" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="paper-key-words">Key Words</label>
+                                            <input type="text" class="form-control" id="paper-key-words" placeholder="Key words, split by ;">
+                                        </div>
+                                    </div>
 
-                            <div class="dz-message needsclick">
-                                <i class="h1 text-muted dripicons-cloud-upload"></i>
-                                <h3>Drag & Drop files here or click to upload.</h3>
+
+                                    <div class="form-group">
+                                        <label>Project File</label>
+                                        <form action="/" method="post" class="dropzone" id="myAwesomeDropzone" data-plugin="dropzone" data-previews-container="#file-previews" data-upload-preview-template="#uploadPreviewTemplate">
+                                            <div class="fallback" id="fallback" style="position: absolute;top:-20px;left:-20px;opacity: 0">
+                                                <input name="file" type="file" id="project-files" style="width: 100%;height: 100%;cursor: pointer" onchange="onAddFile()"/>
+                                            </div>
+
+                                            <div class="dz-message needsclick">
+                                                <i class="h1 text-muted dripicons-cloud-upload"></i>
+                                                <h3>Drag & Drop files here or click to upload.</h3>
+                                            </div>
+                                        </form>
+                                        <div class="dropzone-previews mt-3" id="file-previews"></div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary" id="submit" onclick="mySubmit()">Submit</button>
+
+
+
+                                    <script>
+                                        var fileData=null;
+                                        var id=0;
+
+
+                                        window.onload=function (){
+                                            var fileArea=document.getElementById("myAwesomeDropzone");
+                                            fileArea.style.position="relative";
+                                            var height=fileArea.offsetHeight;
+                                            var width=fileArea.offsetWidth;
+
+                                            var fallback=document.getElementById("fallback");
+                                            fallback.style.width=width+'px';
+                                            fallback.style.height=height+'px';
+
+                                            fileArea.addEventListener("dragleave dragenter drop dragover", function (e) {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                            })
+
+                                            fileArea.addEventListener("drop",
+                                                function(e){
+                                                    var files = e.dataTransfer.items;
+
+                                                    for (var i=0;i<files.length;i++) {
+                                                        console.log(files[i]);
+                                                    }
+                                                }
+                                            )
+                                        }
+
+                                        window.onresize=function (){
+                                            var fileArea=document.getElementById("myAwesomeDropzone");
+                                            var fallback=document.getElementById("fallback");
+
+
+                                            var height=fileArea.offsetHeight;
+                                            var width=fileArea.offsetWidth;
+
+                                            fallback.style.width=width+'px';
+                                            fallback.style.height=height+'px';
+
+                                        }
+
+                                        function onAddFile(e){
+                                            var files=document.getElementById("project-files").files;
+
+                                            genList(id,files[0]);
+                                            fileData=files[0];
+
+                                        }
+
+
+
+                                        function genList(id,file){
+                                            var listContainer=$("#file-previews");
+
+
+                                            var newNode=$("#list-temp").clone();
+
+                                            newNode.attr('id','list-temp'+id);
+                                            newNode.find("#file-name").text(file.name);
+
+
+                                            newNode.find("#file-img").attr('src',window.URL.createObjectURL(file));
+
+                                            newNode.find("#file-size").text(showBytes(file.size));
+
+                                            newNode.find("#file-delete").click(
+                                                function (){
+                                                    fileData=null;
+                                                    var str='#list-temp'+id;
+
+                                                    $(str).remove();
+
+                                                }
+                                            );
+
+
+                                            listContainer.append(newNode);
+                                        }
+
+                                        function showBytes(bytes){
+                                            if(bytes<1024) return ''+bytes+' B';
+                                            if(bytes<(1<<20)) return ''+(bytes>>10)+' KB';
+                                            if(bytes<(1<<30)) return ''+(bytes>>20)+' MB';
+                                            return ''+(bytes>>30)+' GB';
+                                        }
+
+                                        function mySubmit(){
+                                            console.log(fileData);
+                                            var array=Array.from(fileData.values());
+                                            console.log(array[0]);
+
+                                            var paperTitle=$("#paper-title").val();
+                                            var paperAuthor=$("#paper-author").val();
+                                            var paperSummary=$("#paper-summary").val();
+                                            var paperKeywords=$("#paper-key-words").val();
+                                            var paperFile=array[0];
+
+                                            if(paperTitle===""||paperAuthor===""||paperSummary===""||paperKeywords===""||paperFile===null){
+                                                alert("表单不完整！");
+                                            }
+
+
+                                            jQuery.ajax({
+                                                type: 'post',
+                                                url: '/student/paper/do-add',
+                                                data: {
+                                                    'title':paperTitle,
+                                                    'author':paperAuthor,
+                                                    'summary':paperSummary,
+                                                    'keywords':paperKeywords,
+                                                    'file':paperFile
+                                                },
+                                                success: function (data) {
+                                                    alert("success");
+                                                },
+                                                error: function (){
+                                                    alert("论文添加失败！");
+                                                }
+                                            })
+
+
+
+                                        }
+
+                                    </script>
+
+                                </div>
+
                             </div>
-                        </form>
-                        <div class="dropzone-previews mt-3" id="file-previews"></div>
+                        </div>
                     </div>
 
 
-
-                    <script>
-                        var fileData=new Map();
-                        var id=0;
-                        var imageType = /^image\//;
-
-
-                        window.onload=function (){
-                            var fileArea=document.getElementById("myAwesomeDropzone");
-                            fileArea.style.position="relative";
-                            var height=fileArea.offsetHeight;
-                            var width=fileArea.offsetWidth;
-
-                            var fallback=document.getElementById("fallback");
-                            fallback.style.width=width+'px';
-                            fallback.style.height=height+'px';
-
-                            fileArea.addEventListener("dragleave dragenter drop dragover", function (e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                            })
-
-                            fileArea.addEventListener("drop",
-                                function(e){
-                                    var files = e.dataTransfer.items;
-
-                                    for (var i=0;i<files.length;i++) {
-                                        console.log(files[i]);
-                                    }
-                                }
-                            )
-                        }
-
-                        window.onresize=function (){
-                            var fileArea=document.getElementById("myAwesomeDropzone");
-                            var fallback=document.getElementById("fallback");
-
-
-                            var height=fileArea.offsetHeight;
-                            var width=fileArea.offsetWidth;
-
-                            fallback.style.width=width+'px';
-                            fallback.style.height=height+'px';
-
-                        }
-
-                        function onAddFile(e){
-                            var files=document.getElementById("project-files").files;
-
-                            console.log("add!");
-                            console.log(files);
-
-                            for (var i=0;i<files.length;i++) {
-                                console.log(files[i]);
-                                genList(id,files[i]);
-                                fileData.set(id++,files[i]);
-
-                                console.log(fileData);
-                            }
-
-                        }
-
-
-
-                        function genList(id,file){
-                            var listContainer=$("#file-previews");
-
-
-                            var newNode=$("#list-temp").clone();
-
-                            newNode.attr('id','list-temp'+id);
-                            newNode.find("#file-name").text(file.name);
-
-
-                            if (imageType.test(file.type)) {
-
-                                newNode.find("#file-img").attr('src',window.URL.createObjectURL(file));
-
-                            }
-
-                            newNode.find("#file-size").text(showBytes(file.size));
-
-                            newNode.find("#file-delete").click(
-                                function (){
-                                    fileData.delete(id);
-                                    var str='#list-temp'+id;
-                                    console.log(str);
-                                    $(str).remove();
-                                    console.log(fileData);
-                                }
-                            );
-
-
-                            listContainer.append(newNode);
-                        }
-
-                        function showBytes(bytes){
-                            if(bytes<1024) return ''+bytes+' B';
-                            if(bytes<(1<<20)) return ''+(bytes>>10)+' KB';
-                            if(bytes<(1<<30)) return ''+(bytes>>20)+' MB';
-                            return ''+(bytes>>30)+' GB';
-                        }
-                    </script>
 
                     <!--===============main content end===============-->
                 </div>

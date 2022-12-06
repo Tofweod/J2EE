@@ -56,17 +56,17 @@
             <ul class="metismenu side-nav">
 
                 <li class="menu-item">
-                    <a th:href="@{/student/project/project-list}" class="menu-link">
+                    <a href="javascript: void(0);" class="menu-link">
                         <i class="feather icon-box"></i>
                         <span th:text="#{project_manage}"></span>
+                        <span class="menu-sub-icon"></span>
                     </a>
+                    <ul class="menu-level-second collapse" aria-expanded="false">
+                        <li><a th:href="@{/student/project/project-list}" th:text="#{project_list}"></a></li>
+                        <li><a th:href="@{/student/project/project-add}" th:text="#{project_add}"></a></li>
+                    </ul>
                 </li>
-                <li class="menu-item">
-                    <a th:href="@{/student/paper/paper-list}" class="menu-link">
-                        <i class="dripicons-document"></i>
-                        <span th:text="#{paper_mamage}"></span>
-                    </a>
-                </li>
+
                 <li class="menu-item">
                     <a th:href="@{/student/message}" class="menu-link">
                         <i class="dripicons-message"></i>

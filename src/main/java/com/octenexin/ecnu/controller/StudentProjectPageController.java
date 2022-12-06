@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -106,15 +107,17 @@ public class StudentProjectPageController {
         return "/student/project/project-list";
     }
 
-    @RequestMapping("/student/project/details{id}")
-    public String toDetail(@PathVariable("id") String id,Model model){
+    @RequestMapping("/student/project/details")
+    public String toDetail(@RequestParam Integer id, Model model){
         Project project=new Project();
-        project.setProjectId(Integer.parseInt(id));
+        project.setProjectId(id);
         Project realProject=projectDao.getProject(project);
 
         User user=new User();
         user.setUserId(realProject.getProjectChargePersonId());
-        User realUser=userDao.getUser(user);
+        User realUser=userDao.getUserById(user);
+
+        System.out.println(realUser);
 
         ArrayList<String> member=new ArrayList<>(Arrays.asList(realProject.getProjectOtherPeopleInfo().split(";")));
 
@@ -146,7 +149,7 @@ public class StudentProjectPageController {
             }
         }
 
-        SimpleDateFormat formatter=new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
 
 
 
@@ -155,9 +158,34 @@ public class StudentProjectPageController {
         model.addAttribute("member",member);
         model.addAttribute("state",realState);
         model.addAttribute("className",className);
-        model.addAttribute("startTime",formatter.format(project.getProjectStartTime()));
-        model.addAttribute("endTime",formatter.format(project.getProjectEndTime()));
+        model.addAttribute("startTime",formatter.format(realProject.getProjectStartTime()));
+        model.addAttribute("endTime",formatter.format(realProject.getProjectEndTime()));
 
         return "/student/project/project-details";
     }
+
+    @RequestMapping("/student/project/update")
+    public String toUpdate(@RequestParam Integer id, Model model){
+        Project project=new Project();
+        project.setProjectId(id);
+        Project realProject=projectDao.getProject(project);
+
+        ProjectState state=new ProjectState();
+        state.setProjectStateId(realProject.getProjectStateId());
+        ProjectState realState=projectStateDao.query(state);
+
+
+        SimpleDateFormat formatter=new SimpleDateFormat("MM/dd/yyyy");
+
+
+
+        model.addAttribute("project",realProject);
+        model.addAttribute("state",realState);
+        model.addAttribute("startTime",formatter.format(realProject.getProjectStartTime()));
+        model.addAttribute("endTime",formatter.format(realProject.getProjectEndTime()));
+
+        return "/student/project/project-update";
+    }
+
+
 }
