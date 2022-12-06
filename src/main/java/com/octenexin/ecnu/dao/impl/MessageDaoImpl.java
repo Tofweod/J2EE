@@ -41,7 +41,7 @@ public class MessageDaoImpl implements MessageDao {
    * @param message
    */
   @Override
-  public int readMessage(Message message) {
+  public int setRead(Message message) {
     String sql = "UPDATE messages SET message_hasread = 1 WHERE message_id = ?";
     return jdbcTemplate.update(sql,message.getMessageId());
   }

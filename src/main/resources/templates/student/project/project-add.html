@@ -16,10 +16,210 @@
 
                     <!--===============main content start===============-->
 
+                    <div class="row">
+                        <div class="col-12">
+                            <!--                                    <form>-->
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Add Project</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="project-name">Project Name</label>
+                                            <input type="text" class="form-control" id="project-name" placeholder="Project Name">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="project-charge-person-id">Project Charge Person ID</label>
+                                            <input type="text" class="form-control" id="project-charge-person-id" placeholder="Project Charge Person ID">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="other-members">Other Members</label>
+                                            <input type="text" class="form-control" id="other-members" placeholder="member names, split by ;">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="funds-budget">Funds Budget</label>
+                                        <input type="number" class="form-control" id="funds-budget" placeholder="Integer, yuan">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="project-about">Project About</label>
+                                        <textarea class="form-control" id="project-about" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="project-class">Project Class</label>
+                                            <select id="project-class" class="form-control" onchange="showProjectType()">
+                                                <option th:each="c:${project_classes}" th:text="${c.getProjectClass()}" th:value="${c.getProjectClassId()}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="project-type">Project Type</label>
+                                            <select id="project-type" class="form-control"  onchange="showEndTime()">
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="start-time">Start Time</label>
+                                            <input type="text" class="form-control date" id="start-time" data-toggle="date-picker" data-single-date-picker="true">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="end-time">End Time</label>
+                                            <input class="form-control" type="text" placeholder="end time" readonly="" id="end-time">
+                                        </div>
+
+                                    </div>
+
+
+
+
+                                    <button type="submit" class="btn btn-primary" id="submit" onclick="mySubmit()">Submit</button>
+                                    <!--                                    </form>-->
+
+                                    <script>
+
+                                        function showProjectType(){
+
+                                            var projectClass=$("#project-class").val();
+                                            console.log(projectClass);
+
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "/student/add/get-type",
+                                                data: {
+                                                    'projectClass':projectClass
+                                                },
+                                                success: function (data) {
+
+                                                    $("#project-type").empty();
+                                                    for(var i=0;i<data.length;i++){
+                                                        var newElem=$("<option></option>").text(data[i].projectTypeName).val(data[i].projectTypeId);
+                                                        $("#project-type").append(newElem)
+
+                                                    }
+
+                                                    $("#project-type").trigger("change");
+
+                                                },
+                                                error:function (){
+                                                    alert("获取项目类型失败！");
+                                                }
+                                            })
+                                        }
+
+                                        function showEndTime(){
+                                            var projectTypeId=$("#project-type").val();
+                                            console.log(projectTypeId);
+
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "/student/add/get-end-time",
+                                                data: {
+                                                    'projectTypeId':projectTypeId
+                                                },
+                                                success: function (data) {
+
+                                                    $("#end-time").attr('placeholder',data);
+
+                                                },
+                                                error:function (){
+                                                    alert("获取截止时间失败！");
+                                                }
+                                            })
+                                        }
+
+
+
+                                        function mySubmit() {
+                                            var projectName=$("#project-name").val();
+                                            var projectChargePersonId=$("#project-charge-person-id").val();
+                                            var otherMembers=$("#other-members").val();
+                                            var fundsBudget=$("#funds-budget").val();
+                                            var startTime=$("#start-time").val();
+                                            var projectClass=$("#project-class").val();
+                                            var projectAbout=$("#project-about").val();
+                                            var projectType=$("#project-type").val();
+                                            var endTime=$('#end-time').attr('placeholder');
+
+
+                                            console.log(fileData);
+                                            var array=Array.from(fileData.values());
+                                            console.log(array);
+
+
+                                            if(projectName===""||projectChargePersonId===""||otherMembers===""||fundsBudget===""||startTime===""||projectClass===""||projectAbout===""||projectType===""||endTime==="end time"){
+                                                alert("表单不完整！");
+                                                return;
+                                            }
+
+                                            var newSt=startTime.substring(6)+"/"+startTime.substring(0,2)+"/"+startTime.substring(3,5);
+                                            var newEt=endTime.substring(6)+"/"+endTime.substring(0,2)+"/"+endTime.substring(3,5);
+                                            console.log(newSt);
+                                            console.log(newEt);
+
+                                            if(newSt>=newEt){
+                                                alert("起始时间超出结束时间！");
+                                                return;
+                                            }
+
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "/student/do-add",
+                                                data: {
+                                                    //id increment
+                                                    'projectName':projectName,
+                                                    'projectChargePersonId':projectChargePersonId,
+                                                    'otherMembers':otherMembers,
+                                                    //low=0
+                                                    'fundsBudget':fundsBudget,
+                                                    'projectAbout':projectAbout,
+                                                    //paper id null
+                                                    'projectClass':projectClass,
+                                                    //state 1
+                                                    //pre state 1
+                                                    'startTime':startTime,
+                                                    'endTime':endTime
+
+                                                    //'fileList':array
+                                                },
+                                                success: function (data) {
+                                                    alert("项目添加成功！");
+                                                    window.location.href = "/student/project/project-list";
+                                                },
+                                                error:function (){
+                                                    alert("项目添加失败！");
+                                                }
+                                            })
+                                        }
+
+                                    </script>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
 
 
                     <!--===============main content end===============-->
                 </div>
+
+                <footer th:replace="~{commons/common :: footer}"></footer>
+
             </div>
 
         </div>
@@ -27,6 +227,9 @@
 
 
 
+
         <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+
+
     </body>
 </html>

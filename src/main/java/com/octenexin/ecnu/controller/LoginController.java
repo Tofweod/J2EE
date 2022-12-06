@@ -40,7 +40,10 @@ public class LoginController {
         }
     
         messageService.setUser(res);
+
+        //session设置用户；以后都用
         session.setAttribute("loginUser",res.getUserName());
+        session.setAttribute("loginUserId",res.getUserId());
         
         if(res.getAuthority()==1){
             return "redirect:/admin/index";

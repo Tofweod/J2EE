@@ -16,16 +16,157 @@
 
                     <!--===============main content start===============-->
 
+                    <div class="form-group">
+                        <label>Project File</label>
+                        <form action="/" method="post" class="dropzone" id="myAwesomeDropzone" data-plugin="dropzone" data-previews-container="#file-previews" data-upload-preview-template="#uploadPreviewTemplate">
+                            <div class="fallback" id="fallback" style="position: absolute;top:-20px;left:-20px;opacity: 0">
+                                <input name="file" type="file" multiple id="project-files" style="width: 100%;height: 100%;cursor: pointer" onchange="onAddFile()"/>
+                            </div>
 
+                            <div class="dz-message needsclick">
+                                <i class="h1 text-muted dripicons-cloud-upload"></i>
+                                <h3>Drag & Drop files here or click to upload.</h3>
+                            </div>
+                        </form>
+                        <div class="dropzone-previews mt-3" id="file-previews"></div>
+                    </div>
+
+
+
+                    <script>
+                        var fileData=new Map();
+                        var id=0;
+                        var imageType = /^image\//;
+
+
+                        window.onload=function (){
+                            var fileArea=document.getElementById("myAwesomeDropzone");
+                            fileArea.style.position="relative";
+                            var height=fileArea.offsetHeight;
+                            var width=fileArea.offsetWidth;
+
+                            var fallback=document.getElementById("fallback");
+                            fallback.style.width=width+'px';
+                            fallback.style.height=height+'px';
+
+                            fileArea.addEventListener("dragleave dragenter drop dragover", function (e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            })
+
+                            fileArea.addEventListener("drop",
+                                function(e){
+                                    var files = e.dataTransfer.items;
+
+                                    for (var i=0;i<files.length;i++) {
+                                        console.log(files[i]);
+                                    }
+                                }
+                            )
+                        }
+
+                        window.onresize=function (){
+                            var fileArea=document.getElementById("myAwesomeDropzone");
+                            var fallback=document.getElementById("fallback");
+
+
+                            var height=fileArea.offsetHeight;
+                            var width=fileArea.offsetWidth;
+
+                            fallback.style.width=width+'px';
+                            fallback.style.height=height+'px';
+
+                        }
+
+                        function onAddFile(e){
+                            var files=document.getElementById("project-files").files;
+
+                            console.log("add!");
+                            console.log(files);
+
+                            for (var i=0;i<files.length;i++) {
+                                console.log(files[i]);
+                                genList(id,files[i]);
+                                fileData.set(id++,files[i]);
+
+                                console.log(fileData);
+                            }
+
+                        }
+
+
+
+                        function genList(id,file){
+                            var listContainer=$("#file-previews");
+
+
+                            var newNode=$("#list-temp").clone();
+
+                            newNode.attr('id','list-temp'+id);
+                            newNode.find("#file-name").text(file.name);
+
+
+                            if (imageType.test(file.type)) {
+
+                                newNode.find("#file-img").attr('src',window.URL.createObjectURL(file));
+
+                            }
+
+                            newNode.find("#file-size").text(showBytes(file.size));
+
+                            newNode.find("#file-delete").click(
+                                function (){
+                                    fileData.delete(id);
+                                    var str='#list-temp'+id;
+                                    console.log(str);
+                                    $(str).remove();
+                                    console.log(fileData);
+                                }
+                            );
+
+
+                            listContainer.append(newNode);
+                        }
+
+                        function showBytes(bytes){
+                            if(bytes<1024) return ''+bytes+' B';
+                            if(bytes<(1<<20)) return ''+(bytes>>10)+' KB';
+                            if(bytes<(1<<30)) return ''+(bytes>>20)+' MB';
+                            return ''+(bytes>>30)+' GB';
+                        }
+                    </script>
 
                     <!--===============main content end===============-->
                 </div>
+
+                <footer th:replace="~{commons/common :: footer}"></footer>
             </div>
 
         </div>
 
 
-
+        <!-- file preview template -->
+        <div class="d-none" id="uploadPreviewTemplate">
+            <div class="card mt-1 mb-0 shadow-none border" id="list-temp">
+                <div class="p-2">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <img data-file-thumbnail class="avatar-sm rounded bg-light" alt="" id="file-img" src="">
+                        </div>
+                        <div class="col pl-0">
+                            <a href="javascript:void(0);" class="text-muted font-weight-bold" data-file-name id="file-name"></a>
+                            <p class="mb-0" data-dz-size id="file-size"></p>
+                        </div>
+                        <div class="col-auto">
+                            <!-- Button -->
+                            <a class="btn btn-link btn-lg text-muted" data-file-delete id="file-delete">
+                                <i class="dripicons-cross"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div th:replace="~{/commons/common :: common_js(~{})}"></div>
     </body>

@@ -39,8 +39,8 @@ public class MessageServiceImpl implements MessageService {
 	}
 	
 	@Override
-	public int readMessage(Message message) {
-		return messageDao.readMessage(message);
+	public int setRead(Message message) {
+		return messageDao.setRead(message);
 	}
 	
 	@Override
