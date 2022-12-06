@@ -6,9 +6,6 @@ import java.util.List;
 
 /**
  * @author Tofweod
- * papers表中rawdata数据量过大，因此设计接口时应考虑是否须要该字段的情况
- * 即获取paper对象的方法都应该指明是否获取rawdata并尊享该规定
- * 否则内存占用严重超标
  */
 public interface PaperDao {
 	
@@ -29,39 +26,23 @@ public interface PaperDao {
 	int countPapers(Paper paper);
 	
 	/**
-	 * 通过papers列表获取论文列表(无rawdata)
+	 * 通过papers列表获取论文列表
+	 *
 	 * @return paper list
 	 */
 	List<Paper> getPapers(List<Paper> papers);
 	
 	/**
-	 * 获取论文列表(无rawdata)
+	 * 获取论文列表
 	 * 用于实现分页显示
 	 * 从start+1个数据开始查询nums条数据
 	 */
-	List<Paper> getPaperPage(int start,int nums);
+	List<Paper> getPaperPage(int start, int nums);
 	
 	/**
-	 * 获取论文(无rawdata)
+	 * 获取论文
 	 */
 	Paper getPaper(Paper paper);
 	
-	/**
-	 * 获取论文列表(附rawdata)
-	 * @param papers
-	 * @return
-	 */
-	List<Paper> getPapersWithData(List<Paper> papers);
 	
-	/**
-	 * 获取论文(附rawdata)
-	 * 一般用于论文下载
-	 */
-	Paper getPaperWithData(Paper paper);
-	
-	/**
-	 * 获取论文原生数据
-	 * 下载论文使用
-	 */
-	byte[] getPaperData(int paper_id);
 }

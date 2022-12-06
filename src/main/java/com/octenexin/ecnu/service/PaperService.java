@@ -28,15 +28,4 @@ public interface PaperService {
 	List<Paper> getPaperPage(int start,int nums);
 	
 	Paper getPaper(Paper paper);
-	
-	/**
-	 * 该方法未实现，待扩展
-	 */
-	List<Paper> getPapersWithData(List<Paper> papers);
-	
-	Paper getPaperWithData(Paper paper);
-	
-	byte[] getPaperData(int paper_id);
-	
-	byte[] getPaperData(Paper paper);
 }

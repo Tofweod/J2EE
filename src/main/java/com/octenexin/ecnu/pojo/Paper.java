@@ -11,5 +11,5 @@ public class Paper {
     private String paperKeywords;
     private Integer paperStateId;
     private Integer paperPrestateId;
-    private byte[] paperRawdata;
+    private String paperUrl;
 }
