@@ -26,18 +26,18 @@ public class PaperDaoImpl implements PaperDao {
 	
 	@Override
 	public int addPaper(Paper paper) {
-		String sql = "INSERT INTO papers (paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id,paper_rawdata)" +
+		String sql = "INSERT INTO papers (paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id,paper_url)" +
 				"VALUES(?,?,?,?,?,?,?,?)";
 		return jdbcTemplate.update(sql,paper.getPaperId(),paper.getPaperTitle(),paper.getPaperAuthor(),paper.getPaperSummary(),
-				paper.getPaperKeywords(),paper.getPaperStateId(),paper.getPaperPrestateId(),paper.getPaperRawdata());
+				paper.getPaperKeywords(),paper.getPaperStateId(),paper.getPaperPrestateId(),paper.getPaperUrl());
 	}
 	
 	@Override
 	public int updatePaper(Paper paper) {
 		String sql = "UPDATE papers SET paper_id = ?,paper_title = ?,paper_author = ?,paper_summary = ?," +
-				"paper_keywords = ?,paper_state_id = ?,paper_prestate_id = ?,paper_rawdata = ? WHERE paper_id = ?";
+				"paper_keywords = ?,paper_state_id = ?,paper_prestate_id = ?,paper_url = ? WHERE paper_id = ?";
 		return jdbcTemplate.update(sql,paper.getPaperId(),paper.getPaperTitle(),paper.getPaperAuthor(),paper.getPaperSummary(),
-				paper.getPaperKeywords(),paper.getPaperStateId(),paper.getPaperPrestateId(),paper.getPaperRawdata(),paper.getPaperId());
+				paper.getPaperKeywords(),paper.getPaperStateId(),paper.getPaperPrestateId(),paper.getPaperUrl(),paper.getPaperId());
 	}
 	
 	@Override
@@ -63,7 +63,7 @@ public class PaperDaoImpl implements PaperDao {
 	
 	@Override
 	public List<Paper> getPapers(List<Paper> papers) {
-		String sql = "SELECT paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id FROM papers WHERE paper_id = ?";
+		String sql = "SELECT paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id,paper_url FROM papers WHERE paper_id = ?";
 		List<Paper> result = new ArrayList<>();
 		for (Paper paper : papers) {
 			result.add(jdbcTemplate.queryForObject(sql,Paper.class,paper.getPaperId()));
@@ -73,14 +73,14 @@ public class PaperDaoImpl implements PaperDao {
 	
 	@Override
 	public List<Paper> getPaperPage(int start, int nums) {
-		String sql = "SELECT paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id FROM papers" +
+		String sql = "SELECT paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id,paper_url FROM papers" +
 				"LIMIT ?,? WHERE paper_state_id = 1";
 		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Paper.class),start,nums);
 	}
 	
 	@Override
 	public Paper getPaper(Paper paper) {
-		String sql = "SELECT paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id FROM papers WHERE paper_id = ?";
+		String sql = "SELECT paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id,paper_url FROM papers WHERE paper_id = ?";
 		try{
 			return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Paper.class), paper.getPaperId());
 		}catch (EmptyResultDataAccessException e){
@@ -88,29 +88,4 @@ public class PaperDaoImpl implements PaperDao {
 		}
 	}
 	
-	@Override
-	public List<Paper> getPapersWithData(List<Paper> papers) {
-		String sql = "SELECT * FROM papers WHERE paper_id = ?";
-		List<Paper> result = new ArrayList<>();
-		for (Paper paper : papers) {
-			result.add(jdbcTemplate.queryForObject(sql,Paper.class,paper.getPaperId()));
-		}
-		return result;
-	}
-	
-	@Override
-	public Paper getPaperWithData(Paper paper) {
-		String sql = "SELECT * FROM papers WHERE paper_id = ?";
-		try{
-			return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Paper.class), paper.getPaperId());
-		}catch (EmptyResultDataAccessException e){
-			return null;
-		}
-	}
-	
-	@Override
-	public byte[] getPaperData(int paper_id) {
-		String sql = "SELECT paper_rawdata from papers WHERE paper_id = ?";
-		return jdbcTemplate.queryForObject(sql,byte[].class,paper_id);
-	}
 }

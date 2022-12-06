@@ -49,24 +49,4 @@ public class PaperServiceImpl implements PaperService {
 		return paperDao.getPaper(paper);
 	}
 	
-	@Override
-	public List<Paper> getPapersWithData(List<Paper> papers) {
-		throw new RuntimeException("功能未实现");
-	}
-	
-	@Override
-	public Paper getPaperWithData(Paper paper) {
-		return paperDao.getPaperWithData(paper);
-	}
-	
-	
-	@Override
-	public byte[] getPaperData(int paper_id) {
-		return paperDao.getPaperData(paper_id);
-	}
-	
-	@Override
-	public byte[] getPaperData(Paper paper) {
-		return getPaperData(paper.getPaperId());
-	}
 }
