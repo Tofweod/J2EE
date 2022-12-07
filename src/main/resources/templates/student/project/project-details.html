@@ -42,10 +42,10 @@
                                 <div class="card-header">Assignees</div>
                                 <div class="card-body">
                                     <div class="media align-items-center">
-                                        <img src="assets/images/users/avatar-1.jpg" class="rounded-circle ui-w-60 mr-3" alt="avatar image">
+                                        <img th:src="@{/assets/images/users/avatar-1.jpg}" class="rounded-circle ui-w-60 mr-3" alt="avatar image">
                                         <div class="media-body">
                                             <h5 class="m-0" th:text="${chargePerson.getUserName()}"></h5>
-                                            <p class="mb-0 text-muted">Sr Team Manager</p>
+                                            <p class="mb-0 text-muted">Team Manager</p>
                                         </div>
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                             <div class="card">
                                 <div class="card-header">Members</div>
                                 <div class="card-body">
-                                    <span class="mb-3" th:each="m:${member}" th:text="${m}"></span>
+                                    <button type="button" class="btn btn-rounded btn-info" th:each="m:${member}" th:text="${m}"></button>
                                 </div>
                             </div>
                         </div>
@@ -95,6 +95,10 @@
 
                                         <div class="col-sm-12">
                                             <h5>Files</h5>
+
+
+
+                                            <!--有论文则显示-->
                                             <div class="card mb-2">
                                                 <div class="p-2">
                                                     <div class="row align-items-center">
@@ -117,6 +121,9 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <a class="btn btn-xl btn-primary" th:href="@{/student/paper/paper-add}">提交论文</a>
+
 
                                     </div>
                                 </div>
