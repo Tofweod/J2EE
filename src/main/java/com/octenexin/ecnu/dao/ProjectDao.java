@@ -1,8 +1,10 @@
 package com.octenexin.ecnu.dao;
 
+import com.octenexin.ecnu.pojo.Paper;
 import com.octenexin.ecnu.pojo.Project;
 import com.octenexin.ecnu.pojo.User;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ProjectDao {
@@ -48,10 +50,36 @@ public interface ProjectDao {
      * @return
      */
     Project getProject(Project project);
+    
     /**
      * 批量增加项目
-     *
-     * @param batchArgs
      */
-    void batchAddProject(List<Object[]> batchArgs);
+    void batchAddProject(List<Paper> papers);
+    
+    /**
+     * 批量删除项目
+     */
+    void batchDeleteProject(List<Paper> papers);
+    
+    /**
+     * 批量更新项目
+     */
+    void batchUpdateProject(List<Paper> papers);
+    
+    /**
+     * 指定条件筛选满足所选条件的projects,包括起止时间，经费范围，类型，状态
+     * 如果不需要筛选某状态则置null
+     * e.g. 查询经费大于2000的所有不含论文项目 filteringQuery(null,null,2000,null,null,false,null,null);
+     * @param startTime 项目起始时间
+     * @param endTime 项目结束时间
+     * @param fundLow 经费下限
+     * @param fundUp 经费上限
+     * @param hasPaper 是否有论文
+     * @param classId 类型id
+     * @param stateId 状态id
+     */
+    List<Project> filteringQuery(Date startTime, Date endTime,
+                                 Integer fundLow,Integer fundUp,Boolean hasPaper,
+                                 Integer classId,Integer stateId);
+    
 }

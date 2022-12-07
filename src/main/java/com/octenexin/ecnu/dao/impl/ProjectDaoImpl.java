@@ -1,6 +1,7 @@
 package com.octenexin.ecnu.dao.impl;
 
 import com.octenexin.ecnu.dao.ProjectDao;
+import com.octenexin.ecnu.pojo.Paper;
 import com.octenexin.ecnu.pojo.Project;
 import com.octenexin.ecnu.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
@@ -80,7 +83,39 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public void batchAddProject(List<Object[]> batchArgs) {
-
+    public void batchAddProject(List<Paper> batchArgs) {
+    
+    }
+    
+    @Override
+    public void batchDeleteProject(List<Paper> papers) {
+    
+    }
+    
+    @Override
+    public void batchUpdateProject(List<Paper> papers) {
+    
+    }
+    
+    @Override
+    public List<Project> filteringQuery(Date startTime, Date endTime,Integer fundLow, Integer fundUp, Boolean hasPaper,Integer classId, Integer stateId) {
+        Object[] params = { startTime,startTime,
+                            endTime,endTime,
+                            fundLow,fundLow,
+                            fundUp,fundUp,
+                            hasPaper,
+                            classId,classId,
+                            stateId,stateId,
+                          };
+        
+        String sql = "SELECT * FROM projects WHERE\n" +
+                "project_start_time >= (CASE WHEN ? IS NULL THEN project_start_time ELSE ? END) AND\n" +
+                "project_end_time <= (CASE WHEN ? IS NULL THEN project_end_time ELSE ? END) AND\n" +
+                "project_funds_up >= (CASE WHEN ? IS NULL THEN project_funds_up ELSE ? END) AND\n" +
+                "project_funds_up <= (CASE WHEN ? IS NULL THEN project_funds_up ELSE ? END) AND\n" +
+                "(CASE ? WHEN TRUE THEN project_paper_id IS NOT NULL WHEN FALSE THEN project_paper_id IS NULL ELSE project_paper_id IS NULL OR project_paper_id IS NOT NULL END) AND\n" +
+                "project_class_id = (CASE WHEN ? IS NULL THEN project_class_id ELSE ? END) AND\n" +
+                "project_state_id = (CASE WHEN ? IS NULL THEN project_state_id ELSE ? END)";
+        return template.query(sql,new BeanPropertyRowMapper<>(Project.class),params);
     }
 }
