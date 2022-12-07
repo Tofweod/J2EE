@@ -16,14 +16,18 @@ public interface ProjectDao {
      */
     int addProject(Project project);
     /**
-     * 更新指定的项目信息
+     * 根据id更新指定的项目信息的一些位
+     * project_name
+     * project_other_people_info
+     * project_funds_up
+     * project_about
      *
      * @param project
      * @return
      */
     int update(Project project);
     /**
-     * 删除指定的项目
+     * 根据id删除指定的项目
      *
      * @param project
      * @return
@@ -36,6 +40,23 @@ public interface ProjectDao {
      * @return
      */
     int count(Project project);
+
+    /**
+     * 根据负责人id统计项目个数
+     *
+     * @param project
+     * @return
+     */
+    int countByUser(Project project);
+
+    /**
+     * 统计已完成项目个数
+     *
+     * @param project
+     * @return
+     */
+    int countByFinish(Project project);
+
     /**
      * 根据负责人id查询单个用户项目列表
      *

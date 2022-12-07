@@ -99,29 +99,45 @@ public class StudentProjectController {
 
     }
 
-    @PostMapping("/student/project/update")
-    public String doUpdate(@RequestParam("projectId") Integer id,
+    @PostMapping("/student/do-update")
+    public String doUpdate(@RequestParam("projectId") String id,
                             @RequestParam("projectName") String projectName,
                            @RequestParam("otherMembers") String otherMembers,
                            @RequestParam("fundsBudget") Integer fundsBudget,
                            @RequestParam("projectAbout") String projectAbout,
+                           @RequestParam("endTime") String endTime,
                            @RequestParam("shouldDelay") Boolean shouldDelay,
                            @RequestParam("delayReason") String delayReason,
                            Model model){
 
         Project project=new Project();
-        project.setProjectId(id);
-        Project realProject=projectDao.getProject(project);
+        project.setProjectId(Integer.parseInt(id));
+        project.setProjectName(projectName);
+        project.setProjectOtherPeopleInfo(otherMembers);
+        project.setProjectFundsUp(fundsBudget);
+        project.setProjectAbout(projectAbout);
 
-        realProject.setProjectName(projectName);
-        realProject.setProjectOtherPeopleInfo(otherMembers);
-        realProject.setProjectFundsUp(fundsBudget);
-        realProject.setProjectAbout(projectAbout);
 
-        projectDao.update(realProject);
+        projectDao.update(project);
 
         //delay table
         SimpleDateFormat format=new SimpleDateFormat("MM/dd/yyyy");
+
+
+        return "success";
+    }
+
+    @PostMapping("/student/project/do-delete")
+    public String doUpdate(@RequestParam("id") String id){
+
+        Project project=new Project();
+        project.setProjectId(Integer.parseInt(id));
+
+
+        projectDao.delete(project);
+
+        //handle paper table, paper directory...
+        //"cascade"
 
 
         return "success";

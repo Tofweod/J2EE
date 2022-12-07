@@ -44,4 +44,12 @@ public class ProjectClassDaoImpl implements ProjectClassDao {
         List<ProjectClass> res=template.query(sql,new BeanPropertyRowMapper<>(ProjectClass.class));
         return res;
     }
+
+    @Override
+    public ProjectClass queryByid(ProjectClass projectClass) {
+
+        String sql="select * from project_classes where project_class_id=?;";
+        return template.queryForObject(sql,new BeanPropertyRowMapper<>(ProjectClass.class),projectClass.getProjectClassId());
+
+    }
 }

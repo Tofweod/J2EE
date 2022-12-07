@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="card-body">
 
-                                    <input type="hidden" th:>
+                                    <input type="hidden" th:value="${project.getProjectId()}" id="project-id">
 
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
@@ -55,14 +55,14 @@
 
                                     <div class="form-group">
                                         <label for="project-about">Project About</label>
-                                        <textarea class="form-control" id="project-about" rows="3" th:value="${project.getProjectAbout()}"></textarea>
+                                        <textarea class="form-control" id="project-about" rows="3" th:inline="text">[[${project.getProjectAbout()}]]</textarea>
                                     </div>
 
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="project-class">Project Class</label>
                                             <select id="project-class" class="form-control" readonly="">
-                                                <option th:text="${state.getProjectState()}"></option>
+                                                <option th:text="${pClass.getProjectClass()}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -71,20 +71,18 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="start-time">Start Time</label>
-                                            <input type="text" class="form-control date" id="start-time" readonly="" th:placeholder="${startTime}">
+                                            <input type="text" class="form-control date" id="start-time" readonly="" th:placeholder="${#dates.format(project.getProjectStartTime(),'MM/dd/yyyy')}">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="end-time">End Time</label>
-                                            <input type="text" class="form-control date" id="end-time" data-toggle="date-picker" data-single-date-picker="true" th:value="${endTime}" onchange="showDialog()">
+                                            <input type="text" class="form-control date" id="end-time" data-toggle="date-picker" data-single-date-picker="true" th:value="${#dates.format(project.getProjectEndTime(),'MM/dd/yyyy')}" onchange="showDialog()">
                                         </div>
 
                                     </div>
 
-                                    <div class="form-row" style="display: none" id="delay-box">
-                                        <div class="form-group">
-                                            <label for="delay-reason">Delay Reason</label>
-                                            <textarea class="form-control" id="delay-reason" rows="3"></textarea>
-                                        </div>
+                                    <div class="form-group" id="delay-box">
+                                        <label for="delay-reason">Delay Reason</label>
+                                        <textarea class="form-control" id="delay-reason" rows="3"></textarea>
                                     </div>
 
 
@@ -93,9 +91,13 @@
 
                                     <script>
 
+                                        window.onload=function (){
+                                            document.getElementById("delay-box").style.display="none";
+                                        }
+
                                         var shouldDelay=false;
                                         function showDialog(){
-                                            $("#delay-box").style("display: block");
+                                            document.getElementById("delay-box").style.display="block";
                                             shouldDelay=true;
                                         }
 
@@ -107,12 +109,11 @@
 
                                             var projectAbout=$("#project-about").val();
 
+
+                                            var startTime=$('#start-time').attr('placeholder');
                                             var endTime=$('#end-time').val();
                                             var delayReason=$("#delay-reason").val();
 
-                                            console.log(fileData);
-                                            var array=Array.from(fileData.values());
-                                            console.log(array);
 
 
                                             if(projectName===""||otherMembers===""||fundsBudget===""||projectAbout===""||endTime===""){
@@ -137,9 +138,9 @@
 
                                             $.ajax({
                                                 type: "POST",
-                                                url: "/student/do-add",
+                                                url: "/student/do-update",
                                                 data: {
-                                                    //id increment
+                                                    'projectId':$("#project-id").val(),
                                                     'projectName':projectName,
                                                     //'projectChargePersonId':projectChargePersonId,
                                                     'otherMembers':otherMembers,

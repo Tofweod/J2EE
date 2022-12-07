@@ -56,17 +56,40 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public int update(Project project) {
-        return 0;
+        String sql="UPDATE projects SET " +
+                "project_name=?," +
+                "project_other_people_info=?," +
+                "project_funds_up=?," +
+                "project_about=? where project_id=?;";
+        return template.update(sql,
+                project.getProjectName(),
+                project.getProjectOtherPeopleInfo(),
+                project.getProjectFundsUp(),
+                project.getProjectAbout(),
+                project.getProjectId());
     }
 
     @Override
     public int delete(Project project) {
-        return 0;
+        String sql="delete from projects where project_id=?";
+        return template.update(sql,project.getProjectId());
     }
 
     @Override
     public int count(Project project) {
         String sql="select count(*) from projects";
+        return template.queryForObject(sql, Integer.class);
+    }
+
+    @Override
+    public int countByUser(Project project){
+        String sql="select count(*) from projects where project_charge_person_id=?;";
+        return template.queryForObject(sql, Integer.class,project.getProjectChargePersonId());
+    }
+
+    @Override
+    public int countByFinish(Project project){
+        String sql="select count(*) from projects where project_state_id=6;";
         return template.queryForObject(sql, Integer.class);
     }
 

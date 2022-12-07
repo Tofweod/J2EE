@@ -2,25 +2,26 @@ package com.octenexin.ecnu.controller;
 
 import com.octenexin.ecnu.pojo.Paper;
 import com.octenexin.ecnu.service.PaperService;
+import com.octenexin.ecnu.util.FileSaveUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
  * @author Tofweod
  */
-@Controller
+@RestController
 public class PaperController {
 	
 	@Autowired
@@ -31,17 +32,20 @@ public class PaperController {
 	@Value("${upload.path}")
 	String uploadPath;
 	
-	@RequestMapping("/testForm") // 此处映射自行设置，注意修改html文件内uploadURL，跳转操作在html文件内
-	public String update(@RequestParam("title")String title,
+	@PostMapping("/student/paper/do-add") // 此处映射自行设置，注意修改html文件内uploadURL，跳转操作在html文件内
+	public String doAddPaper(@RequestParam("projectId")String projectId,
+						 @RequestParam("title")String title,
 					   @RequestParam("author")String author,
 					   @RequestParam("summary")String summary,
 					   @RequestParam("keywords")String keywords,
-					   @RequestParam("file") MultipartFile file,HttpServletRequest req){
+					   @RequestParam("file") MultipartFile file,
+						 HttpServletRequest req){
+
 		Paper paper = new Paper();
-		// 设置论文的保存路径
-		String pathName = System.getProperty("user.dir")+uploadPath; // 动态获取项目路径
-		String fileName = title+"-"+author+".pdf";
-		try(OutputStream out = new FileOutputStream(pathName+fileName)) {
+
+
+
+		try{
 			// 此处修改papers表主键自增，方案不唯一
 			paper.setPaperId(null);
 			paper.setPaperTitle(title);
@@ -50,13 +54,15 @@ public class PaperController {
 			paper.setPaperKeywords(keywords);
 			paper.setPaperStateId(0); // 待审核
 			paper.setPaperPrestateId(null);
-			paper.setPaperUrl(fileName);
-			out.write(file.getBytes());
-		} catch (IOException e) {
+
+			String filePath=FileSaveUtil.savePaper(file, projectId);
+			paper.setPaperUrl(filePath);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		paperService.addPaper(paper);
-		return "paperForm";
+		return "success";
 	}
 	
 	/**

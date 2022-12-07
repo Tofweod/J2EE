@@ -90,4 +90,4 @@ spring:
 
 
 upload:
-  path: /uploads/
+  path: uploads/

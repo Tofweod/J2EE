@@ -19,4 +19,9 @@ public interface ProjectClassDao {
     int count();
 
     List<ProjectClass> queryAll();
+
+    /**
+     * get pClassName by id
+     * */
+    ProjectClass queryByid(ProjectClass projectClass);
 }

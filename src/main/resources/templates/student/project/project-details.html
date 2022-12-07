@@ -75,13 +75,13 @@
                                         <div class="col-md-4 col-lg-auto">
                                             <div class="mb-4">
                                                 <h5>Start Date</h5>
-                                                <p th:text="${startTime}"></p>
+                                                <p th:text="${#dates.format(project.getProjectStartTime(),'MM/dd/yyyy')}"></p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-lg-auto">
                                             <div class="mb-4">
                                                 <h5>End Date</h5>
-                                                <p th:text="${endTime}"></p>
+                                                <p th:text="${#dates.format(project.getProjectEndTime(),'MM/dd/yyyy')}"></p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-lg-auto">
@@ -99,7 +99,7 @@
 
 
                                             <!--有论文则显示-->
-                                            <div class="card mb-2">
+                                            <div class="card mb-2" th:if="${project.getProjectPaperId() != null}">
                                                 <div class="p-2">
                                                     <div class="row align-items-center">
                                                         <div class="col-auto">
@@ -122,7 +122,7 @@
                                                 </div>
                                             </div>
 
-                                            <a class="btn btn-xl btn-primary" th:href="@{/student/paper/paper-add}">提交论文</a>
+                                            <a th:if="${project.getProjectPaperId() == null}" class="btn btn-xl btn-primary" th:href="@{/student/paper/paper-add(id=${project.getProjectId()})}">提交论文</a>
 
 
                                     </div>
