@@ -39,11 +39,13 @@ public class StudentProjectPageController {
     UserDao userDao;
 
 
-    @RequestMapping("/student/add")
+    @RequestMapping("/student/project/project-add")
     public String toAddProject(Model model){
 
         List<ProjectClass> list=projectClassDao.queryAll();
         model.addAttribute("project_classes",list);
+
+        System.out.println(list);
 
         return "/student/project/project-add";
     }
@@ -170,19 +172,12 @@ public class StudentProjectPageController {
         project.setProjectId(id);
         Project realProject=projectDao.getProject(project);
 
-        ProjectState state=new ProjectState();
-        state.setProjectStateId(realProject.getProjectStateId());
-        ProjectState realState=projectStateDao.query(state);
-
-
-        SimpleDateFormat formatter=new SimpleDateFormat("MM/dd/yyyy");
-
-
+        ProjectClass projectClass=new ProjectClass();
+        projectClass.setProjectClassId(realProject.getProjectClassId());
+        ProjectClass realClass=projectClassDao.queryByid(projectClass);
 
         model.addAttribute("project",realProject);
-        model.addAttribute("state",realState);
-        model.addAttribute("startTime",formatter.format(realProject.getProjectStartTime()));
-        model.addAttribute("endTime",formatter.format(realProject.getProjectEndTime()));
+        model.addAttribute("pClass",realClass);
 
         return "/student/project/project-update";
     }

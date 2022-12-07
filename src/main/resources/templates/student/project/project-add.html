@@ -52,7 +52,7 @@
 
                                     <div class="form-group">
                                         <label for="project-about">Project About</label>
-                                        <textarea class="form-control" id="project-about" rows="3"></textarea>
+                                        <textarea class="form-control" id="project-about" rows="3" placeholder="Project About, no more than 300 chars"></textarea>
                                     </div>
 
                                     <div class="form-row">
@@ -160,6 +160,23 @@
 
                                             if(projectName===""||projectChargePersonId===""||otherMembers===""||fundsBudget===""||startTime===""||projectClass===""||projectAbout===""||projectType===""||endTime==="end time"){
                                                 alert("表单不完整！");
+                                                return;
+                                            }
+
+                                            if(projectName.length>30){
+                                                alert("项目名长度大于30个字符！");
+                                                return;
+                                            }
+                                            if(projectChargePersonId.length>11){
+                                                alert("负责人学号最多为11位数字！");
+                                                return;
+                                            }
+                                            if(otherMembers.length>100){
+                                                alert("其他成员大于100个字符！");
+                                                return;
+                                            }
+                                            if(projectAbout.length>300){
+                                                alert("项目介绍大于300个字符！");
                                                 return;
                                             }
 
