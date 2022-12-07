@@ -1,15 +1,19 @@
 package com.octenexin.ecnu.dao.impl;
 
+import com.octenexin.ecnu.dao.PaperDao;
 import com.octenexin.ecnu.dao.ProjectDao;
 import com.octenexin.ecnu.pojo.Paper;
 import com.octenexin.ecnu.pojo.Project;
 import com.octenexin.ecnu.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.Resource;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -19,6 +23,11 @@ import java.util.Optional;
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
 
+
+    @Resource
+    PaperDao paperDao;
+    
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     JdbcTemplate template;
 
@@ -29,7 +38,6 @@ public class ProjectDaoImpl implements ProjectDao {
                 "project_name," +
                 "project_charge_person_id," +
                 "project_other_people_info," +
-                "project_funds_low," +
                 "project_funds_up," +
                 "project_about,"+
                 "project_paper_id,"+
@@ -37,13 +45,12 @@ public class ProjectDaoImpl implements ProjectDao {
                 "project_state_id," +
                 "project_prestate_id," +
                 "project_start_time," +
-                "project_end_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?);";
+                "project_end_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
         return template.update(sql,
                 project.getProjectId(),
                 project.getProjectName(),
                 project.getProjectChargePersonId(),
                 project.getProjectOtherPeopleInfo(),
-                project.getProjectFundsLow(),
                 project.getProjectFundsUp(),
                 project.getProjectAbout(),
                 project.getProjectPaperId(),
@@ -60,7 +67,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 "project_name=?," +
                 "project_other_people_info=?," +
                 "project_funds_up=?," +
-                "project_about=? where project_id=?;";
+                "project_about=? where project_id=?";
         return template.update(sql,
                 project.getProjectName(),
                 project.getProjectOtherPeopleInfo(),
@@ -72,6 +79,7 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public int delete(Project project) {
         String sql="delete from projects where project_id=?";
+        // todo:删除papers中对应论文以及文件
         return template.update(sql,project.getProjectId());
     }
 
@@ -105,19 +113,49 @@ public class ProjectDaoImpl implements ProjectDao {
         return template.queryForObject(sql, new BeanPropertyRowMapper<>(Project.class),project.getProjectId());
     }
 
-    @Override
-    public void batchAddProject(List<Paper> batchArgs) {
+   
     
+    @Override
+    public void batchDeleteProject(List<Project> projects) {
+        // todo:删除papers中对应论文以及文件
     }
     
     @Override
-    public void batchDeleteProject(List<Paper> papers) {
+    public void batchUpdateProject(List<Project> projects) {
+        String sql="UPDATE projects SET " +
+                "project_id = ?,"+
+                "project_name=?," +
+                "project_other_people_info=?," +
+                "project_funds_up=?," +
+                "project_about=?," +
+                "project_paper_id=?,"+
+                "project_class_id=?,"+
+                "project_state_id=?,"+
+                "project_prestate_id=?,"+
+                "project_start_time=?,"+
+                "project_end_time=?"+
+                "where project_id=?";
+        template.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setInt(1,projects.get(i).getProjectId());
+                ps.setString(2,projects.get(i).getProjectName());
+                ps.setString(3,projects.get(i).getProjectOtherPeopleInfo());
+                ps.setInt(4,projects.get(i).getProjectFundsUp());
+                ps.setString(5,projects.get(i).getProjectAbout());
+                ps.setInt(6,projects.get(i).getProjectClassId());
+                ps.setInt(7,projects.get(i).getProjectStateId());
+                ps.setInt(8,projects.get(i).getProjectPrestateId());
+                ps.setDate(10,new java.sql.Date(projects.get(i).getProjectStartTime().getTime()));
+                ps.setDate(11,new java.sql.Date(projects.get(i).getProjectEndTime().getTime()));
+                ps.setInt(12,projects.get(i).getProjectId());
+            }
     
-    }
-    
-    @Override
-    public void batchUpdateProject(List<Paper> papers) {
-    
+            @Override
+            public int getBatchSize() {
+                return projects.size();
+            }
+        });
     }
     
     @Override

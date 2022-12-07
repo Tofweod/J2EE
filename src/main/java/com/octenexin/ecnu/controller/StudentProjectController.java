@@ -6,12 +6,17 @@ import com.octenexin.ecnu.dao.ProjectTypeDao;
 import com.octenexin.ecnu.pojo.Project;
 import com.octenexin.ecnu.pojo.ProjectClass;
 import com.octenexin.ecnu.pojo.ProjectType;
+import com.octenexin.ecnu.util.FileLoadUtil;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,7 +82,6 @@ public class StudentProjectController {
         project.setProjectName(projectName);
         project.setProjectChargePersonId(projectChargePersonId);
         project.setProjectOtherPeopleInfo(otherMembers);
-        project.setProjectFundsLow(0);
         project.setProjectFundsUp(Integer.parseInt(fundsBudget));
         project.setProjectAbout(projectAbout);
         //paperId=null
@@ -142,6 +146,19 @@ public class StudentProjectController {
 
         return "success";
     }
-
-
+    
+    // 下载xlsx文件
+    public void downloadXLSX(HttpServletResponse response,List<Project> projects){
+        
+        // 文件名未定，类型为xlsx
+        String fileName="";
+    
+        response.setHeader("content-disposition","attachment;fileName="+fileName);
+        try(OutputStream out = response.getOutputStream()) {
+            FileLoadUtil.generateXLSX(projects).write(out);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

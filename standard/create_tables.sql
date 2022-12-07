@@ -41,8 +41,7 @@ CREATE TABLE projects(
                          project_name VARCHAR(30) NOT NULL,
                          project_charge_person_id CHAR(11) NOT NULL, -- 使用学工号作外键
                          project_other_people_info VARCHAR(100) NOT NULL DEFAULT "",
-                         project_funds_low INT DEFAULT 0, -- 经费下界默认为0
-                         project_funds_up INT,  -- 经费可无上界
+                         project_funds_up INT,  -- 经费
                          project_about VARCHAR(300) NOT NULL DEFAULT "", -- 项目简介
                          project_paper_id INT DEFAULT NULL,
                          project_class_id INT NOT NULL,

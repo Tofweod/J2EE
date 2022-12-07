@@ -72,20 +72,16 @@ public interface ProjectDao {
      */
     Project getProject(Project project);
     
-    /**
-     * 批量增加项目
-     */
-    void batchAddProject(List<Paper> papers);
     
     /**
      * 批量删除项目
      */
-    void batchDeleteProject(List<Paper> papers);
+    void batchDeleteProject(List<Project> projects);
     
     /**
      * 批量更新项目
      */
-    void batchUpdateProject(List<Paper> papers);
+    void batchUpdateProject(List<Project> projects);
     
     /**
      * 指定条件筛选满足所选条件的projects,包括起止时间，经费范围，类型，状态

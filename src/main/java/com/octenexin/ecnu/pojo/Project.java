@@ -11,7 +11,6 @@ public class Project {
     private String projectName;
     private String projectChargePersonId;
     private String projectOtherPeopleInfo;
-    private Integer projectFundsLow;
     private Integer projectFundsUp;
     private String projectAbout;
     private Integer projectPaperId;
