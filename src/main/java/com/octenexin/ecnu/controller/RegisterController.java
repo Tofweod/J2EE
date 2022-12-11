@@ -1,6 +1,7 @@
 package com.octenexin.ecnu.controller;
 
 
+import com.octenexin.ecnu.pojo.Message;
 import com.octenexin.ecnu.pojo.User;
 import com.octenexin.ecnu.service.MessageService;
 import com.octenexin.ecnu.service.UserService;
@@ -23,6 +24,7 @@ public class RegisterController {
     @ResponseBody
     public String registerUser(@ModelAttribute User user, Model model, HttpSession session){
 
+        //query, if has result, it fails!
         User res=userService.getUser(user);
         if(res!=null){
             return "error";
@@ -32,7 +34,12 @@ public class RegisterController {
         MessageService messageService = (MessageService) session.getAttribute("messageService");
         // 设置欢迎信息
         messageService.setUser(user);
-        messageService.sendMessage("hello:" + user.getUserName());
+
+        Message message=new Message();
+        message.setMessageTopic("Welcome!");
+        message.setMessageRawData("Dear "+user.getUserName()+": Hello world!");
+
+        messageService.sendMessage(message);
         return "success";
     }
 }

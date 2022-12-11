@@ -9,8 +9,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.sql.Timestamp;
+
 
 /**
  * @author Tofweod
@@ -30,9 +33,9 @@ public class MessageDaoImpl implements MessageDao {
   }
   
   @Override
-  public int sendMessage(User user,String content) {
-    String sql = "INSERT INTO messages(message_user_id,message_raw_data,message_time,message_hasread) VALUES(?,?,NULL,0)";
-    return jdbcTemplate.update(sql,user.getUserId(),content);
+  public int sendMessage(User user,Message message) {
+    String sql = "INSERT INTO messages(message_topic,message_user_id,message_raw_data,message_time,message_hasread) VALUES(?,?,?,?,0)";
+    return jdbcTemplate.update(sql,message.getMessageTopic(),user.getUserId(),message.getMessageRawData(),new Timestamp(System.currentTimeMillis()));
   }
   
   /**

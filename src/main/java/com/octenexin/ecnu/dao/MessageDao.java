@@ -19,9 +19,9 @@ public interface MessageDao {
   /**
    * 向用户发送message
    * @param user
-   * @param content
+   * @param message
    */
-  int sendMessage(User user,String content);
+  int sendMessage(User user,Message message);
   
   /**
    * 设置消息已读

@@ -55,8 +55,10 @@ public class PaperController {
 			paper.setPaperStateId(0); // 待审核
 			paper.setPaperPrestateId(null);
 
-			String filePath=FileSaveUtil.savePaper(file, projectId);
+			String filePath="project"+projectId+file.getOriginalFilename();
 			paper.setPaperUrl(filePath);
+
+			FileSaveUtil.savePaper(file, projectId);
 
 		} catch (Exception e) {
 			e.printStackTrace();

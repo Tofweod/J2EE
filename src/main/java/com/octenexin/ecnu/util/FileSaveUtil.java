@@ -28,10 +28,11 @@ public class FileSaveUtil {
 
             String url= String.valueOf(EcnuApplication.class.getClassLoader().getResource(""));
             System.out.println(url);
-            int j=url.indexOf("/");
-            url=url.substring(j+1);
 
+            url=url.substring(url.indexOf("/")+1);
             url+="upload/";
+            //fixed above, absolute path
+
             try{
                 Files.createDirectory(Paths.get(url));
             }catch (FileAlreadyExistsException e){

@@ -33,8 +33,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     @Override
     public int addProject(Project project) {
-        String sql="INSERT into projects (" +
-                "project_id," +
+        String sql="INSERT into projects ("+
                 "project_name," +
                 "project_charge_person_id," +
                 "project_other_people_info," +
@@ -47,7 +46,6 @@ public class ProjectDaoImpl implements ProjectDao {
                 "project_start_time," +
                 "project_end_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
         return template.update(sql,
-                project.getProjectId(),
                 project.getProjectName(),
                 project.getProjectChargePersonId(),
                 project.getProjectOtherPeopleInfo(),

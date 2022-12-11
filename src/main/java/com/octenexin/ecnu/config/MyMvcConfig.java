@@ -21,8 +21,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
         //student
         registry.addViewController("/student/index").setViewName("/student/index");
 
-        registry.addViewController("/student/message").setViewName("/student/message");
-
         registry.addViewController("/student/project/project-list").setViewName("/student/project/project-list");
         registry.addViewController("/student/project/project-add").setViewName("/student/project/project-add");
         registry.addViewController("/student/project/project-update").setViewName("/student/project/project-update");
@@ -46,7 +44,11 @@ public class MyMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //open if you need intercept
 
-//        registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**")
-//                .excludePathPatterns("/login.html","/","/user/login","/common/**");
+        registry.addInterceptor(new MyInterceptor()).addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/login.html","/","/user/login",
+                        "/pwd_recovery","/mail","/pwd/change",
+                        "/register","/user/register",
+                        "/commons/**");
     }
 }

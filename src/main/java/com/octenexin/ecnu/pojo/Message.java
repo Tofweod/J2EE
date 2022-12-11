@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 @Data
 public class Message {
     private Integer messageId;
+    private String messageTopic;
     private String messageUserId;
     private String messageRawData;
     private Timestamp messageTime;

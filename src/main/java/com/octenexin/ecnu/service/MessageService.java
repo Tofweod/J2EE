@@ -13,7 +13,7 @@ public interface MessageService {
 	/**
 	 * 发送消息
 	 */
-	void sendMessage(String content);
+	void sendMessage(Message content);
 	
 	/**
 	 * 获取所有消息

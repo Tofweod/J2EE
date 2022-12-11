@@ -4,6 +4,7 @@ import com.octenexin.ecnu.pojo.Message;
 import com.octenexin.ecnu.pojo.User;
 import com.octenexin.ecnu.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,13 +25,8 @@ public class MessageController {
 	
 	@RequestMapping("/message")
 	@ResponseBody
-	public List<Message> getMessages(HttpSession session){
+	public List<Message> getMessages(Model model){
 
-		User user=new User();
-		String userId= (String) session.getAttribute("loginUserID");
-		user.setUserId(userId);
-
-		messageService.setUser(user);
 		return messageService.getMessages();
 	}
 }

@@ -32,7 +32,7 @@ public class StartController {
 
 	@RequestMapping("/")
 	public String start(HttpSession session){
-		// 添加邮件服务至会话
+		// 添加消息服务至会话
 		if(session.getAttribute("messageService") == null)
 			session.setAttribute("messageService",messageService);
 		
@@ -42,7 +42,13 @@ public class StartController {
 		for (ProjectClass aClass : classes) {
 			classMap.put(aClass.getProjectClassId(),aClass);
 		}
-		IdManageUtils.setClassMap(classMap);
+
+		try{
+			IdManageUtils.setClassMap(classMap);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
 		
 		Map<Integer, ProjectState> stateMap = new HashMap<>();
 		String sql2 = "select * from project_states";
@@ -50,17 +56,25 @@ public class StartController {
 		for (ProjectState state : states) {
 			stateMap.put(state.getProjectStateId(),state);
 		}
-		IdManageUtils.setStateMap(stateMap);
-		
+		try {
+			IdManageUtils.setStateMap(stateMap);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
 		Map<Integer, ProjectType> typeMap = new HashMap<>();
 		String sql3 = "select * from project_types";
 		List<ProjectType> types = jdbcTemplate.query(sql3, new BeanPropertyRowMapper<>(ProjectType.class));
 		for (ProjectType type : types) {
 			typeMap.put(type.getProjectTypeId(),type);
 		}
-		IdManageUtils.setTypeMap(typeMap);
-		
-		
+		try {
+			IdManageUtils.setTypeMap(typeMap);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+
 		return "/login";
 	}
 }
