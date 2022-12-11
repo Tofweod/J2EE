@@ -160,8 +160,6 @@ public class StudentProjectPageController {
         model.addAttribute("member",member);
         model.addAttribute("state",realState);
         model.addAttribute("className",className);
-        model.addAttribute("startTime",formatter.format(realProject.getProjectStartTime()));
-        model.addAttribute("endTime",formatter.format(realProject.getProjectEndTime()));
 
         return "/student/project/project-details";
     }

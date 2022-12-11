@@ -24,7 +24,7 @@ public class MessageServiceImpl implements MessageService {
 	
 	
 	@Override
-	public void sendMessage(String content) {
+	public void sendMessage(Message content) {
 		messageDao.sendMessage(user,content);
 	}
 	

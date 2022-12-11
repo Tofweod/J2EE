@@ -27,7 +27,7 @@ CREATE TABLE papers(
                        FOREIGN KEY (paper_prestate_id) REFERENCES paper_states(paper_state_id)) ENGINE INNODB;
 
 CREATE TABLE project_classes(
-                                project_class_id INT PRIMARY KEY,
+                                project_class_id INT PRIMARY KEY AUTO_INCREMENT,
                                 project_class VARCHAR(4) NOT NULL);
 INSERT INTO project_classes VALUES(1,"国创"),(2,"省创"),(3,"校创");
 
@@ -37,7 +37,7 @@ CREATE TABLE project_states(
 INSERT INTO project_states VALUES(1,"开发中"),(2,"待答辩"),(3,"答辩失败"),(4,"答辩成功"),(5,"申请延期中"),(6,"结项");
 
 CREATE TABLE projects(
-                         project_id INT PRIMARY KEY,
+                         project_id INT PRIMARY KEY AUTO_INCREMENT,
                          project_name VARCHAR(30) NOT NULL,
                          project_charge_person_id CHAR(11) NOT NULL, -- 使用学工号作外键
                          project_other_people_info VARCHAR(100) NOT NULL DEFAULT "",
@@ -57,6 +57,7 @@ CREATE TABLE projects(
 
 CREATE TABLE messages(
                          message_id INT PRIMARY KEY AUTO_INCREMENT,
+                         message_topic varchar(50) NOT NULL,
                          message_user_id CHAR(11) NOT NULL,
                          message_raw_data TEXT NOT NULL,
                          message_time TIMESTAMP, -- 因为显示消息按顺序排序，使用timestamp方便计算
@@ -64,7 +65,7 @@ CREATE TABLE messages(
 CREATE INDEX user_id_find ON messages(message_user_id); -- 创建索引
 
 CREATE TABLE project_types(
-                              project_type_id INT PRIMARY KEY,
+                              project_type_id INT PRIMARY KEY AUTO_INCREMENT,
                               project_class_id INT NOT NULL,
                               project_type_name VARCHAR(20) NOT NULL,
                               project_type_start_time DATE NOT NULL,

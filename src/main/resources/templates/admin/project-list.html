@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{commons/common :: common_header(~{::title},~{})}">
+
+        <title>Project List</title>
+
+    </head>
+
+<body>
+
+    <!-- Begin page -->
+    <div class="wrapper">
+
+        <!-- ============================================================= -->
+        <!-- ===============    side menu content start  ================= -->
+        <!-- ============================================================= -->
+        <div th:replace="~{commons/common :: sidebar-admin}"></div>
+        <!-- ============================================================= -->
+        <!-- ===============     side menu content End   ================= -->
+        <!-- ============================================================= -->
+
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+
+                <!-- ============================================================= -->
+                <!-- ===============    Top bar header content start  ================= -->
+                <!-- ============================================================= -->
+                <div th:replace="~{commons/common :: navbar-admin}"></div>
+                <!-- ================================================================== -->
+                <!-- ===============    Top bar header content end  ================= -->
+                <!-- ================================================================== -->
+
+
+                <!-- Start Content-->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/index}"><i class="feather icon-home"></i></a></li>
+                                    <li class="breadcrumb-item active" th:text="#{project_list}"></li>
+                                </ol>
+                            </div>
+                            <h4 class="page-title" th:text="#{project_list}"></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div id="selection-datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="dataTables_length" id="selection-datatable_length">
+                                                <label>Show
+                                                    <select name="selection-datatable_length" aria-controls="selection-datatable" class="custom-select custom-select-sm form-control form-control-sm">
+                                                        <option value="10">10</option>
+                                                        <option value="25">25</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100">100</option>
+                                                    </select> entries
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6">
+                                            <div id="selection-datatable_filter" class="dataTables_filter">
+                                                <label>Search:
+                                                    <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="selection-datatable">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="selection-datatable" class="table dt-responsive nowrap dataTable no-footer dtr-inline" width="100%" role="grid" aria-describedby="selection-datatable_info" style="width: 100%;">
+                                                <thead>
+                                                    <tr role="row">
+                                                        <th class="sorting_asc" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 210.8px;" aria-sort="ascending" aria-label="Name: activate to sort column descending">Name</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 308.8px;" aria-label="Position: activate to sort column ascending">Position</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 153.8px;" aria-label="Office: activate to sort column ascending">Office</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 71.8px;" aria-label="Age: activate to sort column ascending">Age</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 144.8px;" aria-label="Start date: activate to sort column ascending">Start date</th>
+                                                        <th class="sorting" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 116.8px;" aria-label="Salary: activate to sort column ascending">Salary</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr role="row" class="odd">
+                                                        <td tabindex="0" class="sorting_1">Airi Satou</td>
+                                                        <td>Accountant</td>
+                                                        <td>Tokyo</td>
+                                                        <td>33</td>
+                                                        <td>2008/11/28</td>
+                                                        <td>$162,700</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-5">
+                                            <div class="dataTables_info" id="selection-datatable_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-7">
+                                            <div class="dataTables_paginate paging_simple_numbers" id="selection-datatable_paginate">
+                                                <ul class="pagination pagination-rounded">
+                                                    <li class="paginate_button page-item previous disabled" id="selection-datatable_previous">
+                                                        <a href="#" aria-controls="selection-datatable" data-dt-idx="0" tabindex="0" class="page-link">
+                                                            <i class="mdi mdi-chevron-left"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="paginate_button page-item active">
+                                                        <a href="#" aria-controls="selection-datatable" data-dt-idx="1" tabindex="0" class="page-link">1</a>
+                                                    </li>
+                                                    <li class="paginate_button page-item ">
+                                                        <a href="#" aria-controls="selection-datatable" data-dt-idx="2" tabindex="0" class="page-link">2</a>
+                                                    </li>
+                                                    <li class="paginate_button page-item ">
+                                                        <a href="#" aria-controls="selection-datatable" data-dt-idx="3" tabindex="0" class="page-link">3</a>
+                                                    </li>
+                                                    <li class="paginate_button page-item ">
+                                                        <a href="#" aria-controls="selection-datatable" data-dt-idx="4" tabindex="0" class="page-link">4</a>
+                                                    </li>
+                                                    <li class="paginate_button page-item ">
+                                                        <a href="#" aria-controls="selection-datatable" data-dt-idx="5" tabindex="0" class="page-link">5</a>
+                                                    </li>
+                                                    <li class="paginate_button page-item ">
+                                                        <a href="#" aria-controls="selection-datatable" data-dt-idx="6" tabindex="0" class="page-link">6</a>
+                                                    </li>
+                                                    <li class="paginate_button page-item next" id="selection-datatable_next">
+                                                        <a href="#" aria-controls="selection-datatable" data-dt-idx="7" tabindex="0" class="page-link">
+                                                            <i class="mdi mdi-chevron-right"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- container -->
+
+            </div>
+            <!-- content -->
+
+            <!-- ============================================================= -->
+            <!-- ===============    footer content start  ================= -->
+            <!-- ============================================================= -->
+
+            <footer th:replace="~{commons/common :: footer}"></footer>
+            <!-- ============================================================= -->
+            <!-- ===============    footer content start  ================= -->
+            <!-- ============================================================= -->
+
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+
+    </div>
+    <!-- END wrapper -->
+
+    <div th:replace="commons/common :: common_js(~{})"></div>
+</body>
+
+</html>
