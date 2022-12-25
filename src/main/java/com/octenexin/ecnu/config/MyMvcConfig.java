@@ -49,6 +49,7 @@ public class MyMvcConfig implements WebMvcConfigurer {
                         "/login.html","/","/user/login",
                         "/pwd_recovery","/mail","/pwd/change",
                         "/register","/user/register",
-                        "/commons/**");
+                        "/commons/**",
+                        "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg","/**/*.jpeg", "/**/*.gif", "/**/fonts/*", "/**/*.svg");
     }
 }

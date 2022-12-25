@@ -43,6 +43,13 @@ public interface PaperDao {
 	 * 获取论文
 	 */
 	Paper getPaper(Paper paper);
-	
+
+	/**
+	 * 获取上一次的主键id
+	 * */
+	Integer getLastId();
+
+
+	List<Paper> autoQuery(String sql);
 	
 }

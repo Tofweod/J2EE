@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
+
+        <title>Shimba Bootstrap 4 Admin Dashboard</title>
+
+    </head>
+    <body>
+
+        <div class="wrapper">
+            <div th:replace="~{/commons/common :: sidebar}"></div>
+
+            <div class="content-page">
+                <div class="content">
+                    <div th:replace="~{/commons/common :: navbar}"></div>
+
+                    <!--===============main content start===============-->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <!--                                    <form>-->
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>修改用户信息</h5>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="user-email">用户邮箱</label>
+                                            <input type="email" class="form-control" id="user-email" placeholder="邮箱，不超过27个字符" th:value="${user.getEmail()}">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="user-id">学工号</label>
+                                            <input type="text" class="form-control" id="user-id" th:placeholder="${user.getUserId()}" readonly="">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-12">
+                                            <label for="user-name">用户姓名</label>
+                                            <input type="text" class="form-control" id="user-name" placeholder="真实姓名,不超过11个字符" th:value="${user.getUserName()}">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="user-pwd">用户密码</label>
+                                        <input type="text" class="form-control" id="user-pwd" placeholder="密码，不超过15个字符" th:value="${user.getUserPassword()}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="user-major">专业</label>
+                                        <input type="text" class="form-control" id="user-major" placeholder="专业，不超过8个字符" th:value="${user.getMajor()}">
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="authority">权限</label>
+                                            <select id="authority" class="form-control" th:value="${user.getAuthority()}">
+                                                <option value="0">学生</option>
+                                                <option value="1">管理员</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary" id="submit" onclick="mySubmit()">提交</button>
+                                    <!--                                    </form>-->
+
+                                    <script>
+
+                                        function mySubmit() {
+                                            var email=$('#user-email').val();
+                                            var id=$('#user-id').attr('placeholder');
+                                            var userName=$('#user-name').val();
+                                            var userPwd=$('#user-pwd').val();
+                                            var userMajor=$('#user-major').val();
+                                            var userAuthority=$('#authority').val();
+
+                                            if(email===""||id===""||userName===""||userPwd===""||userMajor===""||userAuthority===""){
+                                                alert("表单不完整！");
+                                                return;
+                                            }
+
+                                            if(email.length>27){
+                                                alert("邮箱长度大于27个字符！");
+                                                return;
+                                            }
+                                            if(userName.length>11){
+                                                alert("用户名大于11个字符！");
+                                                return;
+                                            }
+                                            if(userPwd.length>15){
+                                                alert("密码长度大于15个字符！");
+                                                return;
+                                            }
+                                            if(userMajor.length>8){
+                                                alert("专业名长度大于8个字符！");
+                                                return;
+                                            }
+
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "/admin/do-change",
+                                                data: {
+                                                    email: email,
+                                                    userId: id,
+                                                    userName: userName,
+                                                    userPassword: userPwd,
+                                                    major: userMajor,
+                                                    authority: userAuthority
+                                                },
+                                                success: function () {
+                                                    alert("用户修改成功！");
+                                                    window.location.href = "/admin/user-list-n?type="+userAuthority+"&page=0";
+                                                },
+                                                error:function (){
+                                                    alert("用户修改失败！");
+                                                }
+                                            })
+                                        }
+
+                                    </script>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!--===============main content end===============-->
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+    </body>
+</html>

@@ -21,12 +21,12 @@ public interface UserService {
      */
     public int updateUser(User user);
     /**
-     * 删除用户数据
+     * 通过学号删除用户数据
      *
-     * @param user
+     * @param id
      * @return
      */
-    public int deleteUser(User user);
+    public int deleteUser(String id);
     /**
      * 统计用户数量
      *

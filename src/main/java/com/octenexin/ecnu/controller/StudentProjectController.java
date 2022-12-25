@@ -1,12 +1,17 @@
 package com.octenexin.ecnu.controller;
 
+import com.octenexin.ecnu.EcnuApplication;
+import com.octenexin.ecnu.dao.PaperDao;
 import com.octenexin.ecnu.dao.ProjectClassDao;
 import com.octenexin.ecnu.dao.ProjectDao;
 import com.octenexin.ecnu.dao.ProjectTypeDao;
+import com.octenexin.ecnu.pojo.Paper;
 import com.octenexin.ecnu.pojo.Project;
 import com.octenexin.ecnu.pojo.ProjectClass;
 import com.octenexin.ecnu.pojo.ProjectType;
+import com.octenexin.ecnu.service.ProjectService;
 import com.octenexin.ecnu.util.FileLoadUtil;
+import com.octenexin.ecnu.util.FileSaveUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
@@ -32,6 +37,12 @@ public class StudentProjectController {
 
     @Autowired
     ProjectTypeDao projectTypeDao;
+
+    @Autowired
+    PaperDao paperDao;
+
+    @Autowired
+    ProjectService projectService;
 
     @PostMapping("/student/add/get-type")
     @ResponseBody
@@ -131,16 +142,9 @@ public class StudentProjectController {
     }
 
     @PostMapping("/student/project/do-delete")
-    public String doUpdate(@RequestParam("id") String id){
+    public String doDelete(@RequestParam("id") String id){
 
-        Project project=new Project();
-        project.setProjectId(Integer.parseInt(id));
-
-
-        projectDao.delete(project);
-
-        //handle paper table, paper directory...
-        //"cascade"
+        projectService.deleteProject(Integer.valueOf(id));
 
 
         return "success";

@@ -27,7 +27,7 @@
                                         <input type="hidden" th:value="${projectId}" id="project_id" name="projectId">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
-                                                <label for="paper-title">Paper Title</label>
+                                                <label for="paper-title">论文主题</label>
                                                 <input type="text" class="form-control" id="paper-title" placeholder="Title" name="title">
                                             </div>
                                             <div class="form-group col-md-6">
@@ -36,19 +36,19 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="paper-summary">Summary</label>
+                                            <label for="paper-summary">论文总结</label>
                                             <textarea class="form-control" id="paper-summary" rows="3" name="summary" placeholder="Summary, no more than 300 chars"></textarea>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
-                                                <label for="paper-key-words">Key Words</label>
+                                                <label for="paper-key-words">论文关键字</label>
                                                 <input type="text" class="form-control" id="paper-key-words" placeholder="Key words, split by ;" name="keywords">
                                             </div>
                                         </div>
 
 
                                         <div class="form-group">
-                                            <label>Project File</label>
+                                            <label>论文文件</label>
                                             <div class="dropzone" id="my-dropzone" data-plugin="dropzone" data-previews-container="#file-previews" data-upload-preview-template="#uploadPreviewTemplate">
                                                 <div class="fallback" id="fallback" style="position: absolute;top:-20px;left:-20px;opacity: 0">
                                                     <input name="file" type="file" id="project-files" style="width: 100%;height: 100%;cursor: pointer" onchange="onAddFile()"/>
@@ -56,7 +56,7 @@
 
                                                 <div class="dz-message needsclick">
                                                     <i class="h1 text-muted dripicons-cloud-upload"></i>
-                                                    <h3>Drag & Drop files here or click to upload.</h3>
+                                                    <h3>拖动文件到此处 或 点击图标</h3>
                                                 </div>
                                             </div>
                                             <div class="dropzone-previews mt-3" id="file-previews"></div>

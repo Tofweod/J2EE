@@ -42,5 +42,24 @@ public class StudentMessagesPageController {
         return "/student/message";
     }
 
+    @RequestMapping("/admin/message")
+    public String toAdminMessage(HttpSession session,Model model){
+
+//        String id= (String) session.getAttribute("loginUserId");
+//        User user=new User();
+//        user.setUserId(id);
+
+        //System.out.println("to message!");
+
+
+        List<Message> msgs=messageService.getMessages();
+
+        //System.out.println(msgs);
+
+
+        model.addAttribute("messages",msgs);
+
+        return "/admin/message";
+    }
 
 }

@@ -1,14 +1,8 @@
 package com.octenexin.ecnu.controller;
 
 
-import com.octenexin.ecnu.dao.ProjectClassDao;
-import com.octenexin.ecnu.dao.ProjectDao;
-import com.octenexin.ecnu.dao.ProjectStateDao;
-import com.octenexin.ecnu.dao.UserDao;
-import com.octenexin.ecnu.pojo.Project;
-import com.octenexin.ecnu.pojo.ProjectClass;
-import com.octenexin.ecnu.pojo.ProjectState;
-import com.octenexin.ecnu.pojo.User;
+import com.octenexin.ecnu.dao.*;
+import com.octenexin.ecnu.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +31,9 @@ public class StudentProjectPageController {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    PaperDao paperDao;
 
 
     @RequestMapping("/student/project/project-add")
@@ -151,7 +148,14 @@ public class StudentProjectPageController {
             }
         }
 
-        SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
+
+        Paper realPaper=null;
+        if(realProject.getProjectPaperId()!=null){
+            Paper paper=new Paper();
+            paper.setPaperId(realProject.getProjectPaperId());
+
+            realPaper=paperDao.getPaper(paper);
+        }
 
 
 
@@ -160,6 +164,7 @@ public class StudentProjectPageController {
         model.addAttribute("member",member);
         model.addAttribute("state",realState);
         model.addAttribute("className",className);
+        model.addAttribute("paper",realPaper);
 
         return "/student/project/project-details";
     }

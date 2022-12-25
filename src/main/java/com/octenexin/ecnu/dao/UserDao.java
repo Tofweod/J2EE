@@ -63,4 +63,6 @@ public interface UserDao {
      * @param batchArgs
      */
     void batchAddUser(List<Object[]> batchArgs);
+
+    List<User> autoQuery(String sql);
 }

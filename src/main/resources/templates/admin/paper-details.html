@@ -8,11 +8,11 @@
     <body>
 
         <div class="wrapper">
-            <div th:replace="~{/commons/common :: sidebar}"></div>
+            <div th:replace="~{/commons/common :: sidebar-admin}"></div>
 
             <div class="content-page">
                 <div class="content">
-                    <div th:replace="~{/commons/common :: navbar}"></div>
+                    <div th:replace="~{/commons/common :: navbar-admin}"></div>
 
                     <!--===============main content start===============-->
                     <div class="row">
@@ -34,10 +34,10 @@
                                 <div class="card-body">
                                     <div class="table-responsive-sm">
 
-                                        <div class="row mb-2">
-                                            <div class="col-md-3 text-muted">论文主题</div>
-                                            <div class="col-md-9" th:text="${paper.getPaperTitle()}"></div>
-                                        </div>
+                                        <h3 class="mt-0" th:text="${paper.getPaperTitle()}"></h3>
+                                        <div th:class="${paperStateColor.get(paper.getPaperStateId())}" th:text="${paperState.get(paper.getPaperStateId()).getState()}"></div>
+
+
                                         <div class="row mb-2">
                                             <div class="col-md-3 text-muted">论文作者</div>
                                             <div class="col-md-9">
@@ -55,10 +55,6 @@
                                             <div class="col-md-9">
                                                 <button type="button" class="btn btn-rounded btn-info" th:each="m:${member}" th:text="${m}"></button>
                                             </div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <div class="col-md-3 text-muted">论文状态</div>
-                                            <div class="col-md-9" th:text="${paperState.get(paper.getPaperStateId()).getState()}"></div>
                                         </div>
 
                                         <div class="row mb-12">

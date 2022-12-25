@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
+
+        <title>消息中心</title>
+
+    </head>
+    <body>
+
+        <div class="wrapper">
+            <div th:replace="~{/commons/common :: sidebar-admin}"></div>
+
+            <div class="content-page">
+                <div class="content">
+                    <div th:replace="~{/commons/common :: navbar-admin}"></div>
+
+                    <!--===============main content start===============-->
+                    <!--使用ajax实现-->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a th:href="@{/admin/index}"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item"><a th:href="@{/admin/profile}">profile</a></li>
+                                        <li class="breadcrumb-item active">Messages</li>
+                                    </ol>
+                                </div>
+                                <h4 class="page-title">Messages</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4" th:each="m:${messages}">
+                        <div class="card-body">
+                            <span class="text-muted float-right mb-3" th:text="${m.getMessageHasread()==0 ? '未读':'已读'}"></span>
+                            <h4 class="card-title" th:text="${m.getMessageTopic()}"></h4>
+                            <div class="card-subtitle text-muted mb-3" th:text="${m.getMessageTime()}"></div>
+                            <p class="card-text" th:text="${m.getMessageRawData()}"></p>
+                            <a style="display: none" th:href="@{/message/set-read(messageId=${m.getMessageId()})}"></a>
+                            <a class="card-link text-primary float-right" th:text="#{message_set_has_read}" onclick="{
+                                                $.ajax(
+                                                    {
+                                                    type: 'POST',
+                                                    url: $(this).prev().attr('href'),
+                                                    success:function (){
+                                                        window.location.href = '/student/message';
+                                                    },
+                                                    error:function (){
+                                                        alert('设置已读失败！')}
+                                                    }
+                                                )
+                            }return false;"></a>
+                            <a style="display: none" th:href="@{/message/delete(messageId=${m.getMessageId()})}"></a>
+                            <a class="card-link text-danger float-right" th:text="#{message_delete}" onclick="{
+
+                                                var res=confirm('是否删除消息？');
+
+                                                if(res){
+                                                    $.ajax(
+                                                        {
+                                                        type: 'POST',
+                                                        url: $(this).prev().attr('href'),
+                                                        success:function (){
+                                                            alert('消息删除成功！');
+                                                            window.location.href = '/student/message';
+                                                        },
+                                                        error:function (){
+                                                            alert('消息删除失败！')}
+                                                        }
+                                                    )
+                                                }
+
+                            }return false;"></a>
+
+                        </div>
+                    </div>
+
+
+
+
+                    <!--===============main content end===============-->
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+    <script>
+        function show_messages(){
+
+        }
+    </script>
+    </body>
+</html>

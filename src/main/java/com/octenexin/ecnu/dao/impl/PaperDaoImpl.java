@@ -2,6 +2,7 @@ package com.octenexin.ecnu.dao.impl;
 
 import com.octenexin.ecnu.dao.PaperDao;
 import com.octenexin.ecnu.pojo.Paper;
+import com.octenexin.ecnu.pojo.Project;
 import com.octenexin.ecnu.pojo.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -21,9 +22,7 @@ public class PaperDaoImpl implements PaperDao {
 	
 	@Resource
 	private JdbcTemplate jdbcTemplate;
-	@Resource
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	
+
 	@Override
 	public int addPaper(Paper paper) {
 		String sql = "INSERT INTO papers (paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id,paper_url)" +
@@ -73,8 +72,8 @@ public class PaperDaoImpl implements PaperDao {
 	
 	@Override
 	public List<Paper> getPaperPage(int start, int nums) {
-		String sql = "SELECT paper_id,paper_title,paper_author,paper_summary,paper_keywords,paper_state_id,paper_prestate_id,paper_url FROM papers" +
-				"LIMIT ?,? WHERE paper_state_id = 1";
+		String sql = "SELECT * FROM papers" +
+				"limit ?,?;";
 		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Paper.class),start,nums);
 	}
 	
@@ -87,5 +86,18 @@ public class PaperDaoImpl implements PaperDao {
 			return null;
 		}
 	}
+	@Override
+	public Integer getLastId(){
+		String sql="SELECT LAST_INSERT_ID();";
+
+		return jdbcTemplate.queryForObject(sql,Integer.class);
+	}
+
+
+	@Override
+	public List<Paper> autoQuery(String sql){
+		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Paper.class));
+	}
+
 	
 }

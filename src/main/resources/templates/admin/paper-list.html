@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{commons/common :: common_header(~{::title},~{::link})}">
+
+        <title>Project List</title>
+
+        <!-- third party css -->
+        <link th:href="@{/assets/css/vendor/dataTables.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <link th:href="@{/assets/css/vendor/responsive.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <link th:href="@{/assets/css/vendor/buttons.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <link th:href="@{/assets/css/vendor/select.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <!-- third party css end -->
+
+    </head>
+
+<body>
+
+    <!-- Begin page -->
+    <div class="wrapper">
+
+        <!-- ============================================================= -->
+        <!-- ===============    side menu content start  ================= -->
+        <!-- ============================================================= -->
+        <div th:replace="~{commons/common :: sidebar-admin}"></div>
+        <!-- ============================================================= -->
+        <!-- ===============     side menu content End   ================= -->
+        <!-- ============================================================= -->
+
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+
+                <!-- ============================================================= -->
+                <!-- ===============    Top bar header content start  ================= -->
+                <!-- ============================================================= -->
+                <div th:replace="~{commons/common :: navbar-admin}"></div>
+                <!-- ================================================================== -->
+                <!-- ===============    Top bar header content end  ================= -->
+                <!-- ================================================================== -->
+
+
+                <!-- Start Content-->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/index}"><i class="feather icon-home"></i></a></li>
+                                    <li class="breadcrumb-item active">论文列表</li>
+                                </ol>
+                            </div>
+                            <h4 class="page-title">论文列表</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>论文Id</th>
+                                                <th>论文标题</th>
+                                                <th>论文作者</th>
+                                                <th>论文关键字</th>
+                                                <th>论文状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="l:${list}">
+                                                <th scope="row" th:text="${l.getPaperId()}"></th>
+                                                <td th:text="${l.getPaperTitle()}"></td>
+                                                <td th:text="${l.getPaperAuthor()}"></td>
+                                                <td th:text="${l.getPaperKeywords()}"></td>
+                                                <td th:text="${states.get(l.getPaperStateId()).getState()}"></td>
+                                                <td>
+                                                    <a class="d-inline-block" th:href="@{/paper/download(paper=${l.getPaperId()})}">下载</a>
+                                                    <a class="d-inline-block" th:href="@{/admin/paper-details(paperId=${l.getPaperId()})}">查看</a>
+                                                    <a class="d-inline-block" th:href="@{/admin/paper-details(paperId=${l.getPaperId()})}">修改</a>
+
+                                                    <a style="display: none" th:href="@{/paper/do-delete(paperId=${l.getPaperId()})}"></a>
+                                                    <a class="d-inline-block text-danger" href="javascript: void(0);" onclick="{
+                                                        if(confirm('确定要删除此论文吗？')===true){
+                                                            $.ajax({
+                                                                type: 'POST',
+                                                                url: $(this).prev().attr('href'),
+                                                                success: function (){
+                                                                    alert('论文删除成功！');
+                                                                    location.reload();
+                                                                },
+                                                                fail: function (){
+                                                                    alert('论文删除失败！');
+                                                                }
+                                                            })
+                                                        }
+                                                    }return false;">删除</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- container -->
+
+            </div>
+            <!-- content -->
+
+            <!-- ============================================================= -->
+            <!-- ===============    footer content start  ================= -->
+            <!-- ============================================================= -->
+
+            <footer th:replace="~{commons/common :: footer}"></footer>
+            <!-- ============================================================= -->
+            <!-- ===============    footer content start  ================= -->
+            <!-- ============================================================= -->
+
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+
+    </div>
+    <!-- END wrapper -->
+
+    <div th:replace="commons/common :: common_js(~{})"></div>
+</body>
+
+</html>

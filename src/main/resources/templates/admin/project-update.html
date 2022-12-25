@@ -31,11 +31,11 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="project-name">项目名称</label>
-                                            <input type="text" class="form-control" id="project-name" placeholder="Project Name" th:value="${project.getProjectName()}">
+                                            <input type="text" class="form-control" id="project-name" placeholder="项目名称，不超过30个字符" th:value="${project.getProjectName()}">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="project-charge-person-id">项目负责人id</label>
-                                            <input type="text" class="form-control" id="project-charge-person-id" th:placeholder="${project.getProjectChargePersonId()}" readonly="">
+                                            <input type="text" class="form-control" id="project-charge-person-id" placeholder="项目负责人学号，不超过11个字符" th:value="${project.getProjectChargePersonId()}">
                                         </div>
                                     </div>
 
@@ -43,26 +43,26 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
                                             <label for="other-members">其他成员</label>
-                                            <input type="text" class="form-control" id="other-members" placeholder="member names, split by ;" th:value="${project.getProjectOtherPeopleInfo()}">
+                                            <input type="text" class="form-control" id="other-members" placeholder="项目其他成员姓名，用英文分号分隔；不超过100个字符" th:value="${project.getProjectOtherPeopleInfo()}">
                                         </div>
                                     </div>
 
 
                                     <div class="form-group">
                                         <label for="funds-budget">项目经费</label>
-                                        <input type="number" class="form-control" id="funds-budget" placeholder="Integer, yuan" th:value="${project.getProjectFundsUp()}">
+                                        <input type="number" class="form-control" id="funds-budget" placeholder="整数，单位为元" th:value="${project.getProjectFundsUp()}">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="project-about">项目大类</label>
+                                        <label for="project-about">项目简介</label>
                                         <textarea class="form-control" id="project-about" rows="3" th:inline="text">[[${project.getProjectAbout()}]]</textarea>
                                     </div>
 
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="project-class">项目小类</label>
-                                            <select id="project-class" class="form-control" readonly="">
-                                                <option th:text="${pClass.getProjectClass()}"></option>
+                                            <label for="project-class">项目大类</label>
+                                            <select id="project-class" class="form-control" th:value="${project.getProjectClassId()}">
+                                                <option th:each="c : ${pClass}" th:value="${c.value().getProjectClassId()}" th:text="${c.value().getProjectClass()}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -71,18 +71,13 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="start-time">起始时间</label>
-                                            <input type="text" class="form-control date" id="start-time" readonly="" th:placeholder="${#dates.format(project.getProjectStartTime(),'MM/dd/yyyy')}">
+                                            <input type="text" class="form-control date" id="start-time" data-toggle="date-picker" data-single-date-picker="true" th:value="${#dates.format(project.getProjectStartTime(),'MM/dd/yyyy')}">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="end-time">截止时间</label>
-                                            <input type="text" class="form-control date" id="end-time" data-toggle="date-picker" data-single-date-picker="true" th:value="${#dates.format(project.getProjectEndTime(),'MM/dd/yyyy')}" onchange="showDialog()">
+                                            <input type="text" class="form-control date" id="end-time" data-toggle="date-picker" data-single-date-picker="true" th:value="${#dates.format(project.getProjectEndTime(),'MM/dd/yyyy')}">
                                         </div>
 
-                                    </div>
-
-                                    <div class="form-group" id="delay-box">
-                                        <label for="delay-reason">延期原因</label>
-                                        <textarea class="form-control" id="delay-reason" rows="3"></textarea>
                                     </div>
 
 
@@ -91,40 +86,26 @@
 
                                     <script>
 
-                                        window.onload=function (){
-                                            document.getElementById("delay-box").style.display="none";
-                                        }
-
-                                        var shouldDelay=false;
-                                        function showDialog(){
-                                            document.getElementById("delay-box").style.display="block";
-                                            shouldDelay=true;
-                                        }
 
                                         function mySubmit() {
                                             var projectName=$("#project-name").val();
+                                            var projectChargePersonId=$('#project-charge-person-id').val();
 
                                             var otherMembers=$("#other-members").val();
                                             var fundsBudget=$("#funds-budget").val();
 
                                             var projectAbout=$("#project-about").val();
+                                            var projectClass=$("#project-class").val();
 
-
-                                            var startTime=$('#start-time').attr('placeholder');
+                                            var startTime=$('#start-time').val();
                                             var endTime=$('#end-time').val();
-                                            var delayReason=$("#delay-reason").val();
 
 
-
-                                            if(projectName===""||otherMembers===""||fundsBudget===""||projectAbout===""||endTime===""){
+                                            if(projectName===""||projectChargePersonId===""||otherMembers===""||fundsBudget===""||projectAbout===""||projectClass===""||startTime===""||endTime===""){
                                                 alert("表单不完整！");
                                                 return;
                                             }
 
-                                            if(shouldDelay&&delayReason===""){
-                                                alert("请填写延期原因！");
-                                                return;
-                                            }
 
                                             var newSt=startTime.substring(6)+"/"+startTime.substring(0,2)+"/"+startTime.substring(3,5);
                                             var newEt=endTime.substring(6)+"/"+endTime.substring(0,2)+"/"+endTime.substring(3,5);
@@ -142,29 +123,19 @@
                                                 data: {
                                                     'projectId':$("#project-id").val(),
                                                     'projectName':projectName,
-                                                    //'projectChargePersonId':projectChargePersonId,
+                                                    'projectChargePersonId':projectChargePersonId,
                                                     'otherMembers':otherMembers,
-                                                    //low=0
                                                     'fundsBudget':fundsBudget,
                                                     'projectAbout':projectAbout,
-                                                    //paper id null
-                                                    //'projectClass':projectClass,
-                                                    //state 1
-                                                    //pre state 1
-                                                    //'startTime':startTime,
-                                                    'endTime':endTime,
-                                                    'shouldDelay':shouldDelay,
-                                                    'delayReason':delayReason
+                                                    'projectClass':projectClass,
+                                                    'startTime':startTime,
+                                                    'endTime':endTime
 
                                                 },
-                                                success: function (data) {
-                                                    if(shouldDelay){
-                                                        alert("项目修改成功！请等待延期申请审核通知！");
-                                                    }else{
-                                                        alert("项目修改成功！");
-                                                    }
+                                                success: function () {
+                                                    alert("项目修改成功！");
 
-                                                    window.location.href = "/student/project/project-list";
+                                                    window.location.href = "/admin/project-list-n?page=0";
                                                 },
                                                 error:function (){
                                                     alert("项目修改失败！");

@@ -3,6 +3,7 @@ package com.octenexin.ecnu.util;
 import com.octenexin.ecnu.EcnuApplication;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -17,6 +18,20 @@ import java.util.UUID;
 
 public class FileSaveUtil {
 
+
+    public static String getFileLoadRootUrl(){
+
+        String rootUrl=CustomVarUtil.uploadUrl;
+        System.out.println(rootUrl);
+
+        String url= String.valueOf(EcnuApplication.class.getClassLoader().getResource(""));
+        url=url.substring(url.indexOf("/")+1);
+
+        url+=rootUrl;
+
+        return url;
+    }
+
     /**
      * @param file 论文原始文件
      * @param projectId 论文所在项目id
@@ -26,11 +41,7 @@ public class FileSaveUtil {
 
         try {
 
-            String url= String.valueOf(EcnuApplication.class.getClassLoader().getResource(""));
-            System.out.println(url);
-
-            url=url.substring(url.indexOf("/")+1);
-            url+="upload/";
+            String url= getFileLoadRootUrl();
             //fixed above, absolute path
 
             try{
@@ -49,24 +60,8 @@ public class FileSaveUtil {
                 //do nothing
             }
 
-            //如果想去掉 '-' 且转换小写
-            //String uuidString = UUID.randomUUID().toString().replace("-", "").toLowerCase();
 
-            String fileName=file.getOriginalFilename();
-
-//            assert fileName != null;
-//            int i=fileName.lastIndexOf('.');
-//            String ext="";
-//            if (i>0){
-//                ext=fileName.substring(i);
-//                fileName=fileName.substring(0,i);
-//            }
-
-
-
-
-
-            String filepath=url+"/"+fileName;
+            String filepath=url+"/"+file.getOriginalFilename();
 
 
             try (FileOutputStream fileOutputStream = new FileOutputStream(filepath)) {
@@ -85,5 +80,39 @@ public class FileSaveUtil {
 
        throw new RuntimeException("control shouldn't reach here");
 
+    }
+
+    /**
+     * delete a paper by url in db
+     * delete a folder
+     * we can add it later
+     * */
+    public static void deletePaper(String u){
+        try {
+
+            String url= getFileLoadRootUrl();
+            //fixed above, absolute path
+
+            String projectName=u.substring(0,u.indexOf('/'));
+
+
+            url+=projectName;
+            System.out.println(url);//file:/C:/Users/HP/Desktop/j2ee/target/classes/project1
+
+            try{
+                Files.deleteIfExists(Paths.get(url));
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+            return;
+
+
+        } catch (Exception e) {
+            System.out.println("删除文件内容出错");
+            e.printStackTrace();
+        }
+
+        throw new RuntimeException("control shouldn't reach here");
     }
 }
