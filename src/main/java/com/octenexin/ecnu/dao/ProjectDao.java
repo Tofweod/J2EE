@@ -27,6 +27,8 @@ public interface ProjectDao {
      */
     int update(Project project);
 
+    int adminUpdate(Project project);
+
 
     int updatePaper(Project project);
 

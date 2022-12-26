@@ -21,6 +21,7 @@ public class IdManageUtils{
 
 	public static Map<Integer, PaperState> paperStateMap;
 
+	public static Map<Integer, String> projectStateColorMap;
 	public static Map<Integer, String> paperStateColorMap;
 	
 	public static void setClassMap(Map<Integer,ProjectClass> map){
@@ -57,6 +58,15 @@ public class IdManageUtils{
 			return;
 		}
 		paperStateMap = map;
+	}
+
+	public static void setProjectStateColorMap(Map<Integer, String> map){
+		if(projectStateColorMap != null){
+			//throw new RuntimeException("map has been set!");
+			System.out.println("[Warning: map has been set!]");
+			return;
+		}
+		projectStateColorMap = map;
 	}
 
 	public static void setPaperStateColorMap(Map<Integer, String> map){

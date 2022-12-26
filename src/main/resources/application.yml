@@ -91,3 +91,5 @@ spring:
 
 upload:
   path: resources/
+
+host: localhost:8081

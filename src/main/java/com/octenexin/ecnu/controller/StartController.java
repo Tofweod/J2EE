@@ -100,6 +100,21 @@ public class StartController {
 			throw new RuntimeException(e);
 		}
 
+		Map<Integer,String> projectStateColorMap=new HashMap<>();
+		projectStateColorMap.put(1,"badge badge-primary mb-3");
+		projectStateColorMap.put(2,"badge mb-3 badge-info");
+		projectStateColorMap.put(3,"badge mb-3 badge-danger");
+		projectStateColorMap.put(4,"badge mb-3 badge-success");
+		projectStateColorMap.put(5,"badge mb-3 badge-secondary");
+		projectStateColorMap.put(6,"badge mb-3 badge-dark");
+		try {
+			IdManageUtils.setProjectStateColorMap(projectStateColorMap);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+
+
 		return "/login";
 	}
 }

@@ -1,9 +1,11 @@
 package com.octenexin.ecnu.service.impl;
 
 import com.octenexin.ecnu.dao.MessageDao;
+import com.octenexin.ecnu.dao.UserDao;
 import com.octenexin.ecnu.pojo.Message;
 import com.octenexin.ecnu.pojo.User;
 import com.octenexin.ecnu.service.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -21,11 +23,11 @@ public class MessageServiceImpl implements MessageService {
 	
 	@Resource
 	MessageDao messageDao;
-	
+
 	
 	@Override
 	public void sendMessage(Message content) {
-		messageDao.sendMessage(user,content);
+		messageDao.addMessage(content);
 	}
 	
 	@Override

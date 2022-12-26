@@ -34,34 +34,27 @@
                                 <div class="card-body">
                                     <div class="table-responsive-sm">
 
+                                        <a style="display: none" id="paper-id" th:href="@{/paper/get-file(paperId=${paper.getPaperId()})}"></a>
                                         <h3 class="mt-0" th:text="${paper.getPaperTitle()}"></h3>
                                         <div th:class="${paperStateColor.get(paper.getPaperStateId())}" th:text="${paperState.get(paper.getPaperStateId()).getState()}"></div>
 
 
-                                        <div class="row mb-2">
-                                            <div class="col-md-3 text-muted">论文作者</div>
-                                            <div class="col-md-9">
-                                                <a href="javascript:void(0)" class="text-dark" th:text="${paper.getPaperAuthor()}"></a>
-                                            </div>
+                                        <h5>论文作者</h5>
+                                        <p class="text-muted" th:text="${paper.getPaperAuthor()}"></p>
+
+                                        <h5>论文总结</h5>
+                                        <p class="text-muted" th:text="${paper.getPaperSummary()}"></p>
+
+                                        <h5>论文关键字</h5>
+                                        <div class="row">
+                                            <button type="button" class="btn btn-rounded btn-info" th:each="m : ${paperKeywords}" th:text="${m}"></button>
                                         </div>
-                                        <div class="row mb-2">
-                                            <div class="col-md-3 text-muted">论文总结</div>
-                                            <div class="col-md-9">
-                                                <a href="javascript:void(0)" class="text-dark" th:text="${paper.getPaperSummary()}"></a>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-2">
-                                            <div class="col-md-3 text-muted">论文关键字</div>
-                                            <div class="col-md-9">
-                                                <button type="button" class="btn btn-rounded btn-info" th:each="m:${member}" th:text="${m}"></button>
-                                            </div>
-                                        </div>
+
 
                                         <div class="row mb-12">
-                                            <embed class="col-12" height=1000 th:src="${paperFile}" type="application/pdf">
 
+                                            <iframe id="paper-file" width="100%" height="95%" src=""></iframe>
                                             <p>embed标签查看pdf</p>
-
                                         </div>
 
                                     </div>
@@ -77,7 +70,44 @@
         </div>
 
 
+        <script>
+            // 将返回的流数据转换为url
+            function getObjectURL(file, type) {
+                return window.URL.createObjectURL(new Blob([file], { type }))
+            }
 
+            // base64转url
+            function base64ToUrl(data, type) {
+                let base64 = data
+                let bstr = atob(base64)
+                let n = bstr.length
+                let u8arr = new Uint8Array(n)
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n)
+                }
+                //确定解析格式
+                let blob = new Blob([u8arr], { type:'application/pdf;charset=UTF-8' })
+                let url = window.URL.createObjectURL(blob)
+                return url
+            }
+
+            window.onload=function(){
+                $.ajax(
+                    {
+                        type:"POST",
+                        url:$('paper-id').attr('href'),
+                        success: function (res){
+                            $('paper-file').attr('src',getObjectURL(res.data, 'application/pdf;charset=UTF-8'))
+                            console.log("解析成功")
+                        },
+                        fail: function (){
+                            console.log("解析失败！")
+                        }
+                    }
+                )
+            }
+
+        </script>
 
         <div th:replace="~{/commons/common :: common_js(~{})}"></div>
     </body>

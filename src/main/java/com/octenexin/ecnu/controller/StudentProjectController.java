@@ -1,14 +1,9 @@
 package com.octenexin.ecnu.controller;
 
 import com.octenexin.ecnu.EcnuApplication;
-import com.octenexin.ecnu.dao.PaperDao;
-import com.octenexin.ecnu.dao.ProjectClassDao;
-import com.octenexin.ecnu.dao.ProjectDao;
-import com.octenexin.ecnu.dao.ProjectTypeDao;
-import com.octenexin.ecnu.pojo.Paper;
-import com.octenexin.ecnu.pojo.Project;
-import com.octenexin.ecnu.pojo.ProjectClass;
-import com.octenexin.ecnu.pojo.ProjectType;
+import com.octenexin.ecnu.dao.*;
+import com.octenexin.ecnu.pojo.*;
+import com.octenexin.ecnu.service.MessageService;
 import com.octenexin.ecnu.service.ProjectService;
 import com.octenexin.ecnu.util.FileLoadUtil;
 import com.octenexin.ecnu.util.FileSaveUtil;
@@ -43,6 +38,13 @@ public class StudentProjectController {
 
     @Autowired
     ProjectService projectService;
+
+    @Autowired
+    ProjectDelayDao projectDelayDao;
+
+    @Autowired
+    MessageService messageService;
+
 
     @PostMapping("/student/add/get-type")
     @ResponseBody
@@ -119,6 +121,7 @@ public class StudentProjectController {
                            @RequestParam("otherMembers") String otherMembers,
                            @RequestParam("fundsBudget") Integer fundsBudget,
                            @RequestParam("projectAbout") String projectAbout,
+                           @RequestParam("oldEndTime") String oldEndTime,
                            @RequestParam("endTime") String endTime,
                            @RequestParam("shouldDelay") Boolean shouldDelay,
                            @RequestParam("delayReason") String delayReason,
@@ -134,11 +137,60 @@ public class StudentProjectController {
 
         projectDao.update(project);
 
-        //delay table
-        SimpleDateFormat format=new SimpleDateFormat("MM/dd/yyyy");
+        //add delay table
+        if(shouldDelay){
+            ProjectDelay delay=new ProjectDelay();
+            //primary key inc
+            delay.setProjectId(Integer.parseInt(id));
+            try{
+                SimpleDateFormat format=new SimpleDateFormat("MM/dd/yyyy");
+                delay.setProjectOldEndTime(new java.sql.Date(format.parse(oldEndTime).getTime()));
+                delay.setProjectNewEndTime(new java.sql.Date(format.parse(endTime).getTime()));
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+
+            delay.setProjectDelayReason(delayReason);
+
+            projectDelayDao.addDelay(delay);
+        }
 
 
         return "success";
+    }
+
+    @PostMapping("/admin/project/do-update")
+    public String doAdminUpdate(@RequestParam("projectId") String id,
+                                @RequestParam("projectName") String projectName,
+                                @RequestParam("projectChargePersonId") String projectChargePersonId,
+                                @RequestParam("otherMembers") String otherMembers,
+                                @RequestParam("fundsBudget") Integer fundsBudget,
+                                @RequestParam("projectAbout") String projectAbout,
+                                @RequestParam("projectClass") String projectClass,
+                                @RequestParam("startTime") String startTime,
+                                @RequestParam("endTime") String endTime){
+
+
+        Project project=new Project();
+        project.setProjectId(Integer.valueOf(id));
+        project.setProjectName(projectName);
+        project.setProjectChargePersonId(projectChargePersonId);
+        project.setProjectOtherPeopleInfo(otherMembers);
+        project.setProjectFundsUp(fundsBudget);
+        project.setProjectAbout(projectAbout);
+        project.setProjectClassId(Integer.valueOf(projectClass));
+        try{
+            SimpleDateFormat format=new SimpleDateFormat("MM/dd/yyyy");
+            project.setProjectStartTime(new java.sql.Date(format.parse(startTime).getTime()));
+            project.setProjectEndTime(new java.sql.Date(format.parse(endTime).getTime()));
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        projectDao.adminUpdate(project);
+
+        return "success";
+
     }
 
     @PostMapping("/student/project/do-delete")
@@ -146,6 +198,42 @@ public class StudentProjectController {
 
         projectService.deleteProject(Integer.valueOf(id));
 
+
+        return "success";
+    }
+
+    @PostMapping("/admin/project/project-delay/do-delete")
+    public String doDeleteDelay(@RequestParam("id")String id){
+        projectDelayDao.deleteDelay(Integer.parseInt(id));
+
+        return "success";
+    }
+
+    @PostMapping("/admin/project/project-delay/do-operate")
+    public String doOperateDelay(@RequestParam("id")String id,@RequestParam("oper")String oper,@RequestParam("reason")String reason){
+        projectDelayDao.handleDelay(Integer.parseInt(id),Integer.parseInt(oper));
+
+        ProjectDelay d=projectDelayDao.getDelayById(Integer.parseInt(id));
+        Project p=new Project();
+        p.setProjectId(d.getProjectId());
+
+        Project realProject=projectDao.getProject(p);
+
+        //update new end time
+        if(oper.equals("1")){
+            realProject.setProjectEndTime(d.getProjectNewEndTime());
+            projectDao.adminUpdate(realProject);
+        }
+
+        //send message to user
+        String userId=realProject.getProjectChargePersonId();
+
+        Message message=new Message();
+        message.setMessageTopic("延期申请"+(oper.equals("1") ?"通过":"驳回")+"通知");
+        message.setMessageUserId(userId);
+        message.setMessageRawData("您的项目\""+realProject.getProjectName()+"\"的延期申请已"+(oper.equals("1") ?"通过！":("被驳回，原因为："+reason)));
+
+        messageService.sendMessage(message);
 
         return "success";
     }

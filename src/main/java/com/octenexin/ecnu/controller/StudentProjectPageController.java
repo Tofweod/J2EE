@@ -3,6 +3,7 @@ package com.octenexin.ecnu.controller;
 
 import com.octenexin.ecnu.dao.*;
 import com.octenexin.ecnu.pojo.*;
+import com.octenexin.ecnu.util.IdManageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -125,29 +126,6 @@ public class StudentProjectPageController {
         state.setProjectStateId(sid);
         ProjectState realState=projectStateDao.query(state);
 
-        String className;
-
-        switch (sid){
-            case 1:{
-                className="badge badge-primary mb-3";
-            }break;
-            case 2:{
-                className="badge mb-3 badge-info";
-            }break;
-            case 3:{
-                className="badge mb-3 badge-danger";
-            }break;
-            case 4:{
-                className="badge mb-3 badge-success";
-            }break;
-            case 5:{
-                className="badge mb-3 badge-secondary";
-            }break;
-            default:{
-                className="badge mb-3 badge-dark";
-            }
-        }
-
 
         Paper realPaper=null;
         if(realProject.getProjectPaperId()!=null){
@@ -163,7 +141,7 @@ public class StudentProjectPageController {
         model.addAttribute("chargePerson",realUser);
         model.addAttribute("member",member);
         model.addAttribute("state",realState);
-        model.addAttribute("className",className);
+        model.addAttribute("className",IdManageUtils.projectStateColorMap.get(sid));
         model.addAttribute("paper",realPaper);
 
         return "/student/project/project-details";

@@ -37,6 +37,12 @@ public class MessageDaoImpl implements MessageDao {
     String sql = "INSERT INTO messages(message_topic,message_user_id,message_raw_data,message_time,message_hasread) VALUES(?,?,?,?,0)";
     return jdbcTemplate.update(sql,message.getMessageTopic(),user.getUserId(),message.getMessageRawData(),new Timestamp(System.currentTimeMillis()));
   }
+
+  @Override
+  public int addMessage(Message message){
+    String sql = "INSERT INTO messages(message_topic,message_user_id,message_raw_data,message_time,message_hasread) VALUES(?,?,?,?,0)";
+    return jdbcTemplate.update(sql,message.getMessageTopic(),message.getMessageUserId(),message.getMessageRawData(),new Timestamp(System.currentTimeMillis()));
+  }
   
   /**
    * message的update只有修改可读状态，因此特殊化其方法

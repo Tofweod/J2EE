@@ -22,7 +22,8 @@ public interface MessageDao {
    * @param message
    */
   int sendMessage(User user,Message message);
-  
+
+  int addMessage(Message message);
   /**
    * 设置消息已读
    * @param message

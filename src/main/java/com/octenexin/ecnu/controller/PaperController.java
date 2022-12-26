@@ -7,6 +7,7 @@ import com.octenexin.ecnu.pojo.Paper;
 import com.octenexin.ecnu.pojo.Project;
 import com.octenexin.ecnu.service.PaperService;
 import com.octenexin.ecnu.util.FileSaveUtil;
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -161,7 +162,34 @@ public class PaperController {
 		// 假设每页显示10条数据
 		return paperService.getPaperPage((page-1) * 10, 10);
 	}
-	
+
+	@PostMapping("/paper/get-file")
+	@ResponseBody
+	public String getPaperFile(@RequestParam("paperId")String paperId, HttpServletResponse response){
+
+		String url=FileSaveUtil.getFileLoadRootUrl();
+
+
+		Paper paper1=new Paper();
+		paper1.setPaperId(Integer.parseInt(paperId));
+		Paper realPaper=paperDao.getPaper(paper1);
+
+		String fileName = realPaper.getPaperUrl();
+
+		File file = new File(url+fileName);
+		try(InputStream in = Files.newInputStream(file.toPath());
+			ServletOutputStream out = response.getOutputStream()) {
+			byte[] buf = new byte[1024];
+			while(in.read(buf) != -1){
+				out.write(buf);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return "success";
+
+	}
 	/**
 	 * 论文下载功能，具体获取paper_id方法未提供
 	 * 通过<a></a>标签提供的url进行下载
