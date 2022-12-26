@@ -26,11 +26,11 @@
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a th:href="@{/student/index}"><i class="feather icon-home"></i></a></li>
-                                        <li class="breadcrumb-item"><a th:href="@{/student/project/project-list}">Projects</a></li>
-                                        <li class="breadcrumb-item active">Project Details</li>
+                                        <li class="breadcrumb-item"><a th:href="@{/student/project/project-list}">项目列表</a></li>
+                                        <li class="breadcrumb-item active">项目详情</li>
                                     </ol>
                                 </div>
-                                <h4 class="page-title">Project Details</h4>
+                                <h4 class="page-title">项目详情</h4>
                             </div>
                         </div>
                     </div>
@@ -39,20 +39,20 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card">
-                                <div class="card-header">Assignees</div>
+                                <div class="card-header">项目负责人</div>
                                 <div class="card-body">
                                     <div class="media align-items-center">
                                         <img th:src="@{/assets/images/users/avatar-1.jpg}" class="rounded-circle ui-w-60 mr-3" alt="avatar image">
                                         <div class="media-body">
                                             <h5 class="m-0" th:text="${chargePerson.getUserName()}"></h5>
-                                            <p class="mb-0 text-muted">Team Manager</p>
+                                            <p class="mb-0 text-muted">组长</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="card">
-                                <div class="card-header">Members</div>
+                                <div class="card-header">项目成员</div>
                                 <div class="card-body">
                                     <button type="button" class="btn btn-rounded btn-info" th:each="m:${member}" th:text="${m}"></button>
                                 </div>
@@ -66,7 +66,7 @@
                                     <h3 class="mt-0" th:text="${project.getProjectName()}"></h3>
                                     <div th:class="${className}" th:text="${state.getProjectState()}"></div>
 
-                                    <h5>Project Overview:</h5>
+                                    <h5>项目详情:</h5>
 
                                     <p class="text-muted mb-2" th:text="${project.getProjectAbout()}"></p>
 
@@ -74,19 +74,19 @@
                                     <div class="row">
                                         <div class="col-md-4 col-lg-auto">
                                             <div class="mb-4">
-                                                <h5>Start Date</h5>
+                                                <h5>起始时间</h5>
                                                 <p th:text="${#dates.format(project.getProjectStartTime(),'MM/dd/yyyy')}"></p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-lg-auto">
                                             <div class="mb-4">
-                                                <h5>End Date</h5>
+                                                <h5>截止时间</h5>
                                                 <p th:text="${#dates.format(project.getProjectEndTime(),'MM/dd/yyyy')}"></p>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-lg-auto">
                                             <div class="mb-4">
-                                                <h5>Budget</h5>
+                                                <h5>经费</h5>
                                                 <p th:text="${project.getProjectFundsUp()}"></p>
                                             </div>
                                         </div>
@@ -94,35 +94,56 @@
 
 
                                         <div class="col-sm-12">
-                                            <h5>Files</h5>
+                                            <h5>文件</h5>
 
 
 
                                             <!--有论文则显示-->
-                                            <div class="card mb-2" th:if="${project.getProjectPaperId() != null}">
+                                            <div class="card mb-2" th:if="${paper != null}">
                                                 <div class="p-2">
                                                     <div class="row align-items-center">
                                                         <div class="col-auto">
                                                             <div class="ui-w-50">
-                                                                <span class="avatar-title rounded">
-                                                                    .ZIP
-                                                                </span>
+                                                                <span class="avatar-title rounded" th:text="#{paper}"></span>
                                                             </div>
                                                         </div>
                                                         <div class="col pl-0">
-                                                            <a href="#!" class="text-muted font-weight-bold">Bee-templtes.zip</a>
-                                                            <p class="mb-0">152.36 MB</p>
+                                                            <a href="#!" class="text-muted font-weight-bold" th:text="${paper.getPaperTitle()}"></a>
+                                                            <p class="mb-0" th:text="${paper.getPaperAuthor()}"></p>
                                                         </div>
                                                         <div class="col-auto">
-                                                            <a href="#!" class="btn btn-link btn-lg text-muted">
+                                                            <a th:href="@{/paper/download(paper=${paper.getPaperId()})}" class="btn btn-link btn-lg text-muted">
                                                                 <i class="dripicons-download"></i>
                                                             </a>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <a class="d-inline-block" th:href="@{/student/paper/paper-update(projectId=${project.getProjectId()},paperId=${paper.getPaperId()})}">修改论文</a>
+                                                        <a style="display: none" th:href="@{/paper/do-delete(paperId=${paper.getPaperId()})}"></a>
+                                                        <a class="d-inline-block text-danger" href="javascript:void(0);" onclick="{
+
+                                                            var res=confirm('确定要删除论文吗？');
+                                                            if(res){
+                                                                $.ajax(
+                                                                    {
+                                                                    type: 'POST',
+                                                                    url: $(this).prev().attr('href'),
+                                                                    success:function (){
+                                                                        alert('论文删除成功！');
+                                                                        window.location.href = '/student/project/project-list';
+                                                                    },
+                                                                    error:function (){alert('论文删除失败！')}
+                                                                    }
+                                                                )
+                                                            }else{
+                                                                return;
+                                                            }
+                                                        }return false;">删除论文</a>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <a th:if="${project.getProjectPaperId() == null}" class="btn btn-xl btn-primary" th:href="@{/student/paper/paper-add(id=${project.getProjectId()})}">提交论文</a>
+                                            <a th:if="${paper == null}" class="btn btn-xl btn-primary" th:href="@{/student/paper/paper-add(id=${project.getProjectId()})}">提交论文</a>
 
 
                                     </div>

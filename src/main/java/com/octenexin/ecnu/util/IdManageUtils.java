@@ -1,5 +1,6 @@
 package com.octenexin.ecnu.util;
 
+import com.octenexin.ecnu.pojo.PaperState;
 import com.octenexin.ecnu.pojo.ProjectClass;
 import com.octenexin.ecnu.pojo.ProjectState;
 import com.octenexin.ecnu.pojo.ProjectType;
@@ -14,9 +15,13 @@ import java.util.Map;
 public class IdManageUtils{
 	
 	// 所有的map均不允许add方法，唯一一次设置map位于StartController中
-	private static Map<Integer, ProjectClass> projectClassMap;
-	private static Map<Integer, ProjectState> projectStateMap;
-	private static Map<Integer, ProjectType> projectTypeMap;
+	public static Map<Integer, ProjectClass> projectClassMap;
+	public static Map<Integer, ProjectState> projectStateMap;
+	public static Map<Integer, ProjectType> projectTypeMap;
+
+	public static Map<Integer, PaperState> paperStateMap;
+
+	public static Map<Integer, String> paperStateColorMap;
 	
 	public static void setClassMap(Map<Integer,ProjectClass> map){
 		if(projectClassMap != null){
@@ -44,7 +49,25 @@ public class IdManageUtils{
 		}
 		projectTypeMap = map;
 	}
-	
+
+	public static void setPaperStateMap(Map<Integer, PaperState> map){
+		if(paperStateMap != null){
+			//throw new RuntimeException("map has been set!");
+			System.out.println("[Warning: map has been set!]");
+			return;
+		}
+		paperStateMap = map;
+	}
+
+	public static void setPaperStateColorMap(Map<Integer, String> map){
+		if(paperStateColorMap != null){
+			//throw new RuntimeException("map has been set!");
+			System.out.println("[Warning: map has been set!]");
+			return;
+		}
+		paperStateColorMap = map;
+	}
+
 	public static ProjectClass getProjectClass(int id){
 		ProjectClass result = projectClassMap.get(id);
 		if(result == null){

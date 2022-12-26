@@ -72,4 +72,9 @@ public class UserDaoImpl implements UserDao {
         String sql = "INSERT into users (email,user_id,user_name,user_password,major,authority) VALUES(?,?,?,?,?,?);";
         jdbcTemplate.batchUpdate(sql, batchArgs);
     }
+
+    @Override
+    public List<User> autoQuery(String sql){
+        return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(User.class));
+    }
 }

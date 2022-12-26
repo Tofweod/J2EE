@@ -16,7 +16,7 @@ public interface PaperService {
 	
 	int updatePaper(Paper paper);
 	
-	int deletePaper(Paper paper);
+	int deletePaper(String paperId);
 	
 	List<Paper> getPapers(List<Paper> papers);
 	

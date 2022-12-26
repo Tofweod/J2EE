@@ -26,6 +26,10 @@ public interface ProjectDao {
      * @return
      */
     int update(Project project);
+
+
+    int updatePaper(Project project);
+
     /**
      * 根据id删除指定的项目
      *
@@ -71,8 +75,13 @@ public interface ProjectDao {
      * @return
      */
     Project getProject(Project project);
-    
-    
+    /**
+     * 根据负责人id查询项目
+     * */
+    List<Project> getProjectByStu(String chargePersonId);
+
+    List<Project> getProjectByPaper(String paperId);
+
     /**
      * 批量删除项目
      */
@@ -98,5 +107,10 @@ public interface ProjectDao {
     List<Project> filteringQuery(Date startTime, Date endTime,
                                  Integer fundLow,Integer fundUp,Boolean hasPaper,
                                  Integer classId,Integer stateId);
+
+    /**
+     * query all.
+     * */
+    List<Project> autoQuery(String sql);
     
 }

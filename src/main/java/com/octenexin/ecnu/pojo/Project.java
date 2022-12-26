@@ -15,11 +15,8 @@ public class Project {
     private String projectAbout;
     private Integer projectPaperId;
     private Integer projectClassId;
-    private String projectClass;
     private Integer projectStateId;
-    private String projectState;
     private Integer projectPrestateId;
-    private String projectPrestate;
     private Date projectStartTime;
     private Date projectEndTime;
 }

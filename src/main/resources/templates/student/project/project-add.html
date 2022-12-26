@@ -22,48 +22,48 @@
 
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Add Project</h5>
+                                    <h5>添加项目</h5>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="project-name">Project Name</label>
-                                            <input type="text" class="form-control" id="project-name" placeholder="Project Name">
+                                            <label for="project-name">项目名称</label>
+                                            <input type="text" class="form-control" id="project-name" placeholder="项目名称，不超过30个字符">
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="project-charge-person-id">Project Charge Person ID</label>
-                                            <input type="text" class="form-control" id="project-charge-person-id" placeholder="Project Charge Person ID">
+                                            <label for="project-charge-person-id">项目负责人ID</label>
+                                            <input type="text" class="form-control" id="project-charge-person-id" placeholder="学号/工号，11位">
                                         </div>
                                     </div>
 
 
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
-                                            <label for="other-members">Other Members</label>
-                                            <input type="text" class="form-control" id="other-members" placeholder="member names, split by ;">
+                                            <label for="other-members">其他成员</label>
+                                            <input type="text" class="form-control" id="other-members" placeholder="其他成员，用英文分号（;）分隔">
                                         </div>
                                     </div>
 
 
                                     <div class="form-group">
-                                        <label for="funds-budget">Funds Budget</label>
-                                        <input type="number" class="form-control" id="funds-budget" placeholder="Integer, yuan">
+                                        <label for="funds-budget">项目经费</label>
+                                        <input type="number" class="form-control" id="funds-budget" placeholder="整数，单位：元">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="project-about">Project About</label>
-                                        <textarea class="form-control" id="project-about" rows="3" placeholder="Project About, no more than 300 chars"></textarea>
+                                        <label for="project-about">项目描述</label>
+                                        <textarea class="form-control" id="project-about" rows="3" placeholder="项目描述，不多于300字"></textarea>
                                     </div>
 
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="project-class">Project Class</label>
+                                            <label for="project-class">项目大类</label>
                                             <select id="project-class" class="form-control" onchange="showProjectType()">
                                                 <option th:each="c:${project_classes}" th:text="${c.getProjectClass()}" th:value="${c.getProjectClassId()}"></option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="project-type">Project Type</label>
+                                            <label for="project-type">项目小类</label>
                                             <select id="project-type" class="form-control"  onchange="showEndTime()">
 
                                             </select>
@@ -73,11 +73,11 @@
 
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="start-time">Start Time</label>
+                                            <label for="start-time">开始时间</label>
                                             <input type="text" class="form-control date" id="start-time" data-toggle="date-picker" data-single-date-picker="true">
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="end-time">End Time</label>
+                                            <label for="end-time">截止时间</label>
                                             <input class="form-control" type="text" placeholder="end time" readonly="" id="end-time">
                                         </div>
 
@@ -86,7 +86,7 @@
 
 
 
-                                    <button type="submit" class="btn btn-primary" id="submit" onclick="mySubmit()">Submit</button>
+                                    <button type="submit" class="btn btn-primary" id="submit" onclick="mySubmit()">提交</button>
                                     <!--                                    </form>-->
 
                                     <script>

@@ -18,8 +18,8 @@ public class ProjectTypeDaoImpl implements ProjectTypeDao {
     JdbcTemplate template;
 
     @Override
-    public List<ProjectType> getList() {
-        String sql="select * from project_types;";
+    public List<ProjectType> getList(String page) {
+        String sql="select * from project_types limit"+page+",10;";
         return template.query(sql, new BeanPropertyRowMapper<>(ProjectType.class));
     }
 

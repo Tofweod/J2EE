@@ -79,3 +79,11 @@ INSERT INTO project_types VALUES
                               (4,3,"22届大夏杯","2022-06-01","2022-12-20"),
                               (5,1,"22届ACM","2022-10-01","2022-12-31");
 
+CREATE TABLE project_delays(
+                            project_delay_id INT PRIMARY KEY AUTO_INCREMENT,
+                            project_id INT NOT NULL,
+                            project_old_end_time DATE NOT NULL,
+                            project_new_end_time DATE NOT NULL,
+                            project_delay_reason VARCHAR(300) NOT NULL,
+                            project_delay_state INT NOT NULL -- 0 unread 1 accept -1 refuse
+)

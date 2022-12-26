@@ -10,7 +10,7 @@ public interface ProjectTypeDao {
     /**
      * 无条件查询项目类型列表
      */
-    List<ProjectType> getList();
+    List<ProjectType> getList(String page);
 
 
     /**

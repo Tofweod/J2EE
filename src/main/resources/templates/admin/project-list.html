@@ -1,8 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{commons/common :: common_header(~{::title},~{})}">
+    <head th:replace="~{commons/common :: common_header(~{::title},~{::link})}">
 
         <title>Project List</title>
+
+        <!-- third party css -->
+        <link th:href="@{/assets/css/vendor/dataTables.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <link th:href="@{/assets/css/vendor/responsive.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <link th:href="@{/assets/css/vendor/buttons.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <link th:href="@{/assets/css/vendor/select.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <!-- third party css end -->
 
     </head>
 
@@ -55,24 +62,141 @@
                         <div class="card">
                             <div class="card-body">
 
+                                <div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label>负责人学号</label>
+                                            <input type="text" class="form-control" id="project-charge-person-id" placeholder="id" th:value="${cpId}">
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>项目类别</label>
+                                            <select id="project-class" class="form-control" th:value="${cId}">
+                                                <option th:each="m:${project_class}" th:text="${m.value.getProjectClass()}" th:value="${m.value.getProjectClassId()}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label>项目状态</label>
+                                            <select id="project-state" class="form-control" th:value="${sId}">
+                                                <option th:each="m:${project_state}" th:text="${m.value.getProjectState()}" th:value="${m.value.getProjectStateId()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-2">
+                                            <label>经费范围</label>
+                                            <input type="number" class="form-control" id="funds_down" placeholder="min" th:value="${lFunds}">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label>&nbsp;</label>
+                                            <input type="number" class="form-control" id="funds_up" placeholder="max" th:value="${hFunds}">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label>截止时间范围</label>
+                                            <input type="text" class="form-control date" id="time_start" data-toggle="date-picker" data-single-date-picker="true" th:value="${sTime}">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label>&nbsp;</label>
+                                            <input type="text" class="form-control date" id="time_end" data-toggle="date-picker" data-single-date-picker="true" th:value="${eTime}">
+                                        </div>
+
+
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-1">
+                                            <label>&nbsp;</label>
+                                            <button class="btn  btn-primary" onclick="{
+                                                console.log('query');
+
+                                                var startTime=$('#start-time').val();
+                                                var endTime=$('#end-time').val();
+
+                                                var newSt=startTime.substring(6)+'/'+startTime.substring(0,2)+'/'+startTime.substring(3,5);
+                                                var newEt=endTime.substring(6)+'/'+endTime.substring(0,2)+'/'+endTime.substring(3,5);
+
+                                                if(newSt>=newEt){
+                                                    alert('起始时间超出结束时间！');
+                                                    return false;
+                                                }
+
+                                                var fundsUp=$('#funds_up').val();
+                                                var fundsDown=$('#funds_down').val();
+
+                                                if(fundsDown>=fundsUp){
+                                                    alert('经费下界大于经费上界！');
+                                                    return false;
+                                                }
+
+                                                $.ajax(
+                                                            {
+                                                            type: 'POST',
+                                                            url: '/admin/project-list/filter',
+                                                            data:{
+                                                                projectChargePersonId: $('#project-charge-person-id').val(),
+                                                                projectClass: $('#project-class').val(),
+                                                                projectState: $('#project-state').val(),
+                                                                fundsDown: fundsDown,
+                                                                fundsUp: fundsUp,
+                                                                startTime: newSt,
+                                                                endTime: newEt
+                                                            },
+                                                            error:function (){
+                                                                alert('设置过滤失败！')}
+                                                            }
+                                                        )
+                                            }">查询</button>
+                                        </div>
+                                        <div class="form-group col-md-1">
+                                            <label>&nbsp;</label>
+                                            <button class="btn  btn-primary" onclick="{
+                                                $('#project-charge-person-id').val='';
+                                                $('#project-class').val='';
+                                                $('#project-state').val='';
+                                                $('#funds_down').val='';
+                                                $('#funds_up').val='';
+                                                $('#start-time').val='';
+                                                $('#end-time').val='';
+
+                                                $.ajax(
+                                                            {
+                                                            type: 'POST',
+                                                            url: '/admin/project-list/filter',
+                                                            data:{
+
+                                                            },
+                                                            error:function (){
+                                                                alert('清除过滤失败！')}
+                                                            }
+                                                        )
+                                            }">重置</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
                                 <div id="selection-datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                     <div class="row">
                                         <div class="col-sm-12 col-md-6">
                                             <div class="dataTables_length" id="selection-datatable_length">
-                                                <label>Show
-                                                    <select name="selection-datatable_length" aria-controls="selection-datatable" class="custom-select custom-select-sm form-control form-control-sm">
+                                                <label>展示
+                                                    <select name="selection-datatable_length" aria-controls="selection-datatable" th:value="${step}" class="custom-select custom-select-sm form-control form-control-sm" onchange="{
+
+                                                        $.ajax(
+                                                            {
+                                                            type: 'POST',
+                                                            url: '/admin/project-list/limit',
+                                                            data:{
+                                                                i: $(this).val()
+                                                            },
+                                                            error:function (){
+                                                                alert('设置分页失败！')}
+                                                            }
+                                                        )
+                                                    }">
                                                         <option value="10">10</option>
                                                         <option value="25">25</option>
                                                         <option value="50">50</option>
                                                         <option value="100">100</option>
-                                                    </select> entries
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-6">
-                                            <div id="selection-datatable_filter" class="dataTables_filter">
-                                                <label>Search:
-                                                    <input type="search" class="form-control form-control-sm" placeholder="" aria-controls="selection-datatable">
+                                                    </select> 项
                                                 </label>
                                             </div>
                                         </div>
@@ -81,23 +205,29 @@
                                         <div class="col-sm-12">
                                             <table id="selection-datatable" class="table dt-responsive nowrap dataTable no-footer dtr-inline" width="100%" role="grid" aria-describedby="selection-datatable_info" style="width: 100%;">
                                                 <thead>
-                                                    <tr role="row">
-                                                        <th class="sorting_asc" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 210.8px;" aria-sort="ascending" aria-label="Name: activate to sort column descending">Name</th>
-                                                        <th class="sorting" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 308.8px;" aria-label="Position: activate to sort column ascending">Position</th>
-                                                        <th class="sorting" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 153.8px;" aria-label="Office: activate to sort column ascending">Office</th>
-                                                        <th class="sorting" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 71.8px;" aria-label="Age: activate to sort column ascending">Age</th>
-                                                        <th class="sorting" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 144.8px;" aria-label="Start date: activate to sort column ascending">Start date</th>
-                                                        <th class="sorting" tabindex="0" aria-controls="selection-datatable" rowspan="1" colspan="1" style="width: 116.8px;" aria-label="Salary: activate to sort column ascending">Salary</th>
+                                                    <tr role="row" id="sorting_control">
+                                                        <th class="sorting_asc" tabindex="0" aria-controls="selection-datatable" o="project_id" rowspan="1" colspan="1">项目Id</th>
+                                                        <th class="sorting" tabindex="1" aria-controls="selection-datatable" o="project_name" rowspan="1" colspan="1" >项目名称</th>
+                                                        <th class="sorting" tabindex="2" aria-controls="selection-datatable" o="project_charge_person_id" rowspan="1" colspan="1" >负责人学号</th>
+                                                        <th class="sorting" tabindex="3" aria-controls="selection-datatable" o="project_funds_up" rowspan="1" colspan="1" >项目经费</th>
+                                                        <th class="sorting" tabindex="4" aria-controls="selection-datatable" o="project_class_id" rowspan="1" colspan="1" >项目类别</th>
+                                                        <th class="sorting" tabindex="5" aria-controls="selection-datatable" o="project_start_time" rowspan="1" colspan="1" >起始时间</th>
+                                                        <th class="sorting" tabindex="6" aria-controls="selection-datatable" o="project_end_time" rowspan="1" colspan="1" >截止时间</th>
+                                                        <th class="sorting" tabindex="7" aria-controls="selection-datatable" o="project_state_id" rowspan="1" colspan="1" >项目状态</th>
+                                                        <th class="sorting" tabindex="8" aria-controls="selection-datatable" o="project_paper_id" rowspan="1" colspan="1" >论文状态</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr role="row" class="odd">
-                                                        <td tabindex="0" class="sorting_1">Airi Satou</td>
-                                                        <td>Accountant</td>
-                                                        <td>Tokyo</td>
-                                                        <td>33</td>
-                                                        <td>2008/11/28</td>
-                                                        <td>$162,700</td>
+                                                    <tr role="row" class="odd" th:each="p: ${projects}">
+                                                        <td tabindex="0" class="sorting_1" th:text="${p.getProjectId()}"></td>
+                                                        <td th:text="${p.getProjectName()}"></td>
+                                                        <td th:text="${p.getProjectChargePersonId()}"></td>
+                                                        <td th:text="${p.getProjectFundsUp()}"></td>
+                                                        <td th:text="${project_class.get(p.getProjectClassId()).getProjectClass()}"></td>
+                                                        <td th:text="${#dates.format(p.getProjectStartTime(),'yyyy-MM-dd')}"></td>
+                                                        <td th:text="${#dates.format(p.getProjectEndTime(),'yyyy-MM-dd')}"></td>
+                                                        <td th:text="${project_state.get(p.getProjectStateId()).getProjectState()}"></td>
+                                                        <td th:text="${p.getProjectPaperId()!=null? '有':'无'}"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -105,7 +235,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12 col-md-5">
-                                            <div class="dataTables_info" id="selection-datatable_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
+                                            <div class="dataTables_info" id="selection-datatable_info" role="status" aria-live="polite" th:text="'Showing '+${beg}+' to '+${end}+' of ' + ${project_cnt} + ' entries'"></div>
                                         </div>
                                         <div class="col-sm-12 col-md-7">
                                             <div class="dataTables_paginate paging_simple_numbers" id="selection-datatable_paginate">
@@ -171,6 +301,63 @@
 
     </div>
     <!-- END wrapper -->
+
+    <script>
+        window.onload= function (){
+            console.log("onload");
+
+            var sortingControl=document.getElementById("sorting_control");
+
+            var sortings=sortingControl.children;
+
+            console.log(sortings);
+
+            for(var i=0;i<sortings.length;i++){
+                sortings[i].onclick=function (){
+
+                    var arr=document.getElementById("sorting_control").children;
+
+                    for(var j=0;j<arr.length;j++){
+                        arr[j].className='sorting';
+                    }
+
+                    console.log($(this).attr('tabindex'));
+
+                    var cn=arr[$(this).attr('tabindex')].className;
+                    var t='asc';
+                    if(cn==='sorting'){
+                        arr[$(this).attr('tabindex')]='sorting_asc';
+                    }else if(cn==='sorting_asc'){
+                        arr[$(this).attr('tabindex')]='sorting_desc';
+                        t='desc';
+                    }else{
+                        arr[$(this).attr('tabindex')]='sorting_asc';
+                    }
+
+                    console.log(cn);
+                    console.log(t);
+                    console.log($(this).attr('o'));
+
+
+                    $.ajax(
+                        {
+                            type: 'POST',
+                            url: '/admin/project-list/order-by',
+                            data:{
+                                o: $(this).attr('o'),
+                                t: t
+                            },
+                            error:function (){
+                                alert('设置排序失败！')}
+                        }
+                    )
+                }
+            }
+
+
+
+        }
+    </script>
 
     <div th:replace="commons/common :: common_js(~{})"></div>
 </body>

@@ -44,7 +44,7 @@ public class ProjectDaoImpl implements ProjectDao {
                 "project_state_id," +
                 "project_prestate_id," +
                 "project_start_time," +
-                "project_end_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
+                "project_end_time) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
         return template.update(sql,
                 project.getProjectName(),
                 project.getProjectChargePersonId(),
@@ -72,6 +72,16 @@ public class ProjectDaoImpl implements ProjectDao {
                 project.getProjectFundsUp(),
                 project.getProjectAbout(),
                 project.getProjectId());
+    }
+
+    @Override
+    public int updatePaper(Project project){
+        String sql="UPDATE projects SET " +
+                "project_paper_id=? where project_id=?";
+        return template.update(sql,
+                project.getProjectPaperId(),
+                project.getProjectId()
+                );
     }
 
     @Override
@@ -111,7 +121,17 @@ public class ProjectDaoImpl implements ProjectDao {
         return template.queryForObject(sql, new BeanPropertyRowMapper<>(Project.class),project.getProjectId());
     }
 
-   
+   @Override
+   public List<Project> getProjectByStu(String chargePersonId){
+       String sql="select * from projects where project_charge_person_id=?;";
+       return template.query(sql, new BeanPropertyRowMapper<>(Project.class),chargePersonId);
+   }
+
+    @Override
+    public List<Project> getProjectByPaper(String paperId){
+        String sql="select * from projects where project_paper_id=?;";
+        return template.query(sql, new BeanPropertyRowMapper<>(Project.class),paperId);
+    }
     
     @Override
     public void batchDeleteProject(List<Project> projects) {
@@ -176,5 +196,10 @@ public class ProjectDaoImpl implements ProjectDao {
                 "project_class_id = (CASE WHEN ? IS NULL THEN project_class_id ELSE ? END) AND\n" +
                 "project_state_id = (CASE WHEN ? IS NULL THEN project_state_id ELSE ? END)";
         return template.query(sql,new BeanPropertyRowMapper<>(Project.class),params);
+    }
+
+    @Override
+    public List<Project> autoQuery(String sql){
+        return template.query(sql,new BeanPropertyRowMapper<>(Project.class));
     }
 }
