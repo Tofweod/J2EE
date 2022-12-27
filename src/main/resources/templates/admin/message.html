@@ -15,7 +15,6 @@
                     <div th:replace="~{/commons/common :: navbar-admin}"></div>
 
                     <!--===============main content start===============-->
-                    <!--使用ajax实现-->
 
                     <div class="row">
                         <div class="col-12">
@@ -39,7 +38,7 @@
                             <div class="card-subtitle text-muted mb-3" th:text="${m.getMessageTime()}"></div>
                             <p class="card-text" th:text="${m.getMessageRawData()}"></p>
                             <a style="display: none" th:href="@{/message/set-read(messageId=${m.getMessageId()})}"></a>
-                            <a class="card-link text-primary float-right" th:text="#{message_set_has_read}" onclick="{
+                            <a class="card-link text-primary float-right" href="javascript:void(0);" th:text="#{message_set_has_read}" onclick="{
                                                 $.ajax(
                                                     {
                                                     type: 'POST',
@@ -53,7 +52,7 @@
                                                 )
                             }return false;"></a>
                             <a style="display: none" th:href="@{/message/delete(messageId=${m.getMessageId()})}"></a>
-                            <a class="card-link text-danger float-right" th:text="#{message_delete}" onclick="{
+                            <a class="card-link text-danger float-right" th:text="#{message_delete}" href="javascript:void(0);" onclick="{
 
                                                 var res=confirm('是否删除消息？');
 
@@ -76,6 +75,14 @@
 
                         </div>
                     </div>
+
+                    <div class="row" th:if="${maxPages>0}">
+                        <div class="col-sm-12 col-md-5"></div>
+                        <div class="col-sm-12 col-md-7">
+                            <nav th:replace="~{commons/common :: pagnation}"></nav>
+                        </div>
+                    </div>
+
 
 
 

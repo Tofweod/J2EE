@@ -1,6 +1,7 @@
 package com.octenexin.ecnu.controller;
 
 
+import com.octenexin.ecnu.dao.MessageDao;
 import com.octenexin.ecnu.pojo.User;
 import com.octenexin.ecnu.service.MessageService;
 import com.octenexin.ecnu.service.UserService;
@@ -23,6 +24,9 @@ public class LoginController {
     @Autowired
     MessageService messageService;
 
+    @Autowired
+    MessageDao messageDao;
+
     @PostMapping("/user/login")
     public String redirectRule(@RequestParam String email, @RequestParam String password, Model model, HttpSession session){
     
@@ -38,12 +42,14 @@ public class LoginController {
             model.addAttribute("fail","true");
             return "/login";
         }
-    
-        messageService.setUser(res);
+
 
         //session设置用户；以后都用
         session.setAttribute("loginUser",res.getUserName());
         session.setAttribute("loginUserId",res.getUserId());
+
+        //初始消息
+        session.setAttribute("messageCnt",messageDao.getMsgUnreadCntByUser(res.getUserId()));
         
         if(res.getAuthority()==1){
             return "redirect:/admin/index";

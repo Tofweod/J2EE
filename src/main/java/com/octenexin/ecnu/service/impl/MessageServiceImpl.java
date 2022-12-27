@@ -18,9 +18,7 @@ import java.util.List;
 @Service("messageService")
 @SessionScope
 public class MessageServiceImpl implements MessageService {
-	
-	private User user;
-	
+
 	@Resource
 	MessageDao messageDao;
 
@@ -31,15 +29,10 @@ public class MessageServiceImpl implements MessageService {
 	}
 	
 	@Override
-	public List<Message> getMessages() {
-		return messageDao.getMessages(user);
+	public List<Message> getMessages(String uid, Integer page) {
+		return messageDao.getMessages(uid,page);
 	}
-	
-	@Override
-	public synchronized void setUser(User user) {
-		this.user = user;
-	}
-	
+
 	@Override
 	public int setRead(Message message) {
 		return messageDao.setRead(message);
@@ -56,7 +49,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 	
 	@Override
-	public int clearAll() {
-		return messageDao.clearAll(user);
+	public int clearAll(String uid) {
+		return messageDao.clearAll(uid);
 	}
 }

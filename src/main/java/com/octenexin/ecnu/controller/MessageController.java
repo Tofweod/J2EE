@@ -25,8 +25,8 @@ public class MessageController {
 	
 	@RequestMapping("/message")
 	@ResponseBody
-	public List<Message> getMessages(Model model){
+	public List<Message> getMessages(HttpSession session,Model model){
 
-		return messageService.getMessages();
+		return messageService.getMessages((String) session.getAttribute("loginUserId"),0);
 	}
 }

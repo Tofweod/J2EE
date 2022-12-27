@@ -50,55 +50,52 @@
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a th:href="@{/admin/index}"><i class="feather icon-home"></i></a></li>
-                                    <li class="breadcrumb-item active">论文列表</li>
+                                    <li class="breadcrumb-item active">延期申请列表</li>
                                 </ol>
                             </div>
-                            <h4 class="page-title">论文列表</h4>
+                            <h4 class="page-title">延期申请列表</h4>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-body table-border-style">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
+                            <div class="card-body">
+                                <div class="table-responsive-sm">
+                                    <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>论文Id</th>
-                                                <th>论文标题</th>
-                                                <th>论文作者</th>
-                                                <th>论文关键字</th>
-                                                <th>论文状态</th>
-                                                <th>操作</th>
+                                                <td>项目类型名</td>
+                                                <td>所属大类</td>
+                                                <td>开始时间</td>
+                                                <td>结束时间</td>
+                                                <td>操作</td>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr th:each="l:${list}">
-                                                <th scope="row" th:text="${l.getPaperId()}"></th>
-                                                <td th:text="${l.getPaperTitle()}"></td>
-                                                <td th:text="${l.getPaperAuthor()}"></td>
-                                                <td th:text="${l.getPaperKeywords()}"></td>
-                                                <td th:text="${states.get(l.getPaperStateId()).getState()}"></td>
+                                            <tr th:each="d: ${list}">
+                                                <td th:text="${d.getProjectTypeName()}"></td>
+                                                <td th:text="${pClass.get(d.getProjectClassId()).getProjectClass()}"></td>
+                                                <td th:text="${d.getProjectTypeStartTime()}"></td>
+                                                <td th:text="${d.getProjectTypeEndTime()}"></td>
                                                 <td>
-                                                    <a class="d-inline-block" th:href="@{/paper/download(paper=${l.getPaperId()})}">下载</a>
-                                                    <a class="d-inline-block" th:href="@{/admin/paper-details(paperId=${l.getPaperId()})}">查看</a>
-                                                    <a class="d-inline-block" th:href="@{/admin/paper-details(paperId=${l.getPaperId()})}">修改</a>
-
-                                                    <a style="display: none" th:href="@{/paper/do-delete(paperId=${l.getPaperId()})}"></a>
+                                                    <a class="d-inline-block" th:href="@{/admin/project/project-type-update(id=${d.getProjectTypeId()})}">修改</a>
+                                                    <a style="display: none" th:href="@{/admin/project/project-type/do-delete(id=${d.getProjectTypeId()})}"></a>
                                                     <a class="d-inline-block text-danger" href="javascript: void(0);" onclick="{
-                                                        if(confirm('确定要删除此论文吗？')===true){
-                                                            $.ajax({
-                                                                type: 'POST',
-                                                                url: $(this).prev().attr('href'),
-                                                                success: function (){
-                                                                    alert('论文删除成功！');
-                                                                    location.reload();
-                                                                },
-                                                                fail: function (){
-                                                                    alert('论文删除失败！');
+                                                        if(confirm('确认删除？')===true){
+                                                            $.ajax(
+                                                                {
+                                                                    type: 'POST',
+                                                                    url:$(this).prev().attr('href'),
+                                                                    success: function (){
+                                                                        alert('已删除！');
+                                                                        location.reload();
+                                                                    },
+                                                                    fail: function (){
+                                                                        alert('删除失败！');
+                                                                    }
                                                                 }
-                                                            })
+                                                            );
                                                         }
                                                     }return false;">删除</a>
                                                 </td>
@@ -106,7 +103,26 @@
                                         </tbody>
                                     </table>
 
-                                    <nav th:replace="~{commons/common :: pagnation}"></nav>
+                                    <nav>
+                                        <ul class="pagination pagination-rounded">
+                                            <li class="page-item">
+                                                <a class="page-link" th:href="${prev}" aria-label="Previous">
+                                                    <span aria-hidden="true">«</span>
+                                                    <span class="sr-only">上一页</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item active"><a class="page-link" href="javascript: void(0);" th:text="${cur_page}"></a></li>
+                                            <li class="page-item" th:each="a:${arr}"><a class="page-link" th:href="${a.getValue()}" th:text="${a.getKey()}"></a></li>
+
+
+                                            <li class="page-item">
+                                                <a class="page-link" th:href="${next}" aria-label="Next">
+                                                    <span aria-hidden="true">»</span>
+                                                    <span class="sr-only">下一页</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
 
                                 </div>
                             </div>

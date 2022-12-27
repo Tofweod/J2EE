@@ -39,23 +39,23 @@
                                         <div th:class="${paperStateColor.get(paper.getPaperStateId())}" th:text="${paperState.get(paper.getPaperStateId()).getState()}"></div>
 
 
-                                        <h5>论文作者</h5>
-                                        <p class="text-muted" th:text="${paper.getPaperAuthor()}"></p>
+                                        <div class="mb-4">
+                                            <h5>论文作者</h5>
+                                            <p class="text-muted" th:text="${paper.getPaperAuthor()}"></p>
+                                        </div>
 
-                                        <h5>论文总结</h5>
-                                        <p class="text-muted" th:text="${paper.getPaperSummary()}"></p>
-
-                                        <h5>论文关键字</h5>
-                                        <div class="row">
-                                            <button type="button" class="btn btn-rounded btn-info" th:each="m : ${paperKeywords}" th:text="${m}"></button>
+                                        <div class="mb-4">
+                                            <h5>论文摘要</h5>
+                                            <p class="text-muted" th:text="${paper.getPaperSummary()}"></p>
                                         </div>
 
 
-                                        <div class="row mb-12">
-
-                                            <iframe id="paper-file" width="100%" height="95%" src=""></iframe>
-                                            <p>embed标签查看pdf</p>
+                                        <div class="mb-4">
+                                            <h5>论文关键字</h5>
+                                            <button type="button" class="btn btn-default" th:each="m : ${paperKeywords}" th:text="${m}"></button>
                                         </div>
+
+
 
                                     </div>
                                 </div>

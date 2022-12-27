@@ -55,7 +55,7 @@ public class ProjectDelayDaoImpl implements ProjectDelayDao {
 
     @Override
     public List<ProjectDelay> getDelays(Integer page){
-        String sql="select * from project_delays limit "+page*10+",10;";
+        String sql="select * from project_delays order by project_delay_id desc limit "+page*10+",10;";
         return template.query(sql,new BeanPropertyRowMapper<>(ProjectDelay.class));
     }
 

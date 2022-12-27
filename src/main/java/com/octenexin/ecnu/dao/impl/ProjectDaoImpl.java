@@ -151,8 +151,20 @@ public class ProjectDaoImpl implements ProjectDao {
        return template.query(sql, new BeanPropertyRowMapper<>(Project.class),chargePersonId);
    }
 
+   @Override
+   public Project getProjectById(Integer id){
+       String sql="select * from projects where project_id=?;";
+       return template.queryForObject(sql, new BeanPropertyRowMapper<>(Project.class),id);
+   }
+
     @Override
-    public List<Project> getProjectByPaper(String paperId){
+    public List<Project> getProjectByStu5(String chargePersonId){
+        String sql="select * from projects where project_charge_person_id=? order by project_id desc limit 0,5;";
+        return template.query(sql, new BeanPropertyRowMapper<>(Project.class),chargePersonId);
+    }
+
+    @Override
+    public List<Project> getProjectByPaper(Integer paperId){
         String sql="select * from projects where project_paper_id=?;";
         return template.query(sql, new BeanPropertyRowMapper<>(Project.class),paperId);
     }

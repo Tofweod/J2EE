@@ -237,6 +237,44 @@ public class StudentProjectController {
 
         return "success";
     }
+
+    @PostMapping("/admin/project/project-type/do-delete")
+    public String doDeleteProjectType(@RequestParam("id")String id){
+
+        projectTypeDao.delete(Integer.valueOf(id));
+
+        return "success";
+
+    }
+
+    @PostMapping("/admin/project/project-type/do-update")
+    public String doUpdateProjectType(@RequestParam("id")String id,
+                                      @RequestParam("cid")String classId,
+                                      @RequestParam("typeName")String name,
+                                      @RequestParam("sTime")String sTime,
+                                      @RequestParam("eTime")String eTime){
+
+        ProjectType type=new ProjectType();
+        type.setProjectTypeId(Integer.parseInt(id));
+        type.setProjectTypeName(name);
+        type.setProjectClassId(Integer.parseInt(classId));
+
+        try{
+            SimpleDateFormat format=new SimpleDateFormat("MM/dd/yyyy");
+            type.setProjectTypeStartTime(new java.sql.Date(format.parse(sTime).getTime()));
+            type.setProjectTypeEndTime(new java.sql.Date(format.parse(eTime).getTime()));
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+
+
+
+        projectTypeDao.update(type);
+
+        return "success";
+
+    }
+
     
     // 下载xlsx文件
     public void downloadXLSX(HttpServletResponse response,List<Project> projects){

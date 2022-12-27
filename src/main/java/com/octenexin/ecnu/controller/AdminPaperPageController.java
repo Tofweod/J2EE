@@ -28,7 +28,7 @@ public class AdminPaperPageController {
     @RequestMapping("/admin/paper-list-n")
     public String toPaperList(@RequestParam("page")String page, Model model){
 
-        List<Paper> list=paperDao.autoQuery("select * from papers limit "+Integer.parseInt(page)*10+",10;");
+        List<Paper> list=paperDao.autoQuery("select * from papers order by paper_id desc limit "+Integer.parseInt(page)*10+",10;");
 
 
         int maxPages=(paperDao.countPapers(new Paper())/10)+1;//31->4

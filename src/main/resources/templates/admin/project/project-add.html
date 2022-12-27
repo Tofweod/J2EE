@@ -8,11 +8,11 @@
     <body>
 
         <div class="wrapper">
-            <div th:replace="~{/commons/common :: sidebar}"></div>
+            <div th:replace="~{/commons/common :: sidebar-admin}"></div>
 
             <div class="content-page">
                 <div class="content">
-                    <div th:replace="~{/commons/common :: navbar}"></div>
+                    <div th:replace="~{/commons/common :: navbar-admin}"></div>
 
                     <!--===============main content start===============-->
 
@@ -78,7 +78,7 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="end-time">截止时间</label>
-                                            <input class="form-control" type="text" placeholder="截止时间，由项目小类决定" readonly="" id="end-time">
+                                            <input class="form-control" type="text" placeholder="截止时间" readonly="" id="end-time">
                                         </div>
 
                                     </div>

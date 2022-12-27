@@ -73,11 +73,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr th:each="d: ${list}">
-                                                <td th:text="${d.getProjectId()}"></td>
+                                            <tr th:each="d,dstat: ${list}">
+                                                <td th:text="${pList.get(dstat).getProjectName()}"></td>
                                                 <td th:text="${d.getProjectOldEndTime()}"></td>
                                                 <td th:text="${d.getProjectNewEndTime()}"></td>
-                                                <td th:text="${d.getProjectDelayState()}"></td>
+                                                <td th:text="${stateMap.get(d.getProjectDelayState())}"></td>
                                                 <td>
                                                     <a class="d-inline-block" th:href="@{/admin/project/project-delay-details(id=${d.getProjectDelayId()})}">查看详情</a>
                                                     <a style="display: none" th:href="@{/admin/project/project-delay/do-delete(id=${d.getProjectDelayId()})}"></a>
@@ -103,26 +103,7 @@
                                         </tbody>
                                     </table>
 
-                                    <nav>
-                                        <ul class="pagination pagination-rounded">
-                                            <li class="page-item">
-                                                <a class="page-link" th:href="${prev}" aria-label="Previous">
-                                                    <span aria-hidden="true">«</span>
-                                                    <span class="sr-only">Previous</span>
-                                                </a>
-                                            </li>
-                                            <li class="page-item active"><a class="page-link" href="javascript: void(0);" th:text="${cur_page+1}"></a></li>
-                                            <li class="page-item" th:each="a:${arr}"><a class="page-link" th:href="${a.getValue()}" th:text="${a.getKey()}"></a></li>
-
-
-                                            <li class="page-item">
-                                                <a class="page-link" th:href="${next}" aria-label="Next">
-                                                    <span aria-hidden="true">»</span>
-                                                    <span class="sr-only">Next</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </nav>
+                                    <nav th:replace="~{commons/common :: pagnation}"></nav>
 
                                 </div>
                             </div>

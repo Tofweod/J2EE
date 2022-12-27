@@ -1,11 +1,13 @@
 package com.octenexin.ecnu.controller;
 
+import com.octenexin.ecnu.dao.MessageDao;
 import com.octenexin.ecnu.dao.PaperDao;
 import com.octenexin.ecnu.dao.ProjectDao;
 import com.octenexin.ecnu.dao.UserDao;
 import com.octenexin.ecnu.pojo.Paper;
 import com.octenexin.ecnu.pojo.Project;
 import com.octenexin.ecnu.pojo.User;
+import com.octenexin.ecnu.service.PaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,23 +32,43 @@ public class AdminUserPageController {
     @Autowired
     PaperDao paperDao;
 
+    @Autowired
+    PaperService paperService;
+
+    @Autowired
+    MessageDao messageDao;
+
     @RequestMapping("/admin/user-list-n")
-    public String toPageN(@RequestParam("type")String type,@RequestParam("page")String page, Model model){
-        model.addAttribute("list",userDao.autoQuery("select * from users where authority = "+type+" limit "+Integer.parseInt(page)*10+",10;"));
+    public String toPageN(@RequestParam("type")String type,@RequestParam("page")String page,@RequestParam("uid")String uid,Model model){
+        if(uid.equals("")){
+            model.addAttribute("list",userDao.autoQuery("select * from users where authority = "+type+" limit "+Integer.parseInt(page)*10+",10;"));
+            int maxPages=(userDao.count(new User())/10)+1;//31->4
+            int curPage=Integer.parseInt(page);//0,1,2,3
 
-        int maxPages=(userDao.count(new User())/10)+1;//31->4
-        int curPage=Integer.parseInt(page);//0,1,2,3
+
+            Map<Integer,String> arr=new HashMap<>();
+            for(int i=1;i<10;i++){
+                if(curPage+i<maxPages) arr.put(curPage+i+1,"/admin/user-list-n?type="+type+"&page="+(curPage+i));
+            }
+
+            model.addAttribute("prev",curPage==0?"javascript: void(0);":"/admin/user-list-n?type="+type+"&page="+(curPage-1)+"&uid=");
+            model.addAttribute("next",curPage==maxPages-1?"javascript: void(0);":"/admin/user-list-n?type="+type+"&page="+(curPage+1)+"&uid=");
+            model.addAttribute("arr",arr);
+            model.addAttribute("cur_page",curPage+1);
+        }
+        else {
+            model.addAttribute("list",userDao.autoQuery("select * from users where uid= "+uid+";"));
+
+            Map<Integer,String> arr=new HashMap<>();
 
 
-        Map<Integer,String> arr=new HashMap<>();
-        for(int i=1;i<10;i++){
-            if(curPage+i<maxPages) arr.put(curPage+i+1,"/admin/user-list-n?type="+type+"&page="+(curPage+i));
+            model.addAttribute("prev","javascript: void(0);");
+            model.addAttribute("next","javascript: void(0);");
+            model.addAttribute("arr",arr);
+            model.addAttribute("cur_page",1);
         }
 
-        model.addAttribute("prev",curPage==0?"javascript: void(0);":"/admin/user-list-n?type="+type+"&page="+(curPage-1));
-        model.addAttribute("next",curPage==maxPages-1?"javascript: void(0);":"/admin/user-list-n?type="+type+"&page="+(curPage+1));
-        model.addAttribute("arr",arr);
-        model.addAttribute("cur_page",curPage);
+
 
         return "/admin/user-list";
 
@@ -75,26 +97,28 @@ public class AdminUserPageController {
 
         userDao.update(user);
 
-        return "redirect:/admin/user-list-n?page=1";
+        return "redirect:/admin/user-list-n?page=0";
     }
 
     @PostMapping("/admin/user-delete")
     public String doUserDelete(@RequestParam("id")String id){
 
-        //delete projects
+
         List<Project> projects=projectDao.getProjectByStu(id);
         for(int i=0;i<projects.size();i++){
             Integer paperId= projects.get(i).getProjectPaperId();
 
             //delete paper
             if(paperId!=null){
-                Paper paper=new Paper();
-                paper.setPaperId(paperId);
-                paperDao.deletePaper(paper);
+                paperService.deletePaper(paperId);
             }
 
+            //delete projects
             projectDao.delete(projects.get(i));
         }
+
+        //delete message
+        messageDao.clearAll(id);
 
         //delete user
         User user=new User();
@@ -102,7 +126,7 @@ public class AdminUserPageController {
         userDao.delete(user);
 
 
-        return "redirect:/admin/user-list-n?page=1";
+        return "redirect:/admin/user-list-n?page=0";
     }
 
 }

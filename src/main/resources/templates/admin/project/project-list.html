@@ -10,11 +10,11 @@
 <body>
 
     <div class="wrapper">
-        <div th:replace="~{/commons/common :: sidebar}"></div>
+        <div th:replace="~{/commons/common :: sidebar-admin}"></div>
 
         <div class="content-page">
             <div class="content">
-                <div th:replace="~{/commons/common :: navbar}"></div>
+                <div th:replace="~{/commons/common :: navbar-admin}"></div>
 
                 <!--===============main content start===============-->
                 <!-- start page title -->
@@ -39,8 +39,8 @@
                                 <div class="btn-group project-actions">
                                     <button type="button" class="btn btn-sm btn-default icon-btn borderless btn-round md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown"><i class="ion ion-ios-more"></i></button>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" th:href="@{/student/project/details(id=${p.getProjectId()})}">详情</a>
-                                        <a class="dropdown-item" th:href="@{/student/project/update(id=${p.getProjectId()})}">修改</a>
+                                        <a class="dropdown-item" th:href="@{/student/project/details(id=${p.getProjectId()})}">View</a>
+                                        <a class="dropdown-item" th:href="@{/student/project/update(id=${p.getProjectId()})}">Edit</a>
                                         <a style="display: none" th:href="@{/student/project/do-delete(id=${p.getProjectId()})}"></a>
                                         <a class="dropdown-item text-danger" onclick="{
                                             var res=confirm('删除项目后，将永久清除与项目关联的所有信息，包括已提交的论文！确定要继续吗？');
@@ -60,7 +60,7 @@
                                                 return;
                                             }
                                         };
-                                        return false;">删除</a>
+                                        return false;">Remove</a>
                                     </div>
                                 </div>
                             </div>

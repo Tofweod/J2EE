@@ -78,6 +78,12 @@
                     </div>
 
 
+                    <div class="row" th:if="${maxPages>0}">
+                        <div class="col-sm-12 col-md-5"></div>
+                        <div class="col-sm-12 col-md-7">
+                            <nav th:replace="~{commons/common :: pagnation}"></nav>
+                        </div>
+                    </div>
 
 
                     <!--===============main content end===============-->
@@ -90,10 +96,6 @@
 
 
         <div th:replace="~{/commons/common :: common_js(~{})}"></div>
-    <script>
-        function show_messages(){
 
-        }
-    </script>
     </body>
 </html>

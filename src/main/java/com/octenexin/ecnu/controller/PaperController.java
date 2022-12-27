@@ -140,7 +140,7 @@ public class PaperController {
 	public String doDeletePaper(@RequestParam("paperId")String paperId){
 
 		try{
-			paperService.deletePaper(paperId);
+			paperService.deletePaper(Integer.valueOf(paperId));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -163,33 +163,6 @@ public class PaperController {
 		return paperService.getPaperPage((page-1) * 10, 10);
 	}
 
-	@PostMapping("/paper/get-file")
-	@ResponseBody
-	public String getPaperFile(@RequestParam("paperId")String paperId, HttpServletResponse response){
-
-		String url=FileSaveUtil.getFileLoadRootUrl();
-
-
-		Paper paper1=new Paper();
-		paper1.setPaperId(Integer.parseInt(paperId));
-		Paper realPaper=paperDao.getPaper(paper1);
-
-		String fileName = realPaper.getPaperUrl();
-
-		File file = new File(url+fileName);
-		try(InputStream in = Files.newInputStream(file.toPath());
-			ServletOutputStream out = response.getOutputStream()) {
-			byte[] buf = new byte[1024];
-			while(in.read(buf) != -1){
-				out.write(buf);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return "success";
-
-	}
 	/**
 	 * 论文下载功能，具体获取paper_id方法未提供
 	 * 通过<a></a>标签提供的url进行下载

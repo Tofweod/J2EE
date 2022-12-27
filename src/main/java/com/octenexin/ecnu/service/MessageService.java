@@ -14,20 +14,10 @@ public interface MessageService {
 	 * 发送消息
 	 */
 	void sendMessage(Message content);
-	
-	/**
-	 * 获取所有消息
-	 */
-	List<Message> getMessages();
-	
-	
-	/**
-	 * 设置该服务的user
-	 * 建议每次操作消息前的因考虑service内的user
-	 * @param user
-	 */
-	void setUser(User user);
-	
+
+
+	List<Message> getMessages(String uid, Integer page);
+
 	/**
 	 * 设置消息已读
 	 * @param message
@@ -50,5 +40,5 @@ public interface MessageService {
 	 * 清空该用户所有message
 	 * 该方法一般在注销用户时，通过session获取到用户对应messageService来执行
 	 */
-	int clearAll();
+	int clearAll(String uid);
 }

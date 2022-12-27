@@ -1,8 +1,10 @@
 package com.octenexin.ecnu.controller;
 
+import com.octenexin.ecnu.dao.ProjectClassDao;
 import com.octenexin.ecnu.dao.ProjectDao;
 import com.octenexin.ecnu.dao.ProjectDelayDao;
 import com.octenexin.ecnu.pojo.Project;
+import com.octenexin.ecnu.pojo.ProjectClass;
 import com.octenexin.ecnu.pojo.ProjectDelay;
 import com.octenexin.ecnu.util.IdManageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class AdminProjectPageController {
@@ -25,10 +24,23 @@ public class AdminProjectPageController {
     @Autowired
     ProjectDelayDao projectDelayDao;
 
+    @Autowired
+    ProjectClassDao projectClassDao;
+
     /**
      * default action.
      * display 1~10, latest first
      * */
+
+    @RequestMapping("/admin/project/project-add")
+    public String toAdd(Model model){
+        List<ProjectClass> list=projectClassDao.queryAll();
+        model.addAttribute("project_classes",list);
+
+        System.out.println(list);
+
+        return "/admin/project/project-add";
+    }
     @RequestMapping("/admin/project-list-n")
     public String toProjectList(@RequestParam("page")String page,@RequestParam("step")String step,@RequestParam("orderby")String orderBy,@RequestParam("mode")String mode, Model model){
 
@@ -54,7 +66,7 @@ public class AdminProjectPageController {
         model.addAttribute("prev",curPage==0?"javascript: void(0);":"/admin/project-list-n?page="+(curPage-1)+"&step="+step+"&orderby="+orderBy+"&mode="+mode);
         model.addAttribute("next",curPage==maxPages-1?"javascript: void(0);":"/admin/project-list-n?page="+(curPage+1)+"&step="+step+"&orderby="+orderBy+"&mode="+mode);
         model.addAttribute("arr",arr);
-        model.addAttribute("cur_page",curPage);
+        model.addAttribute("cur_page",curPage+1);
         model.addAttribute("max_pages",maxPages);
 
         return "/admin/project-list";
@@ -96,11 +108,25 @@ public class AdminProjectPageController {
     @RequestMapping("/admin/project-delay-n")
     public String toDelay(@RequestParam("page")String page,Model model){
 
-        model.addAttribute("list",projectDelayDao.getDelays(Integer.valueOf(page)));
+        List<ProjectDelay> list=projectDelayDao.getDelays(Integer.valueOf(page));
+        List<Project> pList=new ArrayList<>();
+        for(ProjectDelay d: list){
+            pList.add(projectDao.getProjectById(d.getProjectId()));
+        }
+
+
+        model.addAttribute("list",list);
+        model.addAttribute("pList",pList);
 
         int maxPages=(projectDelayDao.countAll()/10)+1;//31->4
         int curPage=Integer.parseInt(page);//0,1,2,3
 
+        Map<Integer,String> stateMap=new HashMap<>();
+        stateMap.put(-1,"已驳回");
+        stateMap.put(0,"未审批");
+        stateMap.put(1,"已通过");
+
+        model.addAttribute("stateMap",stateMap);
 
         Map<Integer,String> arr=new HashMap<>();
         for(int i=1;i<10;i++){
@@ -110,7 +136,7 @@ public class AdminProjectPageController {
         model.addAttribute("prev",curPage==0?"javascript: void(0);":"/admin/project-delay-n?page="+(curPage-1));
         model.addAttribute("next",curPage==maxPages-1?"javascript: void(0);":"/admin/project-delay-n?page="+(curPage+1));
         model.addAttribute("arr",arr);
-        model.addAttribute("cur_page",curPage);
+        model.addAttribute("cur_page",curPage+1);
 
 
 

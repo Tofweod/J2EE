@@ -68,11 +68,16 @@
                 </li>
 
                 <li class="menu-item">
-                    <a th:href="@{/student/message}" class="menu-link">
+                    <a th:href="@{/student/profile(id=${#session.getAttribute('loginUserId')})}" class="menu-link">
+                        <i class="feather icon-user"></i>
+                        <span>个人中心</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a th:href="@{/student/message-n(page=0)}" class="menu-link">
                         <i class="dripicons-message"></i>
-                        <span class="badge badge-danger badge-pill float-right mr-3">100+</span>
+                        <span class="badge badge-danger badge-pill float-right mr-3" th:if="${#session.getAttribute('messageCnt') != 0}" th:text="${#session.getAttribute('messageCnt')>100? '100+': #session.getAttribute('messageCnt')}"></span>
                         <span th:text="#{message}"></span>
-                        <span class="menu-sub-icon"></span>
                     </a>
                 </li>
 
@@ -102,8 +107,8 @@
             <!-------------------------------------->
             <!-- User details start -->
             <div class="sidenav-user">
-                <!--                <h4 class="mb-1 mt-0" th:text="${#session.getAttribute(loginUser)}"></h4>-->
-                <p class="mb-2">UI/UX Designer</p>
+                <h4 class="mb-1 mt-0" th:text="${#session.getAttribute(loginUser)}"></h4>
+                <p class="mb-2">Admin</p>
                 <img th:src="@{/assets/images/users/avatar-1.jpg}" alt="" class="rounded-circle">
             </div>
             <!-- User details end -->
@@ -112,16 +117,23 @@
             <!-- Menu link start -->
             <ul class="metismenu side-nav">
 
+                <li class="menu-caption menu-item mt-1">项目</li>
                 <li class="menu-item">
-                    <a th:href="@{/admin/project-list-n(page=0,step=10,orderby='project_id',mode='ASC')}" class="menu-link">
-                        <i class="feather icon-check-circle"></i>
-                        <span th:text="#{project_manage}"></span>
+                    <a th:href="@{/admin/project/project-list}" class="menu-link">
+                        <i class="feather icon-gitlab"></i>
+                        <span>我的项目</span>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a th:href="@{/admin/paper-list-n(page=0)}" class="menu-link">
-                        <i class="feather icon-feather"></i>
-                        <span th:text="#{paper_mamage}"></span>
+                    <a th:href="@{/admin/project/project-add}" class="menu-link">
+                        <i class="feather icon-plus-square"></i>
+                        <span>新建项目</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a th:href="@{/admin/project-list-n(page=0,step=10,orderby='project_id',mode='DESC')}" class="menu-link">
+                        <i class="feather icon-check-circle"></i>
+                        <span th:text="#{project_manage}"></span>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -131,11 +143,23 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a th:href="@{/admin/type-change}" class="menu-link">
+                    <a th:href="@{/admin/project-type-n(page=0)}" class="menu-link">
                         <i class="feather icon-grid"></i>
                         <span>项目类别管理</span>
                     </a>
                 </li>
+
+
+                <li class="menu-caption menu-item mt-1">论文</li>
+                <li class="menu-item">
+                    <a th:href="@{/admin/paper-list-n(page=0)}" class="menu-link">
+                        <i class="feather icon-feather"></i>
+                        <span th:text="#{paper_mamage}"></span>
+                    </a>
+                </li>
+
+
+                <li class="menu-caption menu-item mt-1">用户</li>
                 <li class="menu-item">
                     <a href="javascript: void(0);" class="menu-link">
                         <i class="feather icon-users"></i>
@@ -143,14 +167,21 @@
                         <span class="menu-sub-icon"></span>
                     </a>
                     <ul class="menu-level-second collapse" aria-expanded="false">
-                        <li><a th:href="@{/admin/user-list-n(type=0,page=0)}">学生用户</a></li>
-                        <li><a th:href="@{/admin/user-list-n(type=1,page=0)}">管理员用户</a></li>
+                        <li><a th:href="@{/admin/user-list-n(type=0,page=0,uid='')}">学生用户</a></li>
+                        <li><a th:href="@{/admin/user-list-n(type=1,page=0,uid='')}">管理员用户</a></li>
                     </ul>
                 </li>
                 <li class="menu-item">
-                    <a th:href="@{/admin/message}" class="menu-link">
+                    <a th:href="@{/admin/profile(id=${#session.getAttribute('loginUserId')})}" class="menu-link">
+                        <i class="feather icon-user"></i>
+                        <span>个人中心</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a th:href="@{/admin/message-n(page=0)}" class="menu-link">
                         <i class="feather icon-message-square"></i>
-                        <span>消息中心</span>
+                        <span class="badge badge-danger badge-pill float-right mr-3" th:if="${#session.getAttribute('messageCnt') != 0}" th:text="${#session.getAttribute('messageCnt')>100? '100+': #session.getAttribute('messageCnt')}"></span>
+                        <span th:text="#{message}"></span>
                     </a>
                 </li>
 
@@ -168,11 +199,9 @@
         <!-- right side topbar content start -->
 
 
-
-
         <ul class="list-unstyled topbar-right-menu float-right mb-0">
             <li class="dropdown notification-list">
-                <a class="nav-link" th:href="@{/student/message}" role="button">
+                <a class="nav-link" th:href="@{/student/message-n(page=0)}" role="button">
                     <i class="feather icon-bell noti-icon"></i>
                     <span class="noti-icon-badge"></span>
                 </a>
@@ -180,7 +209,7 @@
 
 
             <li class="dropdown notification-list">
-                <a class="nav-link dropdown-toggle nav-user arrow-none mx-0" th:href="@{/student/profile}" role="button" aria-haspopup="false" aria-expanded="false">
+                <a class="nav-link dropdown-toggle nav-user arrow-none mx-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                 <span class="account-user-avatar">
                                     <img th:src="@{/assets/images/users/avatar-1.jpg}" alt="user-image" class="rounded-circle">
                                 </span>
@@ -188,7 +217,14 @@
                                     <span class="account-user-name" th:text="${#session.getAttribute('loginUser')}"></span>
                                 </span>
                 </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown show" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-23px, 70px, 0px);">
+                    <a th:href="@{/student/profile(id=${#session.getAttribute('loginUserId')})}" class="dropdown-item"><i class="feather icon-user text-muted"></i> &nbsp; 个人中心</a>
+                    <a th:href="@{/student/message-n(page=0)}" class="dropdown-item"><i class="feather icon-mail text-muted"></i> &nbsp; 消息</a>
+                    <div class="dropdown-divider"></div>
+                    <a th:href="@{/}" class="dropdown-item"><i class="feather icon-power text-danger"></i> &nbsp; 退出登录</a>
+                </div>
             </li>
+
         </ul>
         <!-- right side topbar content end -->
         <!------------------------------------->
@@ -212,13 +248,13 @@
         <!-- right side topbar content start -->
         <ul class="list-unstyled topbar-right-menu float-right mb-0">
             <li class="dropdown notification-list">
-                <a class="nav-link" th:href="@{/admin/message}" role="button">
+                <a class="nav-link" th:href="@{/admin/message-n(page=0)}" role="button">
                     <i class="feather icon-bell noti-icon"></i>
                     <span class="noti-icon-badge"></span>
                 </a>
             </li>
             <li class="dropdown notification-list">
-                <a class="nav-link dropdown-toggle nav-user arrow-none mx-0" th:href="@{/admin/profile}" role="button" aria-haspopup="false" aria-expanded="false">
+                <a class="nav-link dropdown-toggle nav-user arrow-none mx-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                 <span class="account-user-avatar">
                                     <img th:src="@{/assets/images/users/avatar-1.jpg}" alt="user-image" class="rounded-circle"/>
                                 </span>
@@ -226,6 +262,12 @@
                                     <span class="account-user-name" th:text="${#session.getAttribute('loginUser')}"></span>
                                 </span>
                 </a>
+                <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated topbar-dropdown-menu profile-dropdown show" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-23px, 70px, 0px);">
+                    <a th:href="@{/admin/profile(id=${#session.getAttribute('loginUserId')})}" class="dropdown-item"><i class="feather icon-user text-muted"></i> &nbsp; 个人中心</a>
+                    <a th:href="@{/admin/message-n(page=0)}" class="dropdown-item"><i class="feather icon-mail text-muted"></i> &nbsp; 消息</a>
+                    <div class="dropdown-divider"></div>
+                    <a th:href="@{/}" class="dropdown-item"><i class="feather icon-power text-danger"></i> &nbsp; 退出登录</a>
+                </div>
             </li>
         </ul>
         <!-- right side topbar content end -->
@@ -243,6 +285,27 @@
         <!-- Left side topbar content end -->
         <!------------------------------------->
     </div>
+
+    <nav th:fragment="pagnation">
+        <ul class="pagination pagination-rounded">
+            <li class="page-item">
+                <a class="page-link" th:href="${prev}" aria-label="Previous">
+                    <span aria-hidden="true">«</span>
+                    <span class="sr-only">上一页</span>
+                </a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="javascript: void(0);" th:text="${cur_page}"></a></li>
+            <li class="page-item" th:each="a:${arr}"><a class="page-link" th:href="${a.getValue()}" th:text="${a.getKey()}"></a></li>
+
+
+            <li class="page-item">
+                <a class="page-link" th:href="${next}" aria-label="Next">
+                    <span aria-hidden="true">»</span>
+                    <span class="sr-only">下一页</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
     <footer class="footer" th:fragment="footer">
         <div class="container-fluid">

@@ -89,11 +89,11 @@ public class StartController {
 
 
 		Map<Integer, String> paperStateColorMap = new HashMap<>();
-		paperStateColorMap.put(-1,"badge badge-danger");
-		paperStateColorMap.put(-2,"badge badge-warning");
-		paperStateColorMap.put(0,"badge badge-primary");
-		paperStateColorMap.put(1,"badge badge-success");
-		paperStateColorMap.put(2,"badge badge-info");
+		paperStateColorMap.put(-1,"badge badge-danger mb-3");
+		paperStateColorMap.put(-2,"badge badge-warning mb-3");
+		paperStateColorMap.put(0,"badge badge-primary mb-3");
+		paperStateColorMap.put(1,"badge badge-success mb-3");
+		paperStateColorMap.put(2,"badge badge-info mb-3");
 		try {
 			IdManageUtils.setPaperStateColorMap(paperStateColorMap);
 		} catch (Exception e) {
