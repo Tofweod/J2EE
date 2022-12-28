@@ -27,15 +27,33 @@ public class MessageDaoImpl implements MessageDao {
   private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
   
   @Override
-  public List<Message> getMessages(User user) {
-    String sql = "select * from messages where message_user_id = ?";
-    return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Message.class),user.getUserId());
+  public List<Message> getMessages(String uid,Integer page) {
+    String sql = "select * from messages where message_user_id = ? limit ?,10;";
+    return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(Message.class),uid,page*10);
   }
-  
+
+  @Override
+  public Integer getMsgCntByUser(String uid){
+    String sql = "select count(*) from messages where message_user_id = ?";
+    return jdbcTemplate.queryForObject(sql,Integer.class,uid);
+  }
+
+  @Override
+  public Integer getMsgUnreadCntByUser(String uid){
+    String sql = "select count(*) from messages where message_user_id = ? and message_hasread = 0";
+    return jdbcTemplate.queryForObject(sql,Integer.class,uid);
+  }
+
   @Override
   public int sendMessage(User user,Message message) {
     String sql = "INSERT INTO messages(message_topic,message_user_id,message_raw_data,message_time,message_hasread) VALUES(?,?,?,?,0)";
     return jdbcTemplate.update(sql,message.getMessageTopic(),user.getUserId(),message.getMessageRawData(),new Timestamp(System.currentTimeMillis()));
+  }
+
+  @Override
+  public int addMessage(Message message){
+    String sql = "INSERT INTO messages(message_topic,message_user_id,message_raw_data,message_time,message_hasread) VALUES(?,?,?,?,0)";
+    return jdbcTemplate.update(sql,message.getMessageTopic(),message.getMessageUserId(),message.getMessageRawData(),new Timestamp(System.currentTimeMillis()));
   }
   
   /**
@@ -64,8 +82,8 @@ public class MessageDaoImpl implements MessageDao {
   }
   
   @Override
-  public int clearAll(User user) {
+  public int clearAll(String uid) {
     String sql = "DELETE FROM messages WHERE message_user_id = ?";
-    return jdbcTemplate.update(sql,user.getUserId());
+    return jdbcTemplate.update(sql,uid);
   }
 }

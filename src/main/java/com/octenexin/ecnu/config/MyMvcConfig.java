@@ -1,9 +1,11 @@
 package com.octenexin.ecnu.config;
 
+import com.octenexin.ecnu.util.FileSaveUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -39,6 +41,13 @@ public class MyMvcConfig implements WebMvcConfigurer {
     public LocaleResolver localeResolver(){
         return new MyLocaleResolver();
     }
+
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/uploads/**").addResourceLocations(FileSaveUtil.getFileLoadRootUrl());
+//
+//        //  /uploads/project1/数字逻辑10-21.pdf  -> C:/.../classes/resources/
+//    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

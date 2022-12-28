@@ -34,7 +34,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         //paper, file
         if(realProject.getProjectPaperId()!=null){
-            paperService.deletePaper(realProject.getProjectPaperId().toString());
+            paperService.deletePaper(realProject.getProjectPaperId());
         }
 
         projectDao.delete(project);

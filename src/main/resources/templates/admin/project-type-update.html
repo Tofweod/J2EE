@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
+
+        <title>Shimba Bootstrap 4 Admin Dashboard</title>
+
+    </head>
+    <body>
+
+        <div class="wrapper">
+            <div th:replace="~{/commons/common :: sidebar}"></div>
+
+            <div class="content-page">
+                <div class="content">
+                    <div th:replace="~{/commons/common :: navbar}"></div>
+
+                    <!--===============main content start===============-->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <!--                                    <form>-->
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>修改项目</h5>
+                                </div>
+                                <div class="card-body">
+
+                                    <input type="hidden" th:value="${type.getProjectTypeId()}" id="project-type-id">
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="project-type-name">项目类型名称</label>
+                                            <input type="text" class="form-control" id="project-type-name" placeholder="项目类型名称，不超过20个字符" th:value="${type.getProjectTypeName()}">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="project-class">所属大类</label>
+                                            <select id="project-class" class="form-control" th:value="${type.getProjectClassId()}">
+                                                <option th:each="c : ${pClass}" th:value="${c.getValue().getProjectClassId()}" th:text="${c.getValue().getProjectClass}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="start-time">起始时间</label>
+                                            <input type="text" class="form-control date" id="start-time" data-toggle="date-picker" data-single-date-picker="true" th:value="${#dates.format(type.getProjectTypeStartTime(),'MM/dd/yyyy')}">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="end-time">截止时间</label>
+                                            <input type="text" class="form-control date" id="end-time" data-toggle="date-picker" data-single-date-picker="true" th:value="${#dates.format(type.getProjectTypeEndTime(),'MM/dd/yyyy')}">
+                                        </div>
+
+                                    </div>
+
+
+                                    <button type="submit" class="btn btn-primary" id="submit" onclick="mySubmit()">提交</button>
+                                    <!--                                    </form>-->
+
+                                    <script>
+
+
+                                        function mySubmit() {
+                                            var projectTypeName=$("#project-type-name").val();
+                                            var projectClass=$("#project-class").val();
+
+                                            var startTime=$('#start-time').val();
+                                            var endTime=$('#end-time').val();
+
+
+                                            if(projectTypeName===""||projectClass===""||startTime===""||endTime===""){
+                                                alert("表单不完整！");
+                                                return;
+                                            }
+
+
+                                            var newSt=startTime.substring(6)+"/"+startTime.substring(0,2)+"/"+startTime.substring(3,5);
+                                            var newEt=endTime.substring(6)+"/"+endTime.substring(0,2)+"/"+endTime.substring(3,5);
+                                            console.log(newSt);
+                                            console.log(newEt);
+
+                                            if(newSt>=newEt){
+                                                alert("起始时间超出结束时间！");
+                                                return;
+                                            }
+
+                                            $.ajax({
+                                                type: "POST",
+                                                url: "/admin/project/do-update",
+                                                data: {
+                                                    'id':$("#project-type-id").val(),
+                                                    'cid':projectClass,
+                                                    'typeName':projectTypeName,
+                                                    'sTime':startTime,
+                                                    'eTime':endTime
+
+                                                },
+                                                success: function () {
+                                                    alert("项目修改成功！");
+
+                                                    window.location.href=document.referrer;
+                                                },
+                                                error:function (){
+                                                    alert("项目修改失败！");
+                                                }
+                                            })
+                                        }
+
+                                    </script>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!--===============main content end===============-->
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+    </body>
+</html>

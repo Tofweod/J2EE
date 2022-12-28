@@ -89,16 +89,31 @@ public class StartController {
 
 
 		Map<Integer, String> paperStateColorMap = new HashMap<>();
-		paperStateColorMap.put(-1,"badge badge-danger");
-		paperStateColorMap.put(-2,"badge badge-warning");
-		paperStateColorMap.put(0,"badge badge-primary");
-		paperStateColorMap.put(1,"badge badge-success");
-		paperStateColorMap.put(2,"badge badge-info");
+		paperStateColorMap.put(-1,"badge badge-danger mb-3");
+		paperStateColorMap.put(-2,"badge badge-warning mb-3");
+		paperStateColorMap.put(0,"badge badge-primary mb-3");
+		paperStateColorMap.put(1,"badge badge-success mb-3");
+		paperStateColorMap.put(2,"badge badge-info mb-3");
 		try {
 			IdManageUtils.setPaperStateColorMap(paperStateColorMap);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+
+		Map<Integer,String> projectStateColorMap=new HashMap<>();
+		projectStateColorMap.put(1,"badge badge-primary mb-3");
+		projectStateColorMap.put(2,"badge mb-3 badge-info");
+		projectStateColorMap.put(3,"badge mb-3 badge-danger");
+		projectStateColorMap.put(4,"badge mb-3 badge-success");
+		projectStateColorMap.put(5,"badge mb-3 badge-secondary");
+		projectStateColorMap.put(6,"badge mb-3 badge-dark");
+		try {
+			IdManageUtils.setProjectStateColorMap(projectStateColorMap);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
+
 
 		return "/login";
 	}

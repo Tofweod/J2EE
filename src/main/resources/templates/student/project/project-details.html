@@ -54,9 +54,36 @@
                             <div class="card">
                                 <div class="card-header">项目成员</div>
                                 <div class="card-body">
-                                    <button type="button" class="btn btn-rounded btn-info" th:each="m:${member}" th:text="${m}"></button>
+                                    <button type="button" class="btn btn-default" th:each="m:${member}" th:text="${m}"></button>
                                 </div>
                             </div>
+
+                            <div class="card">
+                                <div class="card-header">项目操作</div>
+                                <div class="card-body">
+                                    <a class="btn btn-primary" th:href="@{/student/project/update(id=${project.getProjectId()})}">修改项目</a>
+                                    <a href="javascript:void(0);" class="btn btn-primary" onclick="{
+                                            var res=confirm('删除项目后，将永久清除与项目关联的所有信息，包括已提交的论文！确定要继续吗？');
+                                            if(res){
+                                                $.ajax(
+                                                    {
+                                                    type: 'POST',
+                                                    url: $(this).prev().attr('href'),
+                                                    success:function (){
+                                                        alert('项目删除成功！');
+                                                        window.location.href = '/student/project/project-list';
+                                                    },
+                                                    error:function (){alert('项目删除失败！')}
+                                                    }
+                                                )
+                                            }else{
+                                                return;
+                                            }
+                                        };
+                                        return false;">删除项目</a>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="col-md-8">
                             <!-- project card -->
@@ -93,23 +120,43 @@
                                     </div>
 
 
-                                        <div class="col-sm-12">
-                                            <h5>文件</h5>
-
-
+                                        <div class="row">
+                                            <h5>论文信息</h5>
 
                                             <!--有论文则显示-->
                                             <div class="card mb-2" th:if="${paper != null}">
+
+                                                <div class="mb-4">
+                                                    <h6>论文标题</h6>
+                                                    <p th:text="${paper.getPaperTitle()}"></p>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <h6>作者</h6>
+                                                    <p th:text="${paper.getPaperAuthor()}"></p>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <h6>论文状态</h6>
+                                                    <p th:text="${paperState}"></p>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <h6>论文摘要</h6>
+                                                    <p th:text="${paper.getPaperSummary()}"></p>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <h6>论文关键字</h6>
+                                                    <button type="button" class="btn btn-default" th:each="k : ${keywords}" th:text="${k}"></button>
+                                                </div>
+
                                                 <div class="p-2">
                                                     <div class="row align-items-center">
                                                         <div class="col-auto">
-                                                            <div class="ui-w-50">
-                                                                <span class="avatar-title rounded" th:text="#{paper}"></span>
-                                                            </div>
+                                                            <a class="btn btn-link btn-lg text-muted">
+                                                                <i class="feather icon-file"></i>
+                                                            </a>
                                                         </div>
                                                         <div class="col pl-0">
-                                                            <a href="#!" class="text-muted font-weight-bold" th:text="${paper.getPaperTitle()}"></a>
-                                                            <p class="mb-0" th:text="${paper.getPaperAuthor()}"></p>
+                                                            <a href="javascript:void(0);" class="text-muted font-weight-bold" th:text="${fileName}"></a>
+                                                            <p class="mb-0" th:text="${fileSize}"></p>
                                                         </div>
                                                         <div class="col-auto">
                                                             <a th:href="@{/paper/download(paper=${paper.getPaperId()})}" class="btn btn-link btn-lg text-muted">
@@ -118,9 +165,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <a class="d-inline-block" th:href="@{/student/paper/paper-update(projectId=${project.getProjectId()},paperId=${paper.getPaperId()})}">修改论文</a>
+                                                        <a class="col-md-6"></a>
+                                                        <a class="col-md-3" th:href="@{/student/paper/paper-update(projectId=${project.getProjectId()},paperId=${paper.getPaperId()})}">修改论文</a>
                                                         <a style="display: none" th:href="@{/paper/do-delete(paperId=${paper.getPaperId()})}"></a>
-                                                        <a class="d-inline-block text-danger" href="javascript:void(0);" onclick="{
+                                                        <a class="col-md-3 text-danger" href="javascript:void(0);" onclick="{
 
                                                             var res=confirm('确定要删除论文吗？');
                                                             if(res){

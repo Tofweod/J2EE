@@ -27,7 +27,12 @@ public interface ProjectDao {
      */
     int update(Project project);
 
+    int adminUpdate(Project project);
 
+
+    /**
+     * 只更新论文id
+     * */
     int updatePaper(Project project);
 
     /**
@@ -75,12 +80,25 @@ public interface ProjectDao {
      * @return
      */
     Project getProject(Project project);
+
+
+
+    /**
+     * 根据id查询一个project
+     * */
+    Project getProjectById(Integer id);
     /**
      * 根据负责人id查询项目
      * */
     List<Project> getProjectByStu(String chargePersonId);
 
-    List<Project> getProjectByPaper(String paperId);
+
+    /**
+     * 查询自己的5条项目
+     * */
+    List<Project> getProjectByStu5(String chargePersonId);
+
+    List<Project> getProjectByPaper(Integer paperId);
 
     /**
      * 批量删除项目

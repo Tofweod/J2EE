@@ -18,31 +18,41 @@
 
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Add Paper</h5>
+                            <div class="page-title-box">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a th:href="@{/admin/index}"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item active">论文添加</li>
+                                    </ol>
                                 </div>
+                                <h4 class="page-title">论文添加</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
                                 <div class="card-body">
                                     <form id="paperForm">
                                         <input type="hidden" th:value="${projectId}" id="project_id" name="projectId">
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label for="paper-title">论文主题</label>
-                                                <input type="text" class="form-control" id="paper-title" placeholder="Title" name="title">
+                                                <input type="text" class="form-control" id="paper-title" placeholder="论文主题，不超过30字" name="title">
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label for="paper-author" th:text="#{paper_author}"></label>
-                                                <input type="text" class="form-control" id="paper-author" placeholder="Author" name="author">
+                                                <input type="text" class="form-control" id="paper-author" placeholder="论文作者姓名，不超过20字" name="author">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="paper-summary">论文总结</label>
-                                            <textarea class="form-control" id="paper-summary" rows="3" name="summary" placeholder="Summary, no more than 300 chars"></textarea>
+                                            <label for="paper-summary">论文摘要</label>
+                                            <textarea class="form-control" id="paper-summary" rows="3" name="summary" placeholder="论文摘要，不超过300字"></textarea>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-12">
                                                 <label for="paper-key-words">论文关键字</label>
-                                                <input type="text" class="form-control" id="paper-key-words" placeholder="Key words, split by ;" name="keywords">
+                                                <input type="text" class="form-control" id="paper-key-words" placeholder="论文关键字，用英文分号（;）分隔" name="keywords">
                                             </div>
                                         </div>
 

@@ -10,7 +10,7 @@ public interface ProjectTypeDao {
     /**
      * 无条件查询项目类型列表
      */
-    List<ProjectType> getList(String page);
+    List<ProjectType> getList(Integer page);
 
 
     /**
@@ -23,4 +23,12 @@ public interface ProjectTypeDao {
      * 根据主键查询单个项目类型
      */
     ProjectType query(ProjectType type);
+
+
+    Integer count();
+
+
+    Integer delete(Integer projectTypeId);
+
+    Integer update(ProjectType projectType);
 }

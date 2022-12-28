@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
+
+        <title>Shimba Bootstrap 4 Admin Dashboard</title>
+
+    </head>
+    <body>
+
+        <div class="wrapper">
+            <div th:replace="~{/commons/common :: sidebar-admin}"></div>
+
+            <div class="content-page">
+                <div class="content">
+                    <div th:replace="~{/commons/common :: navbar-admin}"></div>
+
+                    <!--===============main content start===============-->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a th:href="@{/admin/index}"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item active">项目详情</li>
+                                    </ol>
+                                </div>
+                                <h4 class="page-title">项目详情</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive-sm">
+
+                                        <h3 class="mt-0" th:text="${project.getProjectName()}"></h3>
+                                        <div th:class="${className}" th:text="${pState.getProjectState()}"></div>
+
+                                        <h5>主要负责人id</h5>
+                                        <p class="text-muted" th:text="${project.getProjectChargePersonId()}"></p>
+
+                                        <h5>项目简介</h5>
+                                        <p class="text-muted" th:text="${project.getProjectAbout()}"></p>
+
+                                        <h5>项目其他成员</h5>
+                                        <div class="row">
+                                            <button type="button" class="btn btn-default" th:each="m : ${member}" th:text="${m}"></button>
+                                        </div>
+
+                                        <h5>项目经费</h5>
+                                        <p class="text-muted" th:text="${project.getProjectFundsUp() + '元'}"></p>
+
+                                        <h5>起始时间</h5>
+                                        <p class="text-muted" th:text="${#dates.format(project.getProjectStartTime(),'yyyy-MM-dd')}"></p>
+
+                                        <h5>结束时间</h5>
+                                        <p class="text-muted" th:text="${#dates.format(project.getProjectEndTime(),'yyyy-MM-dd')}"></p>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--===============main content end===============-->
+                </div>
+            </div>
+
+        </div>
+
+        <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+    </body>
+</html>

@@ -33,9 +33,9 @@ public class RegisterController {
         userService.addUser(user);
         MessageService messageService = (MessageService) session.getAttribute("messageService");
         // 设置欢迎信息
-        messageService.setUser(user);
 
         Message message=new Message();
+        message.setMessageUserId(user.getUserId());
         message.setMessageTopic("Welcome!");
         message.setMessageRawData("Dear "+user.getUserName()+": Hello world!");
 

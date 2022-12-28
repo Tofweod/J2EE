@@ -66,7 +66,7 @@
                                 <div class="col">
                                     <h4 class="font-weight-bold mb-2" th:text="${user.getUserName()}"></h4>
                                     <div class="text-muted mb-2">
-                                        Lorem ipsum dolor sit amet, nibh suavitate qualisque ut nam. Ad harum primis electram duo, porro principes ei has.
+                                        Hello, world!
                                     </div>
 
                                 </div>
@@ -127,6 +127,43 @@
                             </div>
                             <!-- / Info -->
 
+                            <!-- project-->
+                            <div class="card sale-card" th:if="${projectList5.size()!=0}">
+                                <div class="card-header">
+                                    <h5>项目展示</h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="border-top-0">项目名</th>
+                                                    <th class="border-top-0">项目大类</th>
+                                                    <th class="border-top-0">项目状态</th>
+                                                    <th class="border-top-0">起始时间</th>
+                                                    <th class="border-top-0">截止时间</th>
+                                                    <th class="border-top-0">项目经费</th>
+                                                    <th class="border-top-0">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="p: ${projectList5}">
+                                                    <td class="" th:text="${p.getProjectName()}"></td>
+                                                    <td class="" th:text="${pClass.get(p.getProjectClassId()).getProjectClass()}"></td>
+                                                    <td class="" th:text="${pState.get(p.getProjectStateId()).getProjectState()}"></td>
+                                                    <td class="" th:text="${#dates.format(p.getProjectStartTime(),'yyyy-MM-dd')}"></td>
+                                                    <td class="" th:text="${#dates.format(p.getProjectEndTime(),'yyyy-MM-dd')}"></td>
+                                                    <td class="" th:text="${p.getProjectFundsUp()}"></td>
+                                                    <td>
+                                                        <a th:href="@{/student/project/details(id=${p.getProjectId()})}">查看详情</a>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>

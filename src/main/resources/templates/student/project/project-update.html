@@ -31,7 +31,7 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="project-name">项目名称</label>
-                                            <input type="text" class="form-control" id="project-name" placeholder="Project Name" th:value="${project.getProjectName()}">
+                                            <input type="text" class="form-control" id="project-name" placeholder="项目名称，不超过30个字符" th:value="${project.getProjectName()}">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="project-charge-person-id">项目负责人id</label>
@@ -43,19 +43,19 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-12">
                                             <label for="other-members">其他成员</label>
-                                            <input type="text" class="form-control" id="other-members" placeholder="member names, split by ;" th:value="${project.getProjectOtherPeopleInfo()}">
+                                            <input type="text" class="form-control" id="other-members" placeholder="其他成员，用英文分号（;）分隔" th:value="${project.getProjectOtherPeopleInfo()}">
                                         </div>
                                     </div>
 
 
                                     <div class="form-group">
                                         <label for="funds-budget">项目经费</label>
-                                        <input type="number" class="form-control" id="funds-budget" placeholder="Integer, yuan" th:value="${project.getProjectFundsUp()}">
+                                        <input type="number" class="form-control" id="funds-budget" placeholder="整数，单位：元" th:value="${project.getProjectFundsUp()}">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="project-about">项目大类</label>
-                                        <textarea class="form-control" id="project-about" rows="3" th:inline="text">[[${project.getProjectAbout()}]]</textarea>
+                                        <textarea class="form-control" id="project-about" rows="3" th:inline="text" placeholder="项目描述，不多于300字">[[${project.getProjectAbout()}]]</textarea>
                                     </div>
 
                                     <div class="form-row">
@@ -73,6 +73,7 @@
                                             <label for="start-time">起始时间</label>
                                             <input type="text" class="form-control date" id="start-time" readonly="" th:placeholder="${#dates.format(project.getProjectStartTime(),'MM/dd/yyyy')}">
                                         </div>
+                                        <input type="text" id="project_old_end_time" style="display: none" th:value="${#dates.format(project.getProjectEndTime(),'MM/dd/yyyy')}">
                                         <div class="form-group col-md-6">
                                             <label for="end-time">截止时间</label>
                                             <input type="text" class="form-control date" id="end-time" data-toggle="date-picker" data-single-date-picker="true" th:value="${#dates.format(project.getProjectEndTime(),'MM/dd/yyyy')}" onchange="showDialog()">
@@ -82,7 +83,7 @@
 
                                     <div class="form-group" id="delay-box">
                                         <label for="delay-reason">延期原因</label>
-                                        <textarea class="form-control" id="delay-reason" rows="3"></textarea>
+                                        <textarea class="form-control" id="delay-reason" rows="3" placeholder="延期原因，不超过300字"></textarea>
                                     </div>
 
 
@@ -121,10 +122,18 @@
                                                 return;
                                             }
 
-                                            if(shouldDelay&&delayReason===""){
-                                                alert("请填写延期原因！");
-                                                return;
+                                            if(shouldDelay){
+                                                if(delayReason===""){
+                                                    alert("请填写延期原因！");
+                                                    return;
+                                                }
+                                                if(delayReason.length>300){
+                                                    alert("延期原因大于300字！");
+                                                    return;
+                                                }
                                             }
+
+
 
                                             var newSt=startTime.substring(6)+"/"+startTime.substring(0,2)+"/"+startTime.substring(3,5);
                                             var newEt=endTime.substring(6)+"/"+endTime.substring(0,2)+"/"+endTime.substring(3,5);
@@ -144,7 +153,6 @@
                                                     'projectName':projectName,
                                                     //'projectChargePersonId':projectChargePersonId,
                                                     'otherMembers':otherMembers,
-                                                    //low=0
                                                     'fundsBudget':fundsBudget,
                                                     'projectAbout':projectAbout,
                                                     //paper id null
@@ -152,6 +160,7 @@
                                                     //state 1
                                                     //pre state 1
                                                     //'startTime':startTime,
+                                                    'oldEndTime':$('#project_old_end_time').val(),
                                                     'endTime':endTime,
                                                     'shouldDelay':shouldDelay,
                                                     'delayReason':delayReason

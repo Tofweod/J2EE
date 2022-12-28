@@ -12,7 +12,15 @@ public interface ProjectDelayDao {
 
     int handleDelay(Integer projectDelayId,Integer oper);
 
+    int deleteDelay(Integer projectDelayId);
+
+
+
+    Integer countAll();
+
     List<ProjectDelay> getDelays(Integer page);
+
+    ProjectDelay getDelayById(Integer projectDelayId);
 
     List<ProjectDelay> autoQuery(String sql);
 

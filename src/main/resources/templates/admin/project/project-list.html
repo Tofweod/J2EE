@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+    <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
+
+        <title>Shimba Bootstrap 4 Admin Dashboard</title>
+
+    </head>
+
+<body>
+
+    <div class="wrapper">
+        <div th:replace="~{/commons/common :: sidebar-admin}"></div>
+
+        <div class="content-page">
+            <div class="content">
+                <div th:replace="~{/commons/common :: navbar-admin}"></div>
+
+                <!--===============main content start===============-->
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">Projects</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <!--card start-->
+                    <div class="col-sm-12 col-xl-6" th:each="p,pStat:${projects}">
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-start">
+                                <div>
+                                    <a href="javascript:void(0)" class="text-dark text-big font-weight-semibold" th:text="${p.getProjectName()}"></a>
+                                    <span th:class="${classNames[pStat.index]}" th:text="${states[pStat.index].getProjectState()}"></span>
+
+                                </div>
+                                <div class="btn-group project-actions">
+                                    <button type="button" class="btn btn-sm btn-default icon-btn borderless btn-round md-btn-flat dropdown-toggle hide-arrow" data-toggle="dropdown"><i class="ion ion-ios-more"></i></button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" th:href="@{/student/project/details(id=${p.getProjectId()})}">View</a>
+                                        <a class="dropdown-item" th:href="@{/student/project/update(id=${p.getProjectId()})}">Edit</a>
+                                        <a style="display: none" th:href="@{/student/project/do-delete(id=${p.getProjectId()})}"></a>
+                                        <a class="dropdown-item text-danger" onclick="{
+                                            var res=confirm('删除项目后，将永久清除与项目关联的所有信息，包括已提交的论文！确定要继续吗？');
+                                            if(res){
+                                                $.ajax(
+                                                    {
+                                                    type: 'POST',
+                                                    url: $(this).prev().attr('href'),
+                                                    success:function (){
+                                                        alert('项目删除成功！');
+                                                        window.location.href = '/student/project/project-list';
+                                                    },
+                                                    error:function (){alert('项目删除失败！')}
+                                                    }
+                                                )
+                                            }else{
+                                                return;
+                                            }
+                                        };
+                                        return false;">Remove</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p th:text="${p.getProjectAbout()}"></p>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="text-muted small">Created</div>
+                                        <div class="font-weight-bold" th:text="${p.getProjectStartTime()}"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="text-muted small">Deadline</div>
+                                        <div class="font-weight-bold" th:text="${p.getProjectEndTime()}"></div>
+                                    </div>
+                                </div>
+                                <div class="small pt-3 pb-2">
+                                    <strong>33%</strong> completed
+                                </div>
+                                <div class="progress rounded-0" style="height: 3px;">
+                                    <div class="progress-bar bg-danger" style="width: 33%;"></div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-muted small mb-2">Team</div>
+                                <div class="d-flex flex-wrap">
+                                    <button type="button" class="btn btn-rounded btn-info" th:each="m:${members[pStat.index]}" th:text="${m}"></button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--card end-->
+                </div>
+                <!-- end page title -->
+
+
+                <!--===============main content end===============-->
+            </div>
+
+            <footer th:replace="~{commons/common :: footer}"></footer>
+        </div>
+
+    </div>
+
+
+
+    <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+
+</body>
+
+</html>

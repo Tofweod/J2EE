@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
+
+        <title>Shimba Bootstrap 4 Admin Dashboard</title>
+
+    </head>
+    <body>
+
+        <div class="wrapper">
+            <div th:replace="~{/commons/common :: sidebar-admin}"></div>
+
+            <div class="content-page">
+                <div class="content">
+                    <div th:replace="~{/commons/common :: navbar-admin}"></div>
+
+                    <!--===============main content start===============-->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a th:href="@{/admin/index}"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item active">论文添加</li>
+                                    </ol>
+                                </div>
+                                <h4 class="page-title">论文添加</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form id="paperForm">
+                                        <input type="hidden" th:value="${projectId}" id="project_id" name="projectId">
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="paper-title">论文主题</label>
+                                                <input type="text" class="form-control" id="paper-title" placeholder="论文主题，不超过30字" name="title">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="paper-author" th:text="#{paper_author}"></label>
+                                                <input type="text" class="form-control" id="paper-author" placeholder="论文作者姓名，不超过20字" name="author">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="paper-summary">论文摘要</label>
+                                            <textarea class="form-control" id="paper-summary" rows="3" name="summary" placeholder="论文摘要，不超过300字"></textarea>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label for="paper-key-words">论文关键字</label>
+                                                <input type="text" class="form-control" id="paper-key-words" placeholder="论文关键字，用英文分号（;）分隔" name="keywords">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>论文文件</label>
+                                            <div class="dropzone" id="my-dropzone" data-plugin="dropzone" data-previews-container="#file-previews" data-upload-preview-template="#uploadPreviewTemplate">
+                                                <div class="fallback" id="fallback" style="position: absolute;top:-20px;left:-20px;opacity: 0">
+                                                    <input name="file" type="file" id="project-files" style="width: 100%;height: 100%;cursor: pointer" onchange="onAddFile()"/>
+                                                </div>
+
+                                                <div class="dz-message needsclick">
+                                                    <i class="h1 text-muted dripicons-cloud-upload"></i>
+                                                    <h3>拖动文件到此处 或 点击图标</h3>
+                                                </div>
+                                            </div>
+                                            <div class="dropzone-previews mt-3" id="file-previews"></div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary" id="submit" onclick="fileSelected();return false;">Submit</button>
+
+                                    </form>
+
+
+
+                                    <script>
+                                        var fileData=null;
+
+
+                                        window.onload=function (){
+                                            var fileArea=document.getElementById("my-dropzone");
+                                            fileArea.style.position="relative";
+                                            var height=fileArea.offsetHeight;
+                                            var width=fileArea.offsetWidth;
+
+                                            var fallback=document.getElementById("fallback");
+                                            fallback.style.width=width+'px';
+                                            fallback.style.height=height+'px';
+
+                                            fileArea.addEventListener("dragleave dragenter drop dragover", function (e) {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                            })
+
+                                            fileArea.addEventListener("drop",
+                                                function(e){
+                                                    var files = e.dataTransfer.items;
+                                                    //do nothing
+                                                }
+                                            )
+                                        }
+
+                                        window.onresize=function (){
+                                            var fileArea=document.getElementById("my-dropzone");
+                                            var fallback=document.getElementById("fallback");
+
+
+                                            var height=fileArea.offsetHeight;
+                                            var width=fileArea.offsetWidth;
+
+                                            fallback.style.width=width+'px';
+                                            fallback.style.height=height+'px';
+
+                                        }
+
+                                        function onAddFile(e){
+                                            var files=document.getElementById("project-files").files;
+
+                                            var pdfParse=/.+.pdf$/
+                                            if(!pdfParse.test(files[0].name)){
+                                                alert("只能上传pdf文件！");
+
+                                                var fileControl=document.getElementById("project-files");
+                                                fileControl.outerHTML=fileControl.outerHTML;
+                                                //clear
+
+                                                return;
+                                            }
+
+                                            fileData=files[0];
+
+                                            genList(fileData);
+
+                                        }
+
+                                        function genList(file){
+                                            var listContainer=$("#file-previews");
+
+
+                                            var newNode=$("#list-temp").clone();
+
+                                            newNode.attr('id','list-temp0');
+                                            newNode.find("#file-name").text(file.name);
+                                            newNode.find("#file-img").attr('src',window.URL.createObjectURL(file));
+                                            newNode.find("#file-size").text(showBytes(file.size));
+
+                                            newNode.find("#file-delete").click(
+                                                function (){
+                                                    fileData=null;
+                                                    $('#list-temp0').remove();
+
+                                                }
+                                            );
+
+
+                                            listContainer.append(newNode);
+                                        }
+
+                                        function showBytes(bytes){
+                                            if(bytes<1024) return ''+bytes+' B';
+                                            if(bytes<(1<<20)) return ''+(bytes>>10)+' KB';
+                                            if(bytes<(1<<30)) return ''+(bytes>>20)+' MB';
+                                            return ''+(bytes>>30)+' GB';
+                                        }
+
+                                        function fileSelected(){
+
+                                            //var projectId=$("#project_id").val();
+                                            var paperTitle=$("#paper-title").val();
+                                            var paperAuthor=$("#paper-author").val();
+                                            var paperSummary=$("#paper-summary").val();
+                                            var paperKeywords=$("#paper-key-words").val();
+                                            var paperFile=fileData;
+
+                                            if(paperTitle===""||paperAuthor===""||paperSummary===""||paperKeywords===""){
+                                                alert("表单不完整！");
+                                                return;
+                                            }
+
+                                            if(paperTitle.length>30){
+                                                alert("论文标题大于30个字符！");
+                                                return;
+                                            }
+                                            if(paperAuthor.length>30){
+                                                alert("作者姓名大于20个字符！");
+                                                return;
+                                            }
+                                            if(paperSummary.length>400){
+                                                alert("论文简介大于400个字符！");
+                                                return;
+                                            }
+                                            if(paperKeywords.length>30){
+                                                alert("论文关键字列表大于30个字符！");
+                                                return;
+                                            }
+                                            if(paperFile==null){
+                                                alert("未上传文件！");
+                                                return;
+                                            }
+
+                                            var form =document.getElementById("paperForm");
+                                            startFileUpload(form);
+
+                                        }
+
+                                        //开始上传
+
+                                        function startFileUpload(form)
+                                        {
+
+                                            var uploadURL = "/student/paper/do-add"; // 此处与controller的映射对应
+
+                                            var formData = new FormData(form);
+
+                                            //设置 progress, load, error, abort 4个事件处理器
+
+                                            var request = new XMLHttpRequest();
+
+                                            request.upload.addEventListener("progress" , window.evt_upload_progress , false);
+
+                                            request.addEventListener("load", window.evt_upload_complete, false);
+
+                                            request.addEventListener("error", window.evt_upload_failed, false);
+
+                                            request.addEventListener("abort", window.evt_upload_cancel, false);
+
+                                            request.open("POST", uploadURL ); // 设置服务URL
+                                            request.send(formData); // 发送表单数据
+
+                                        }
+
+                                        window.evt_upload_progress = function(evt)
+                                        {
+
+                                            if(evt.lengthComputable)
+
+                                            {
+
+                                                var progress = Math.round(evt.loaded * 100 / evt.total);
+
+                                                console.log("上传进度" + progress);
+
+                                            }
+
+                                        };
+
+                                        window.evt_upload_complete = function (evt)
+                                        {
+                                            if(evt.loaded === 0) {console.log ("上传失败!");}
+
+                                            else
+                                            {
+                                                // 弹窗提示
+                                                alert("上传完成!");
+                                                //var response = JSON.parse(evt.target.responseText);
+                                                var response=evt.target.responseText;
+                                                console.log ("response:  "+response);
+                                                // 点击确定后跳转到设置页面
+                                                // 需要在MyMvcConfig里添加viewController
+                                                window.location.href="/student/project/project-list?id="+$("project_id").val();
+                                            }
+
+                                        };
+
+                                        window.evt_upload_failed = function (evt)
+                                        {
+                                            console.log ("上传出错");
+                                        };
+
+                                        window.evt_upload_cancel = function (evt)
+                                        {
+                                            console.log( "上传中止!");
+                                        };
+
+                                        // function mySubmit(){
+                                        //     console.log(fileData);
+                                        //
+                                        //     var projectId=$("#project_id").val();
+                                        //     var paperTitle=$("#paper-title").val();
+                                        //     var paperAuthor=$("#paper-author").val();
+                                        //     var paperSummary=$("#paper-summary").val();
+                                        //     var paperKeywords=$("#paper-key-words").val();
+                                        //     var paperFile=fileData;
+                                        //
+                                        //     if(paperTitle===""||paperAuthor===""||paperSummary===""||paperKeywords===""||paperFile===null){
+                                        //         alert("表单不完整！");
+                                        //     }
+                                        //
+                                        //
+                                        //     jQuery.ajax({
+                                        //         type: 'post',
+                                        //         url: '/student/paper/do-add',
+                                        //         data: {
+                                        //             'projectId':projectId,
+                                        //             'title':paperTitle,
+                                        //             'author':paperAuthor,
+                                        //             'summary':paperSummary,
+                                        //             'keywords':paperKeywords,
+                                        //             'file':paperFile
+                                        //         },
+                                        //         success: function (data) {
+                                        //             alert("success");
+                                        //         },
+                                        //         error: function (){
+                                        //             alert("论文添加失败！");
+                                        //         }
+                                        //     })
+                                        //
+                                        //
+                                        //
+                                        // }
+
+                                    </script>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!--===============main content end===============-->
+                </div>
+
+                <footer th:replace="~{commons/common :: footer}"></footer>
+            </div>
+
+        </div>
+
+
+        <!-- file preview template -->
+        <div class="d-none" id="uploadPreviewTemplate">
+            <div class="card mt-1 mb-0 shadow-none border" id="list-temp">
+                <div class="p-2">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <a class="avatar-sm rounded bg-light">
+                                <i class="feather icon-aperture"></i>
+                            </a>
+                        </div>
+                        <div class="col pl-0">
+                            <a href="javascript:void(0);" class="text-muted font-weight-bold" data-file-name id="file-name"></a>
+                            <p class="mb-0" data-dz-size id="file-size"></p>
+                        </div>
+                        <div class="col-auto">
+                            <!-- Button -->
+                            <a class="btn btn-link btn-lg text-muted" data-file-delete id="file-delete">
+                                <i class="dripicons-cross"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+    </body>
+</html>

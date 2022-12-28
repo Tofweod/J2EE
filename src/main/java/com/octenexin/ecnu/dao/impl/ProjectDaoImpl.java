@@ -75,6 +75,30 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
+    public int adminUpdate(Project project) {
+        String sql="UPDATE projects SET " +
+                "project_name=?," +
+                "project_charge_person_id=?," +
+                "project_other_people_info=?," +
+                "project_funds_up=?," +
+                "project_about=?, " +
+                "project_class_id=?," +
+                "project_start_time=?," +
+                "project_end_time=? " +
+                "where project_id=?;";
+        return template.update(sql,
+                project.getProjectName(),
+                project.getProjectChargePersonId(),
+                project.getProjectOtherPeopleInfo(),
+                project.getProjectFundsUp(),
+                project.getProjectAbout(),
+                project.getProjectClassId(),
+                project.getProjectStartTime(),
+                project.getProjectEndTime(),
+                project.getProjectId());
+    }
+
+    @Override
     public int updatePaper(Project project){
         String sql="UPDATE projects SET " +
                 "project_paper_id=? where project_id=?";
@@ -87,7 +111,7 @@ public class ProjectDaoImpl implements ProjectDao {
     @Override
     public int delete(Project project) {
         String sql="delete from projects where project_id=?";
-        // todo:删除papers中对应论文以及文件
+
         return template.update(sql,project.getProjectId());
     }
 
@@ -127,8 +151,20 @@ public class ProjectDaoImpl implements ProjectDao {
        return template.query(sql, new BeanPropertyRowMapper<>(Project.class),chargePersonId);
    }
 
+   @Override
+   public Project getProjectById(Integer id){
+       String sql="select * from projects where project_id=?;";
+       return template.queryForObject(sql, new BeanPropertyRowMapper<>(Project.class),id);
+   }
+
     @Override
-    public List<Project> getProjectByPaper(String paperId){
+    public List<Project> getProjectByStu5(String chargePersonId){
+        String sql="select * from projects where project_charge_person_id=? order by project_id desc limit 0,5;";
+        return template.query(sql, new BeanPropertyRowMapper<>(Project.class),chargePersonId);
+    }
+
+    @Override
+    public List<Project> getProjectByPaper(Integer paperId){
         String sql="select * from projects where project_paper_id=?;";
         return template.query(sql, new BeanPropertyRowMapper<>(Project.class),paperId);
     }

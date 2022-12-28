@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 @RestController
@@ -18,29 +19,37 @@ public class StudentMessagesController {
 
 
     @RequestMapping("/message/set-read")
-    public String setRead(@RequestParam("messageId") String messageId){
+    public String setRead(@RequestParam("messageId") String messageId, HttpSession session){
         System.out.println(messageId);
         Message message=new Message();
         message.setMessageId(Integer.parseInt(messageId));
 
-        System.out.println(message);
 
         messageService.setRead(message);
+
+        //decline point
+        session.setAttribute("messageCnt",(Integer)session.getAttribute("messageCnt")-1);
 
         return "success";
     }
 
     @RequestMapping("/message/delete")
-    public String setDelete(@RequestParam("messageId") String messageId){
+    public String setDelete(@RequestParam("messageId") String messageId,HttpSession session){
 
-        System.out.println(messageId);
         Message message=new Message();
         message.setMessageId(Integer.parseInt(messageId));
+
+        //decline point
+        if(message.getMessageHasread()==0){
+            session.setAttribute("messageCnt",(Integer)session.getAttribute("messageCnt")-1);
+        }
 
         ArrayList<Message> list=new ArrayList<>();
         list.add(message);
 
         messageService.deleteMessages(list);
+
+
 
         return "success";
     }

@@ -10,11 +10,20 @@ import java.util.List;
  */
 public interface MessageDao {
   /**
-   * 获取该用户所有messages
+   * 获取该用户messages，分页10
    * @param user
+   * @param page
    * @return
    */
-  List<Message> getMessages(User user);
+  List<Message> getMessages(String uid,Integer page);
+
+
+  /**
+   * 根据用户id获取消息数量
+   * */
+  Integer getMsgCntByUser(String uid);
+
+  Integer getMsgUnreadCntByUser(String uid);
   
   /**
    * 向用户发送message
@@ -22,7 +31,8 @@ public interface MessageDao {
    * @param message
    */
   int sendMessage(User user,Message message);
-  
+
+  int addMessage(Message message);
   /**
    * 设置消息已读
    * @param message
@@ -44,9 +54,8 @@ public interface MessageDao {
   /**
    * 清空该用户所有message
    * 该方法一般在注销用户时，通过session获取到用户对应messageService来执行
-   * @param user
    */
-  int clearAll(User user);
+  int clearAll(String uid);
   
   
 }

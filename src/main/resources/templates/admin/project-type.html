@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{commons/common :: common_header(~{::title},~{::link})}">
+
+        <title>Project List</title>
+
+        <!-- third party css -->
+        <link th:href="@{/assets/css/vendor/dataTables.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <link th:href="@{/assets/css/vendor/responsive.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <link th:href="@{/assets/css/vendor/buttons.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <link th:href="@{/assets/css/vendor/select.bootstrap4.css}" rel="stylesheet" type="text/css" />
+        <!-- third party css end -->
+
+    </head>
+
+<body>
+
+    <!-- Begin page -->
+    <div class="wrapper">
+
+        <!-- ============================================================= -->
+        <!-- ===============    side menu content start  ================= -->
+        <!-- ============================================================= -->
+        <div th:replace="~{commons/common :: sidebar-admin}"></div>
+        <!-- ============================================================= -->
+        <!-- ===============     side menu content End   ================= -->
+        <!-- ============================================================= -->
+
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+
+                <!-- ============================================================= -->
+                <!-- ===============    Top bar header content start  ================= -->
+                <!-- ============================================================= -->
+                <div th:replace="~{commons/common :: navbar-admin}"></div>
+                <!-- ================================================================== -->
+                <!-- ===============    Top bar header content end  ================= -->
+                <!-- ================================================================== -->
+
+
+                <!-- Start Content-->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a th:href="@{/admin/index}"><i class="feather icon-home"></i></a></li>
+                                    <li class="breadcrumb-item active">延期申请列表</li>
+                                </ol>
+                            </div>
+                            <h4 class="page-title">延期申请列表</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive-sm">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <td>项目类型名</td>
+                                                <td>所属大类</td>
+                                                <td>开始时间</td>
+                                                <td>结束时间</td>
+                                                <td>操作</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="d: ${list}">
+                                                <td th:text="${d.getProjectTypeName()}"></td>
+                                                <td th:text="${pClass.get(d.getProjectClassId()).getProjectClass()}"></td>
+                                                <td th:text="${d.getProjectTypeStartTime()}"></td>
+                                                <td th:text="${d.getProjectTypeEndTime()}"></td>
+                                                <td>
+                                                    <a class="d-inline-block" th:href="@{/admin/project/project-type-update(id=${d.getProjectTypeId()})}">修改</a>
+                                                    <a style="display: none" th:href="@{/admin/project/project-type/do-delete(id=${d.getProjectTypeId()})}"></a>
+                                                    <a class="d-inline-block text-danger" href="javascript: void(0);" onclick="{
+                                                        if(confirm('确认删除？')===true){
+                                                            $.ajax(
+                                                                {
+                                                                    type: 'POST',
+                                                                    url:$(this).prev().attr('href'),
+                                                                    success: function (){
+                                                                        alert('已删除！');
+                                                                        location.reload();
+                                                                    },
+                                                                    fail: function (){
+                                                                        alert('删除失败！');
+                                                                    }
+                                                                }
+                                                            );
+                                                        }
+                                                    }return false;">删除</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <nav>
+                                        <ul class="pagination pagination-rounded">
+                                            <li class="page-item">
+                                                <a class="page-link" th:href="${prev}" aria-label="Previous">
+                                                    <span aria-hidden="true">«</span>
+                                                    <span class="sr-only">上一页</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item active"><a class="page-link" href="javascript: void(0);" th:text="${cur_page}"></a></li>
+                                            <li class="page-item" th:each="a:${arr}"><a class="page-link" th:href="${a.getValue()}" th:text="${a.getKey()}"></a></li>
+
+
+                                            <li class="page-item">
+                                                <a class="page-link" th:href="${next}" aria-label="Next">
+                                                    <span aria-hidden="true">»</span>
+                                                    <span class="sr-only">下一页</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- container -->
+
+            </div>
+            <!-- content -->
+
+            <!-- ============================================================= -->
+            <!-- ===============    footer content start  ================= -->
+            <!-- ============================================================= -->
+
+            <footer th:replace="~{commons/common :: footer}"></footer>
+            <!-- ============================================================= -->
+            <!-- ===============    footer content start  ================= -->
+            <!-- ============================================================= -->
+
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+
+    </div>
+    <!-- END wrapper -->
+
+    <div th:replace="commons/common :: common_js(~{})"></div>
+</body>
+
+</html>

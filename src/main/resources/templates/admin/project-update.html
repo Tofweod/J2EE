@@ -62,7 +62,7 @@
                                         <div class="form-group col-md-6">
                                             <label for="project-class">项目大类</label>
                                             <select id="project-class" class="form-control" th:value="${project.getProjectClassId()}">
-                                                <option th:each="c : ${pClass}" th:value="${c.value().getProjectClassId()}" th:text="${c.value().getProjectClass()}"></option>
+                                                <option th:each="c : ${pClass}" th:value="${c.getValue().getProjectClassId()}" th:text="${c.getValue().getProjectClass}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@
 
                                             $.ajax({
                                                 type: "POST",
-                                                url: "/student/do-update",
+                                                url: "/admin/project/do-update",
                                                 data: {
                                                     'projectId':$("#project-id").val(),
                                                     'projectName':projectName,
@@ -135,7 +135,7 @@
                                                 success: function () {
                                                     alert("项目修改成功！");
 
-                                                    window.location.href = "/admin/project-list-n?page=0";
+                                                    history.back(-1);
                                                 },
                                                 error:function (){
                                                     alert("项目修改失败！");

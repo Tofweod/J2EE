@@ -35,23 +35,26 @@ public class PaperServiceImpl implements PaperService {
 	}
 	
 	@Override
-	public int deletePaper(String paperId) {
+	public int deletePaper(Integer paperId) {
 
-		//unbind project
-		List<Project> list=projectDao.getProjectByPaper(paperId);
-		for (Project p : list) {
-			p.setProjectPaperId(null);
-		}
 
-		//delete paper
 		Paper paper=new Paper();
-		paper.setPaperId(Integer.valueOf(paperId));
+		paper.setPaperId(paperId);
 
 
 			//delete file
 			Paper realPaper=paperDao.getPaper(paper);
 			FileSaveUtil.deletePaper(realPaper.getPaperUrl());
 
+
+		//unbind project
+		List<Project> list=projectDao.getProjectByPaper(paperId);
+		for (Project p : list) {
+			p.setProjectPaperId(null);
+			projectDao.updatePaper(p);
+		}
+
+		//delete paper
 		return paperDao.deletePaper(paper);
 	}
 	

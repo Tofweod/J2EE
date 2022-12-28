@@ -3,7 +3,7 @@
 
     <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
 
-        <title>个人中心</title>
+        <title>Shimba Bootstrap 4 Admin Dashboard</title>
 
     </head>
 
@@ -61,22 +61,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-auto col-sm-12">
-                                    <img src="assets/images/users/avatar-2.jpg" alt class="d-block ui-w-100 rounded-circle mb-3">
+                                    <img th:src="@{/assets/images/users/avatar-4.jpg}" alt class="d-block ui-w-100 rounded-circle mb-3">
                                 </div>
                                 <div class="col">
-                                    <h4 class="font-weight-bold mb-2">Rang Avdhut</h4>
+                                    <h4 class="font-weight-bold mb-2" th:text="${user.getUserName()}"></h4>
                                     <div class="text-muted mb-2">
-                                        Lorem ipsum dolor sit amet, nibh suavitate qualisque ut nam. Ad harum primis electram duo, porro principes ei has.
+                                        * Java is the best Language in the world *
                                     </div>
 
-                                    <a href="javascript:void(0)" class="d-inline-block text-dark">
-                                        <strong>234</strong>
-                                        <span class="text-muted">followers</span>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-inline-block text-dark ml-3">
-                                        <strong>111</strong>
-                                        <span class="text-muted">following</span>
-                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -84,303 +76,98 @@
                     <!-- Header -->
 
                     <div class="row">
-                        <div class="col-xl-4">
-
-                            <!-- Side info -->
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <a href="javascript:void(0)" class="btn btn-primary btn-round">+&nbsp; Follow</a> &nbsp;
-                                    <a href="javascript:void(0)" class="btn icon-btn btn-default md-btn-flat btn-round">
-                                        <span class="ion ion-md-mail"></span>
-                                    </a>
-                                </div>
-                                <hr class="border-light m-0">
-                                <div class="card-body">
-                                    <p class="mb-2">
-                                        <i class="ion ion-md-desktop ui-w-30 text-center text-lighter"></i> UI/UX Designer</p>
-                                    <p class="mb-2">
-                                        <i class="ion ion-ios-navigate ui-w-30 text-center text-lighter"></i> Panama, United Kingdom</p>
-                                    <p class="mb-0">
-                                        <i class="ion ion-md-globe ui-w-30 text-center text-lighter"></i>
-                                        <a href="javascript:void(0)" class="text-dark">website.com</a>
-                                    </p>
-                                </div>
-                                <hr class="border-light m-0">
-                                <div class="card-body">
-                                    <a href="javascript:void(0)" class="d-block text-dark mb-2">
-                                        <i class="ion ion-logo-twitter ui-w-30 text-center"></i> @Beethemes
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-block text-dark mb-2">
-                                        <i class="ion ion-logo-facebook ui-w-30 text-center "></i> \Beethemes
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-block text-dark mb-0">
-                                        <i class="ion ion-logo-instagram ui-w-30 text-center"></i> #Beethemes
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- / Side info -->
-
-                            <!-- Skills -->
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <h5>Skills</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-1">HTML -
-                                        <small class="text-muted">80%</small>
-                                    </div>
-                                    <div class="progress mb-3" style="height: 5px;">
-                                        <div class="progress-bar bg-secondary progress-bar-striped" style="width: 80%;"></div>
-                                    </div>
-
-                                    <div class="mb-1">CSS -
-                                        <small class="text-muted">95%</small>
-                                    </div>
-                                    <div class="progress mb-3" style="height: 5px;">
-                                        <div class="progress-bar bg-success progress-bar-striped" style="width: 95%;"></div>
-                                    </div>
-
-                                    <div class="mb-1">Javascript -
-                                        <small class="text-muted">90%</small>
-                                    </div>
-                                    <div class="progress mb-3" style="height: 5px;">
-                                        <div class="progress-bar bg-warning progress-bar-striped" style="width: 90%;"></div>
-                                    </div>
-
-                                    <div class="mb-1">UI/UX -
-                                        <small class="text-muted">80%</small>
-                                    </div>
-                                    <div class="progress" style="height: 5px;">
-                                        <div class="progress-bar bg-danger progress-bar-striped" style="width: 80%;"></div>
-                                    </div>
-
-                                </div>
-                                <a href="javascript:void(0)" class="card-footer d-block text-center text-dark small font-weight-semibold">SHOW ALL SKILLS</a>
-                            </div>
-                            <!-- / Skills -->
-
-                            <!-- Friends -->
-                            <div class="card mb-4">
-                                <div class="card-header with-elements">
-                                    <h5>Friends &nbsp;<small class="text-muted">591</small></h5>
-                                    <div class="card-header-elements ml-auto">
-                                        <a href="javascript:void(0)" class="btn btn-primary md-btn-flat btn-xs">Show All</a>
-                                    </div>
-                                </div>
-                                <div class="row no-gutters row-border-light">
-                                    <a href="javascript:void(0)" class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-dark py-3 px-2">
-                                        <img src="assets/images/users/avatar-1.jpg" alt class="d-block ui-w-40 rounded-circle mb-2">
-                                        <div class="text-center small">Leon Wilson</div>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-dark py-3 px-2">
-                                        <img src="assets/images/users/avatar-2.jpg" alt class="d-block ui-w-40 rounded-circle mb-2">
-                                        <div class="text-center small">Allie Rodriguez</div>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-dark py-3 px-2">
-                                        <img src="assets/images/users/avatar-3.jpg" alt class="d-block ui-w-40 rounded-circle mb-2">
-                                        <div class="text-center small">Kenneth Frazier</div>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-dark py-3 px-2">
-                                        <img src="assets/images/users/avatar-5.jpg" alt class="d-block ui-w-40 rounded-circle mb-2">
-                                        <div class="text-center small">Nellie Maxwell</div>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-dark py-3 px-2">
-                                        <img src="assets/images/users/avatar-6.jpg" alt class="d-block ui-w-40 rounded-circle mb-2">
-                                        <div class="text-center small">Mae Gibson</div>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-dark py-3 px-2">
-                                        <img src="assets/images/users/avatar-7.jpg" alt class="d-block ui-w-40 rounded-circle mb-2">
-                                        <div class="text-center small">Alice Hampton</div>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-dark py-3 px-2">
-                                        <img src="assets/images/users/avatar-4.jpg" alt class="d-block ui-w-40 rounded-circle mb-2">
-                                        <div class="text-center small">Belle Ross</div>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-dark py-3 px-2">
-                                        <img src="assets/images/users/avatar-2.jpg" alt class="d-block ui-w-40 rounded-circle mb-2">
-                                        <div class="text-center small">Arthur Duncan</div>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-dark py-3 px-2">
-                                        <img src="assets/images/users/avatar-6.jpg" alt class="d-block ui-w-40 rounded-circle mb-2">
-                                        <div class="text-center small">Amanda Warner</div>
-                                    </a>
-                                </div>
-                            </div>
-                            <!-- / Friends -->
-                        </div>
                         <div class="col">
 
                             <!-- Info -->
                             <div class="card mb-4">
                                 <div class="card-body">
+
                                     <div class="row mb-2">
-                                        <div class="col-md-3 text-muted">Birthday:</div>
-                                        <div class="col-md-9">
-                                            Dec 16, 1994
+                                        <div class="col-md-3 text-muted" th:text="#{user_email}"></div>
+                                        <div class="col-md-9" th:text="${user.getEmail()}">
+
                                         </div>
                                     </div>
+
                                     <div class="row mb-2">
-                                        <div class="col-md-3 text-muted">Country:</div>
-                                        <div class="col-md-9">
-                                            <a href="javascript:void(0)" class="text-dark">Panama</a>
+                                        <div class="col-md-3 text-muted" th:text="#{user_name}"></div>
+                                        <div class="col-md-9" th:text="${user.getUserName()}">
+
                                         </div>
                                     </div>
+
                                     <div class="row mb-2">
-                                        <div class="col-md-3 text-muted">Languages:</div>
-                                        <div class="col-md-9">
-                                            <a href="javascript:void(0)" class="text-dark">English</a>
+                                        <div class="col-md-3 text-muted" th:text="#{user_id}"></div>
+                                        <div class="col-md-9" th:text="${user.getUserId()}">
+
                                         </div>
                                     </div>
-                                    <h6 class="my-3">Contacts</h6>
+
+
                                     <div class="row mb-2">
-                                        <div class="col-md-3 text-muted">Phone:</div>
-                                        <div class="col-md-9">
-                                            +0 (123) 456 7891
+                                        <div class="col-md-3 text-muted" th:text="#{user_major}"></div>
+                                        <div class="col-md-9" th:text="${user.getMajor()}">
+
                                         </div>
                                     </div>
-                                    <h6 class="my-3">Interests</h6>
-                                    <div class="row mb-2">
-                                        <div class="col-md-3 text-muted">Favorite music:</div>
-                                        <div class="col-md-9">
-                                            <a href="javascript:void(0)" class="text-dark">Rock</a>,
-                                            <a href="javascript:void(0)" class="text-dark">Alternative</a>,
-                                            <a href="javascript:void(0)" class="text-dark">Electro</a>,
-                                            <a href="javascript:void(0)" class="text-dark">Drum &amp; Bass</a>,
-                                            <a href="javascript:void(0)" class="text-dark">Dance</a>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3 text-muted">Favorite movies:</div>
-                                        <div class="col-md-9">
-                                            <a href="javascript:void(0)" class="text-dark">The Green Mile</a>,
-                                            <a href="javascript:void(0)" class="text-dark">Pulp Fiction</a>,
-                                            <a href="javascript:void(0)" class="text-dark">Back to the Future</a>,
-                                            <a href="javascript:void(0)" class="text-dark">WALL·E</a>,
-                                            <a href="javascript:void(0)" class="text-dark">Django Unchained</a>,
-                                            <a href="javascript:void(0)" class="text-dark">The Truman Show</a>,
-                                            <a href="javascript:void(0)" class="text-dark">Home Alone</a>,
-                                            <a href="javascript:void(0)" class="text-dark">Seven Pounds</a>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <div class="card-footer text-center p-0">
                                     <div class="row no-gutters row-bordered row-border-light">
                                         <a href="javascript:void(0)" class="d-flex col flex-column text-dark py-3">
-                                            <div class="font-weight-bold">24</div>
-                                            <div class="text-muted small">posts</div>
+                                            <div class="font-weight-bold" th:text="${projectNums}"></div>
+                                            <div class="text-muted small" th:text="#{project_num}"></div>
                                         </a>
                                         <a href="javascript:void(0)" class="d-flex col flex-column text-dark py-3">
-                                            <div class="font-weight-bold">51</div>
-                                            <div class="text-muted small">videos</div>
-                                        </a>
-                                        <a href="javascript:void(0)" class="d-flex col flex-column text-dark py-3">
-                                            <div class="font-weight-bold">215</div>
-                                            <div class="text-muted small">photos</div>
+                                            <div class="font-weight-bold" th:text="${finishNums}"></div>
+                                            <div class="text-muted small" th:text="#{project_finished}"></div>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                             <!-- / Info -->
-                            <!-- Posts -->
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <p>
-                                        Aliquam varius euismod lectus, vel consectetur nibh tincidunt vitae. In non dignissim est. Sed eu ligula metus. Vivamus eget quam sit amet risus venenatis laoreet ut vel magna. Sed dui ligula, tincidunt in nunc
-                                        eu, rhoncus iaculis nisi.
-                                    </p>
-                                    <p>
-                                        Sed et convallis odio, vel laoreet tellus. Vivamus a leo eu metus porta pulvinar. Pellentesque tristique varius rutrum.
-                                    </p>
-                                    <div class="ui-bordered">
-                                        <div class="card bg-dark text-white">
-                                            <img src="assets/images/bg/bg-1.jpg" class="card-img" alt="images">
-                                            <div class="card-img-overlay d-flex align-items-end jusify-content-start">
-                                                <div class="bg-dark rounded text-white small py-1 px-2">
-                                                    <i class="ion ion-md-link"></i> &nbsp; external.com/some/page
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit</h5> Duis ut quam nec mi bibendum finibus et id tortor. Maecenas tristique dolor enim, sed tristique sem cursus et. Etiam tempus iaculis blandit.
-                                        Vivamus a justo a elit bibendum pulvinar ut non erat. Cras in purus sed leo mattis consequat viverra id arcu.
+
+                            <!-- project-->
+                            <div class="card sale-card" th:if="${projectList5.size()!=0}">
+                                <div class="card-header">
+                                    <h5>项目展示</h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="border-top-0">项目名</th>
+                                                    <th class="border-top-0">项目大类</th>
+                                                    <th class="border-top-0">项目状态</th>
+                                                    <th class="border-top-0">起始时间</th>
+                                                    <th class="border-top-0">截止时间</th>
+                                                    <th class="border-top-0">项目经费</th>
+                                                    <th class="border-top-0">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="p: ${projectList5}">
+                                                    <td class="" th:text="${p.getProjectName()}"></td>
+                                                    <td class="" th:text="${pClass.get(p.getProjectClassId()).getProjectClass()}"></td>
+                                                    <td class="" th:text="${pState.get(p.getProjectStateId()).getProjectState()}"></td>
+                                                    <td class="" th:text="${#dates.format(p.getProjectStartTime(),'yyyy-MM-dd')}"></td>
+                                                    <td class="" th:text="${#dates.format(p.getProjectEndTime(),'yyyy-MM-dd')}"></td>
+                                                    <td class="" th:text="${p.getProjectFundsUp()}"></td>
+                                                    <td>
+                                                        <a th:href="@{/admin/project-details(id=${p.getProjectId()})}">查看详情</a>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <a href="javascript:void(0)" class="d-inline-block text-muted">
-                                        <small class="align-middle"><strong>123</strong> Likes</small>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-inline-block text-muted ml-2">
-                                        <small class="align-middle"><strong>12</strong> Comments</small>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-inline-block text-muted ml-2">
-                                        <i class="ion ion-md-share align-middle"></i>&nbsp;
-                                        <small class="align-middle">Repost</small>
-                                    </a>
-                                </div>
                             </div>
-
-
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus finibus commodo bibendum. Vivamus laoreet blandit odio, vel finibus quam dictum ut.
-                                    </p>
-                                    <a href="javascript:void(0)">
-                                        <img src="assets/images/bg/bg-3.jpg" alt="images" class="img-fluid">
-                                    </a>
-                                </div>
-                                <div class="card-footer">
-                                    <a href="javascript:void(0)" class="d-inline-block text-muted">
-                                        <small class="align-middle"><strong>123</strong> Likes</small>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-inline-block text-muted ml-2">
-                                        <small class="align-middle"><strong>12</strong> Comments</small>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-inline-block text-muted ml-2">
-                                        <i class="ion ion-md-share align-middle"></i>&nbsp;
-                                        <small class="align-middle">Repost</small>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <p>
-                                        Aliquam viverra ornare tincidunt. Vestibulum sit amet vestibulum quam. Donec eu est non velit rhoncus interdum eget vel lorem.
-                                    </p>
-
-                                    <div class="border-top-0 border-right-0 border-bottom-0 ui-bordered pl-3 mt-4 mb-2">
-                                        <div class="media mb-3">
-                                            <img src="assets/images/users/avatar-4.jpg" class="d-block ui-w-40 rounded-circle" alt>
-                                            <div class="media-body ml-3">
-                                                Sunita Ahir
-                                                <div class="text-muted small">3 days ago</div>
-                                            </div>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus finibus commodo bibendum. Vivamus laoreet blandit odio, vel finibus quam dictum ut.
-                                        </p>
-                                        <a href="javascript:void(0)" class="ui-rect ui-bg-cover" style="background-image: url(http://bvmthemes.com/themes/shimba/live/'assets/images/bg/bg-8.jpg');"></a>
-                                    </div>
-                                    <a href="javascript:void(0)" class="text-muted small">Reposted from @sunita/posts/123</a>
-                                </div>
-                                <div class="card-footer">
-                                    <a href="javascript:void(0)" class="d-inline-block text-muted">
-                                        <small class="align-middle"><strong>123</strong> Likes</small>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-inline-block text-muted ml-2">
-                                        <small class="align-middle"><strong>12</strong> Comments</small>
-                                    </a>
-                                    <a href="javascript:void(0)" class="d-inline-block text-muted ml-2">
-                                        <i class="ion ion-md-share align-middle"></i>&nbsp;
-                                        <small class="align-middle">Repost</small>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- / Posts -->
 
                         </div>
                     </div>
+
 
 
                 </div> <!-- container -->
@@ -391,22 +178,7 @@
             <!-- ===============    footer content start  ================= -->
             <!-- ============================================================= -->
 
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-6">
-                            © Shimba - by Beethemesdesign
-                        </div>
-                        <div class="col-md-6">
-                            <div class="text-md-right footer-links d-none d-md-block">
-                                <a href="javascript: void(0);">Buy Now</a>
-                                <a href="https://www.php.cn/xiazai/code/">Rate us</a>
-                               
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            <footer th:replace="~{/commons/common :: footer}"></footer>
             <!-- ============================================================= -->
             <!-- ===============    footer content start  ================= -->
             <!-- ============================================================= -->
@@ -423,7 +195,7 @@
     <!-- END wrapper -->
 
     <!-- Required js -->
-    <script src="assets/js/app.js"></script>
+    <div th:replace="~{/commons/common :: common_js(~{})}"></div>
 
 </body>
 

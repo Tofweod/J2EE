@@ -2,10 +2,12 @@ package com.octenexin.ecnu.util;
 
 import com.octenexin.ecnu.EcnuApplication;
 
+import com.octenexin.ecnu.pojo.Paper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -29,7 +31,30 @@ public class FileSaveUtil {
 
         url+=rootUrl;
 
-        return url;
+        return url;//C:\...classes/resources/
+    }
+
+    public static String getFileSize(String paperUrl){
+        String url=FileSaveUtil.getFileLoadRootUrl();//...resources/
+
+        // 从uploads中传输文件到响应流中
+        File file = new File(url+paperUrl);
+
+        long len=file.length();
+
+        //B,KB,MB,GB
+
+        String[] arr= new String[]{"B", "KB", "MB", "GB"};
+        int i=0;
+        for(;i<3;i++){
+           if(len>=1024){
+               len>>=10;
+           }else{
+               break;
+           }
+        }
+
+        return len+arr[i];
     }
 
     /**
@@ -99,11 +124,7 @@ public class FileSaveUtil {
             url+=projectName;
             System.out.println(url);//file:/C:/Users/HP/Desktop/j2ee/target/classes/project1
 
-            try{
-                Files.deleteIfExists(Paths.get(url));
-            }catch (IOException e){
-                e.printStackTrace();
-            }
+            deleteDir(url);//递归删除
 
             return;
 
@@ -115,4 +136,18 @@ public class FileSaveUtil {
 
         throw new RuntimeException("control shouldn't reach here");
     }
+
+    public static boolean deleteDir(String path) {
+        File dir = new File(path);
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            //递归删除目录中的子目录下
+            for (String child : children) {
+                deleteDir(path + "/" + child);
+            }
+        }
+        // 目录此时为空，可以删除
+        return dir.delete();
+    }
+
 }

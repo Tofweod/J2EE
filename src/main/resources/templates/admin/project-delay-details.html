@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head th:replace="~{/commons/common :: common_header(~{::title},~{})}">
+
+        <title>Shimba Bootstrap 4 Admin Dashboard</title>
+
+    </head>
+    <body>
+
+        <div class="wrapper">
+            <div th:replace="~{/commons/common :: sidebar-admin}"></div>
+
+            <div class="content-page">
+                <div class="content">
+                    <div th:replace="~{/commons/common :: navbar-admin}"></div>
+
+                    <!--===============main content start===============-->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a th:href="@{/admin/index}"><i class="feather icon-home"></i></a></li>
+                                        <li class="breadcrumb-item active">延期申请详情</li>
+                                    </ol>
+                                </div>
+                                <h4 class="page-title">延期申请详情</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive-sm">
+
+                                        <input style="display: none" id="delay-id" th:value="${delay.getProjectDelayId()}"/>
+
+                                        <h3 class="mt-0" th:text="${'延期申请：' + project.getProjectName()}"></h3>
+                                        <div th:class="${className}" th:text="${stateName}"></div>
+
+                                        <h5>原截止时间</h5>
+                                        <p class="text-muted" th:text="${#dates.format(delay.getProjectOldEndTime(),'yyyy-MM-dd')}"></p>
+
+                                        <h5>现截止时间</h5>
+                                        <p class="text-muted" th:text="${#dates.format(delay.getProjectNewEndTime(),'yyyy-MM-dd')}"></p>
+
+                                        <h5>延期原因</h5>
+                                        <p class="text-muted" th:text="${delay.getProjectDelayReason()}"></p>
+
+                                        <h5>评语</h5>
+                                        <textarea class="form-control" rows="3" id="reason" placeholder="若同意延期，可不填"></textarea>
+
+                                        <div class="row mb-3"> </div>
+
+                                        <div class="row mb-12">
+                                            <button th:if="${delay.getProjectDelayState() == 0}" type="button" class="btn btn-outline-primary" onclick="{
+                                                $.ajax({
+                                                type:'POST',
+                                                url:'/admin/project/project-delay/do-operate',
+                                                data:{
+                                                  id:  $('#delay-id').val(),
+                                                  oper: 1,
+                                                  reason : ''
+                                                },
+                                                success: function (){
+                                                    alert('已通过！');
+                                                    history.back(-1);
+                                                },
+                                                fail: function (){
+                                                    alert('通过失败！');
+                                                }
+                                            })
+                                            }">通过</button>
+                                            <button th:if="${delay.getProjectDelayState() == 0}" type="button" class="btn btn-outline-danger" onclick="{
+
+                                                if($('#reason').val()===''){
+                                                    alert('请填写驳回理由！');
+                                                    return false;
+                                                }
+
+                                                $.ajax({
+                                                type:'POST',
+                                                url:'/admin/project/project-delay/do-operate',
+                                                data:{
+                                                  id:  $('#delay-id').val(),
+                                                  oper: -1,
+                                                  reason : $('#reason').val()
+                                                },
+                                                success: function (){
+                                                    alert('已驳回！');
+                                                    history.back(-1);
+                                                },
+                                                fail: function (){
+                                                    alert('驳回失败！');
+                                                }
+                                            })
+                                            }">驳回</button>
+                                            <button type="button" class="btn btn-outline-secondary" onclick="{history.back(-1);}">返回前页</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--===============main content end===============-->
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <div th:replace="~{/commons/common :: common_js(~{})}"></div>
+    </body>
+</html>

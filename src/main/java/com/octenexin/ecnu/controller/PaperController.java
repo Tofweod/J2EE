@@ -7,6 +7,7 @@ import com.octenexin.ecnu.pojo.Paper;
 import com.octenexin.ecnu.pojo.Project;
 import com.octenexin.ecnu.service.PaperService;
 import com.octenexin.ecnu.util.FileSaveUtil;
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -139,7 +140,7 @@ public class PaperController {
 	public String doDeletePaper(@RequestParam("paperId")String paperId){
 
 		try{
-			paperService.deletePaper(paperId);
+			paperService.deletePaper(Integer.valueOf(paperId));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -161,7 +162,7 @@ public class PaperController {
 		// 假设每页显示10条数据
 		return paperService.getPaperPage((page-1) * 10, 10);
 	}
-	
+
 	/**
 	 * 论文下载功能，具体获取paper_id方法未提供
 	 * 通过<a></a>标签提供的url进行下载
